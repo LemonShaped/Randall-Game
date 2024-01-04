@@ -1,12 +1,19 @@
-#disable all eol conversions
+# no eol conversions on files outside of Assets.
+eol=lf
 * -text
+Assets/* text=auto
+Assets/**/* text=auto
+.editorconfig text=auto
+.gitignore text=auto
+.gitattributes text=auto
+
 
 
 # Collapse Unity-generated files on GitHub
-*.asset linguist-generated
-*.mat linguist-generated
-*.meta linguist-generated
-*.prefab linguist-generated
-*.unity linguist-generated
+*.asset linguist-generated -text
+*.mat linguist-generated -text
+*.meta linguist-generated -text
+*.prefab linguist-generated -text
+*.unity linguist-generated -text
 
 
