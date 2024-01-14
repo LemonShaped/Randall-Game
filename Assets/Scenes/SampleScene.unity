@@ -629,10 +629,10 @@ MonoBehaviour:
   movement: {x: 0, y: 0}
   doHover: 0
   walkSpeed: 2.5
-  jumpVelocity: 10
-  jumpHeight: 2.5
+  jumpHeight: 3
   jumpTime: 0.5
-  normalGravityScale: 2.0387359
+  jumpVelocity: 12
+  normalGravityScale: 2.4464831
   hoverGravityScale: 0.2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

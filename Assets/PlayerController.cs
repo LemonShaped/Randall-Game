@@ -16,17 +16,20 @@ public class PlayerController : MonoBehaviour
 
     public bool doHover;
     public float walkSpeed; // walking speed in m/s
-    public float jumpVelocity;
 
     public float jumpHeight;
     public float jumpTime;
 
-    public float normalGravityScale;
+    private float jumpVelocity;
+    private float normalGravityScale;
+
     public float hoverGravityScale;
+    public float hoverDrag;
 
     private void OnEnable()
     {
         moveAction.Enable();
+        jumpAction.Enable();
 
         OnValidate();
     }
@@ -52,7 +55,7 @@ public class PlayerController : MonoBehaviour
 
         if (doHover) {
             rb.gravityScale = hoverGravityScale;
-            rb.drag = 5f;
+            rb.drag = hoverDrag;
 
             if (movement.x != 0)
                 rb.velocityX = movement.x * walkSpeed;
