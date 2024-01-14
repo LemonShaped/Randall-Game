@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -28,23 +27,25 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         moveAction.Enable();
+
         OnValidate();
     }
 
     private void OnValidate()
     {
-        jumpVelocity = 2 * jumpHeight / jumpTime; //Mathf.Sqrt(2 * -Physics2D.gravity.y * jumpHeight); //without jumpTime
+        jumpVelocity = 2 * jumpHeight / jumpTime;
         normalGravityScale = (jumpVelocity / jumpTime) / -Physics2D.gravity.y;
     }
-    // s=s  u=?  v=0  a=?  t=t
+    // s=s  u=?  v=0  a=  t=t
     // s = (v+u)/2 * t
     // u = 2s/t - 0
     // jumpVelocity = 2*jumpHeight/jumpTime
-    //
+
     // v = u + at
     // a=(v-u)/t
     // a= -u/t
     // gravity = -jumpVelocity/jumpTime
+
     private void FixedUpdate()
     {
         movement = moveAction.ReadValue<Vector2>();
@@ -67,7 +68,7 @@ public class PlayerController : MonoBehaviour
             rb.velocityX = movement.x * walkSpeed;
 
             // jump
-            if (movement.y > 0 && rb.IsTouchingLayers(groundLayers)) {
+            if (rb.IsTouchingLayers(groundLayers) && jumpAction.IsPressed()) {
                 rb.velocityY = jumpVelocity;
             }
 
