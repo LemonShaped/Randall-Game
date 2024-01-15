@@ -104,3 +104,8 @@ $RECYCLE.BIN/
 
 
 
+# Replit
+#
+#
+/.replit
+/replit.nix
