@@ -1,8 +1,9 @@
-# no eol conversions on files outside of Assets.
+# no eol conversions on most files.
+# lf endings on scripts in Assets.
 eol=lf
 * -text
-Assets/* text=auto
-Assets/**/* text=auto
+/Assets/* text=auto
+/Assets/**/* text=auto
 .editorconfig text=auto
 .gitignore text=auto
 .gitattributes text=auto
