@@ -71,12 +71,17 @@ public class PlayerController : MonoBehaviour
             rb.velocityX = movement.x * walkSpeed;
 
             // jump
-            if (rb.IsTouchingLayers(groundLayers) && jumpAction.IsPressed()) {
+            if (jumpAction.IsPressed() && OnGround()) {
                 rb.velocityY = jumpVelocity;
             }
 
         }
 
+    }
+
+    private bool OnGround()
+    {
+        return rb.IsTouchingLayers(groundLayers);
     }
 
 }
