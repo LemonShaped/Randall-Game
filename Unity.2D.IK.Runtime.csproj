@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{0F9C287D-9E14-DF29-CC68-E770AD75FAE4}</ProjectGuid>
+    <ProjectGuid>{19EF70DD-978C-B381-4183-9D140FE84D05}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Unity.2D.IK.Runtime</AssemblyName>
@@ -1067,19 +1067,19 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Unity.InternalAPIEngineBridge.001.csproj">
-      <Project>{1CBE016D-B816-CF94-0010-661D9D2E06EB}</Project>
+      <Project>{CE44736E-E4AB-562A-A29E-DB911A741186}</Project>
       <Name>Unity.InternalAPIEngineBridge.001</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.2D.Animation.Runtime.csproj">
-      <Project>{3ABF3C8A-9036-F2DD-78C0-C473FF79F9D1}</Project>
+      <Project>{B7569A9E-EE2A-211D-2AB2-ABBEE1C83302}</Project>
       <Name>Unity.2D.Animation.Runtime</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEditor.UI.csproj">
-      <Project>{8404B736-31C7-F6B0-08BB-D1802C9EDE6C}</Project>
+      <Project>{6AFE4919-C525-7BBB-DF4B-33A63AB22134}</Project>
       <Name>UnityEditor.UI</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.UI.csproj">
-      <Project>{CFEE3972-2980-9DC2-4A05-26F8285DC43D}</Project>
+      <Project>{3B66BFA6-C14A-1EC5-76CD-C64C034D6963}</Project>
       <Name>UnityEngine.UI</Name>
     </ProjectReference>
   </ItemGroup>
