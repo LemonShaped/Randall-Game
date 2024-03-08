@@ -15,3 +15,4 @@ public class FileModificationWarning : AssetModificationProcessor
         return paths;
     }
 }
+//"H:\vscode\pwsh test\poweshl.exe" cd H:\Projects\Unity\Randall-Game; git add .; git commit -m "automated: $(Get-Date -format 'yyyy-MM-dd HH:mm:ss')"; git branch hyperspecific; git pull; git push; while ($true){pause};
