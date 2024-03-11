@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class movementMode
+public class MovementMode
 {
+    public string name;
     public float jumpVelocity;
     public float gravityScale;
     
@@ -42,26 +43,23 @@ public class PlayerController : MonoBehaviour
     public float hoverGravityScale;
     public float hoverDrag;
 
-    public MovementMode[3] phases = {
-        new MovementMode(){name="ice", jumpHeight=1.05, jumpTime=0.5},
-        new MovementMode(){name="water", jumpHeight=3.1, jumpTime=0.9},
-        new MovementMode(){name="cloud"}
+    public class Modes {
+        MovementMode Ice = new MovementMode() { jumpHeight = 1.05f, jumpTime = 0.5f };
+        MovementMode Water = new MovementMode() { jumpHeight = 3.1f, jumpTime = 0.9f};
+        MovementMode Cloud = new MovementMode();
     };
-    public Phase phase = "water";
-    public MovementMode mode {
-        get => phases[phase]
-    }
+    public MovementMode currentMode;
     
     private void OnEnable()
     {
         moveAction.Enable();
         jumpAction.Enable();
 
-        foreach phase in phases {
-            phase.setupJump();
+        foreach (MovementMode mode in Modes) { // error
+            mode.setupJump();
         } 
     }
-    private void onDisable()
+    private void OnDisable()
     {
         moveAction.Disable();
         jumpAction.Disable();
@@ -69,9 +67,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnValidate()
     {
-        foreach phase in phases {
-            phase.setupJump();
-        } 
+        foreach (MovementMode mode in Modes) { //
+            mode.setupJump();
+        }
     }
     
     private void FixedUpdate()
