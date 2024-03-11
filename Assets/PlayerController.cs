@@ -4,9 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public class movementMode
+{
+    public float jumpVelocity;
+    public float gravityScale;
+    
+    public float jumpHeight;
+    public float jumpTime;
+    
+    public void setupJump() {
+        jumpVelocity = 2 * jumpHeight / jumpTime;
+        gravityScale = (jumpVelocity / jumpTime) / -Physics2D.gravity.y;
+    }
+}
+
 public class PlayerController : MonoBehaviour
 {
     public Rigidbody2D rb;
+    
     public InputAction moveAction;
     public InputAction jumpAction;
 
@@ -21,34 +36,44 @@ public class PlayerController : MonoBehaviour
     public float jumpTime;
 
     private float jumpVelocity;
+    
     private float normalGravityScale;
 
     public float hoverGravityScale;
     public float hoverDrag;
 
+    public MovementMode[3] phases = {
+        new MovementMode(){name="ice", jumpHeight=1.05, jumpTime=0.5},
+        new MovementMode(){name="water", jumpHeight=3.1, jumpTime=0.9},
+        new MovementMode(){name="cloud"}
+    };
+    public Phase phase = "water";
+    public MovementMode mode {
+        get => phases[phase]
+    }
+    
     private void OnEnable()
     {
         moveAction.Enable();
         jumpAction.Enable();
 
-        OnValidate();
+        foreach phase in phases {
+            phase.setupJump();
+        } 
+    }
+    private void onDisable()
+    {
+        moveAction.Disable();
+        jumpAction.Disable();
     }
 
     private void OnValidate()
     {
-        jumpVelocity = 2 * jumpHeight / jumpTime;
-        normalGravityScale = (jumpVelocity / jumpTime) / -Physics2D.gravity.y;
+        foreach phase in phases {
+            phase.setupJump();
+        } 
     }
-    // s=s  u=?  v=0  a=  t=t
-    // s = (v+u)/2 * t
-    // u = 2s/t - 0
-    // jumpVelocity = 2*jumpHeight/jumpTime
-
-    // v = u + at
-    // a=(v-u)/t
-    // a= -u/t
-    // gravity = -jumpVelocity/jumpTime
-
+    
     private void FixedUpdate()
     {
         movement = moveAction.ReadValue<Vector2>();
@@ -71,7 +96,7 @@ public class PlayerController : MonoBehaviour
             rb.velocityX = movement.x * walkSpeed;
 
             // jump
-            if (jumpAction.IsPressed() && OnGround()) {
+            if (jumpAction.IsPressed() && IsOnGround()) {
                 rb.velocityY = jumpVelocity;
             }
 
@@ -79,7 +104,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private bool OnGround()
+    private bool IsOnGround()
     {
         return rb.IsTouchingLayers(groundLayers);
     }
