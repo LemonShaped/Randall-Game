@@ -10,12 +10,16 @@ public class MovementMode
     public float jumpVelocity;
     public float gravityScale;
     
-    public float jumpHeight;
-    public float jumpTime;
-    
-    public void setupJump() {
-        jumpVelocity = 2 * jumpHeight / jumpTime;
-        gravityScale = (jumpVelocity / jumpTime) / -Physics2D.gravity.y;
+    public MovementMode(string name, float jumpHeight, float JumpTime) {
+        this.name = name;
+        this.jumpVelocity = 2 * jumpHeight / jumpTime;
+        this.gravityScale = (this.jumpVelocity / jumpTime) / -Physics2D.gravity.y;
+    }
+    public MovementMode(string name) {
+        this.name = name;
+    }
+    public bool eq(MovementMode other) {
+        return this.name == other.name;
     }
 }
 
@@ -44,9 +48,9 @@ public class PlayerController : MonoBehaviour
     public float hoverDrag;
 
     public class Modes {
-        MovementMode Ice = new MovementMode() { jumpHeight = 1.05f, jumpTime = 0.5f };
-        MovementMode Water = new MovementMode() { jumpHeight = 3.1f, jumpTime = 0.9f};
-        MovementMode Cloud = new MovementMode();
+        MovementMode Ice = new MovementMode("Ice", 1.05f, 0.5f);
+        MovementMode Water = new MovementMode("Water", 3.1f, 0.9f);
+        MovementMode Cloud = new MovementMode("Cloud"){ gravityScale = 0.1f };
     };
     public MovementMode currentMode;
     
