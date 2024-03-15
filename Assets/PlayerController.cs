@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnValidate()
     {
+        UnityEditor.EditorPrefs.SetBool("DeveloperMode", false);
         jumpVelocity = 2 * jumpHeight / jumpTime;
         normalGravityScale = (jumpVelocity / jumpTime) / -Physics2D.gravity.y;
     }
