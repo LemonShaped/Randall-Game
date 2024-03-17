@@ -4,16 +4,16 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 
-public class Neighbour
-{
-    public const int This = 1;
-    public const int NotThis = 2;
-    public const int Empty = 3;
-    public const int NotEmpty = 4;
-}
-
 [CreateAssetMenu]
-public class MyRuleTile : RuleTile<Neighbour> {    
+public class BetterRuleTile : RuleTile<BetterRuleTile.Neighbour> {
+
+    public class Neighbour
+    {
+        public const int This = 1;
+        public const int NotThis = 2;
+        public const int Empty = 3;
+        public const int NotEmpty = 4;
+    }
 
     public override bool RuleMatch(int neighbor, TileBase other) {
         if (other is RuleOverrideTile ot)
