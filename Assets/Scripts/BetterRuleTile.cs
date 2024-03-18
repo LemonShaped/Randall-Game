@@ -15,6 +15,9 @@ public class BetterRuleTile : RuleTile<BetterRuleTile.Neighbour> {
         public const int NotEmpty = 4;
     }
 
+    #region -
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style","IDE0066:Convert switch statement to expression")] 
+    #endregion
     public override bool RuleMatch(int neighbor, TileBase other) {
         if (other is RuleOverrideTile ot)
             other = ot.m_InstanceTile;
