@@ -13,19 +13,19 @@ public class MovementMode
     public float jumpVelocity;
     public float gravityScale;
 
-    public SetupJump(float jumpHeight, float jumpTime) {
-        this.jumpVelocity = 2 * jumpHeight / jumpTime;
-        this.gravityScale = (this.jumpVelocity / jumpTime) / -Physics2D.gravity.y;
+    public void SetupJump(float jumpHeight, float jumpTime) {
+        jumpVelocity = 2 * jumpHeight / jumpTime;
+        gravityScale = (jumpVelocity / jumpTime) / -Physics2D.gravity.y;
     }
     
     public MovementMode(string name, float jumpHeight, float JumpTime) {
         this.name = name;
-        this.SetupJump(jumpHeight, JumpTime)
+        SetupJump(jumpHeight, JumpTime);
     }
     public MovementMode(string name) {
         this.name = name;
     }
-}
+}//put jymo height and jukp speed ijto the class.
 
 public class PlayerController : MonoBehaviour
 {
@@ -38,29 +38,26 @@ public class PlayerController : MonoBehaviour
 
     public Vector2 movement;
 
-    public bool doHover;
-
-    private float jumpVelocity;
-    
-    // private float normalGravityScale;
-
+    //public bool doHover;
+    //private float jumpVelocity;
     // public float hoverGravityScale;
     // public float hoverDrag;
-    public enum Mode {
+    public enum Mode : int {
         Water,
         Underground,
         Ice,
         Cloud,
     }
-    public MovementMode[4] modes = {
+
+    public MovementMode[] modes = {
         new MovementMode("Water", 3.1f, 0.9f),
-        new MovementMode("Underground"){ gravityScale = 0.0f }
+        new MovementMode("Underground"){ gravityScale = 0.0f },
         new MovementMode("Ice", 1.05f, 0.5f),
         new MovementMode("Cloud"){ gravityScale = 0.1f },
     };
     public Mode currentMode = Mode.Water;
-    public MovementMode CurrentMode { get => return modes[currentMode]; };
-    
+    public MovementMode CurrentMode { get => modes[(int)currentMode]; }
+
     private void OnEnable()
     {
         moveAction.Enable();
@@ -76,7 +73,7 @@ public class PlayerController : MonoBehaviour
     private void OnValidate()
     {
         foreach (MovementMode mode in modes) {
-            mode.SetupJump();
+            mode.SetupJump();///////////err
         }
     }
     
@@ -84,26 +81,26 @@ public class PlayerController : MonoBehaviour
     {
         movement = moveAction.ReadValue<Vector2>();
 
-        if (doHover) {
-            rb.gravityScale = hoverGravityScale;
-            rb.drag = hoverDrag;
+        if (doHover) {///////err
+            rb.gravityScale = hoverGravityScale;//////err
+            rb.drag = hoverDrag;///////err
 
             if (movement.x != 0)
-                rb.velocityX = movement.x * speed;
+                rb.velocityX = movement.x * speed;///////err
 
             if (movement.y != 0)
-                rb.velocityY = movement.y * speed;
+                rb.velocityY = movement.y * speed;///////err
 
         }
         else {
-            rb.gravityScale = normalGravityScale;
+            rb.gravityScale = normalGravityScale;///////err
             rb.drag = 0;
 
-            rb.velocityX = movement.x * speed;
+            rb.velocityX = movement.x * speed;///////err
 
             // jump
             if (jumpAction.IsPressed() && IsOnGround()) {
-                rb.velocityY = jumpVelocity;
+                rb.velocityY = jumpVelocity;///////err
             }
 
         }
