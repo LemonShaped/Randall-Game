@@ -26,11 +26,11 @@ MonoBehaviour:
     e20: 0
     e21: 0
     e22: 1
-    e23: -1
+    e23: 0
     e30: 0
     e31: 0
     e32: 0
     e33: 1
-  m_InstancedGameObject: {fileID: 0}
-  m_Flags: 3
-  m_ColliderType: 2
+  m_InstancedGameObject: {fileID: 3641756805711374193, guid: 148b8b0121eca504ea9f3abeec4f05f7, type: 3}
+  m_Flags: 1
+  m_ColliderType: 0

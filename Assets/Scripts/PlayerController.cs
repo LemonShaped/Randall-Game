@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 public class MovementMode
 {
@@ -12,6 +14,7 @@ public class MovementMode
     
     public float jumpVelocity;
     public float gravityScale;
+    public float drag;
 
     public void SetupJump(float jumpHeight, float jumpTime) {
         jumpVelocity = 2 * jumpHeight / jumpTime;
@@ -29,19 +32,21 @@ public class MovementMode
 
 public class PlayerController : MonoBehaviour
 {
-    public Rigidbody2D rb;
     
     public InputAction moveAction;
     public InputAction jumpAction;
-
-    public LayerMask groundLayers;
-
     public Vector2 movement;
 
-    //public bool doHover;
-    //private float jumpVelocity;
-    // public float hoverGravityScale;
-    // public float hoverDrag;
+    public Rigidbody2D rb;
+
+    public LayerMask groundLayers;
+    public Tilemap groundTilemap;
+    public GroundCheck groundCheck;
+
+    public Vector3Int playerTile {
+        get => Vector3Int.FloorToInt(transform.position);
+    }
+
     public enum Mode : int {
         Water,
         Underground,
@@ -58,11 +63,14 @@ public class PlayerController : MonoBehaviour
     public Mode currentMode = Mode.Water;
     public MovementMode CurrentMode { get => modes[(int)currentMode]; }
 
+    public TileBase[] porousTiles;
+
     private void OnEnable()
     {
         moveAction.Enable();
         jumpAction.Enable();
 
+        OnValidate();
     }
     private void OnDisable()
     {
@@ -73,43 +81,77 @@ public class PlayerController : MonoBehaviour
     private void OnValidate()
     {
         foreach (MovementMode mode in modes) {
-            mode.SetupJump();///////////err
+            mode.SetupJump();
         }
     }
-    
+    /* s = t(u+v)/2
+     * u = 2s/t
+     * jumpVelocity = 2*jumpHeight/jumpTime
+     * 
+     * v = u + at
+     * a= -u/t
+     * gravity = -jumpVelocity/jumpTime
+     */
+
     private void FixedUpdate()
     {
         movement = moveAction.ReadValue<Vector2>();
 
-        if (doHover) {///////err
-            rb.gravityScale = hoverGravityScale;//////err
-            rb.drag = hoverDrag;///////err
+        if (doHover) {
+            rb.gravityScale = hoverGravityScale;
+            rb.drag = hoverDrag;
 
-            if (movement.x != 0)
-                rb.velocityX = movement.x * speed;///////err
+            if (movement.x != 0) // we want to control the speed directly but we dont want to stop instantly, when flying.
+                rb.velocityX = movement.x * walkSpeed;
 
             if (movement.y != 0)
-                rb.velocityY = movement.y * speed;///////err
+                rb.velocityY = movement.y * walkSpeed;
 
         }
         else {
-            rb.gravityScale = normalGravityScale;///////err
+            rb.gravityScale = normalGravityScale;
             rb.drag = 0;
 
-            rb.velocityX = movement.x * speed;///////err
+            rb.velocityX = movement.x * walkSpeed;
 
             // jump
             if (jumpAction.IsPressed() && IsOnGround()) {
-                rb.velocityY = jumpVelocity;///////err
+                rb.velocityY = jumpVelocity;
             }
 
         }
 
+        if (movement.y < 0 && groundCheck.CheckGround(groundLayers) && IsTilePorous(groundTilemap.GetTile(playerTile + Vector3Int.down))) {
+            doHover = true;
+            rb.excludeLayers |= (1 << LayerMask.NameToLayer("GroundPorous")); // exclude collisions with porous ground
+        }
+        else if (groundTilemap.GetTile(playerTile) == null) {
+            doHover = false;
+            rb.excludeLayers &= ~(1 << LayerMask.NameToLayer("GroundPorous")); // allow collisions with porous ground
+        }
+    }
+
+    private bool IsTilePorous(TileBase tile)
+    {
+        //if (tile.GetType() == typeof(Tile)) {
+        //    Tile tile_ = (Tile)tile;
+        //    return LayerMask.LayerToName(tile_.gameObject.layer) == "GroundPorous";
+        //}
+        //else if (tile.GetType() == typeof(RuleTile)) {
+        //    RuleTile tile_ = (RuleTile)tile;
+        //    return LayerMask.LayerToName(tile_.m_DefaultGameObject.layer) == "GroundPorous";
+        //}
+        foreach (TileBase porousTile in porousTiles) {
+            if (tile == porousTile)
+                return true;
+        }
+        return false;
     }
 
     private bool IsOnGround()
     {
-        return rb.IsTouchingLayers(groundLayers);
+        return rb.IsTouchingLayers(groundLayers) && groundCheck.CheckGround(groundLayers);
     }
+
 
 }
