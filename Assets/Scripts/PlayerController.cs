@@ -5,15 +5,18 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 [Serializable]
 public class MovementMode
 {
-    [SerializeField] public readonly string name;
+    [SerializeField] public string name;
 
-    [SerializeField] private float _jumpHeight;
-    [SerializeField] private float _jumpTime;
+    [SerializeField]
+    [InspectorLabel("(jump height)")]
+    private float _jumpHeight;
+    [SerializeField]
+    [InspectorLabel("(jump time)")]
+    private float _jumpTime;
     public float jumpVelocity;
     public float gravityScale;
 
@@ -21,35 +24,32 @@ public class MovementMode
     public float speed;
 
     public void SetupJump() {
+        if (_jumpHeight == 0 || _jumpTime == 0)
+            return;
+
         jumpVelocity = 2 * _jumpHeight / _jumpTime;
         gravityScale = (jumpVelocity / _jumpTime) / -Physics2D.gravity.y;
     }
 
-    public MovementMode(string name) {
-        this.name = name;
-    }
-
-    //public override bool Equals(object obj) =>
-    //    obj is not null && obj.GetType() == typeof(MovementMode) && name == ((MovementMode)obj).name;
-    //public static bool operator ==(MovementMode b1, MovementMode b2) =>
-    //    b1 is not null && b1.Equals(b2);
-    //public static bool operator !=(MovementMode b1, MovementMode b2) =>
-    //    !(b1 == b2);
-
-}
-
-[Serializable]
-public class Modes
-{
-    public MovementMode Water = new("Water");
-    public MovementMode Underground = new("Underground");
-    public MovementMode Ice = new("Ice");
-    public MovementMode Cloud = new("Cloud");
 }
 
 public class PlayerController : MonoBehaviour
 {
-    
+    public enum ModesEnum {
+        Water, Underground, Ice, Cloud
+    }
+    [Serializable]
+    public class Modes
+    {
+        public MovementMode Water;
+        public MovementMode Underground;
+        public MovementMode Ice;
+        public MovementMode Cloud;
+        private Modes() { }
+        private static Modes _instance;
+        public static Modes Instance => _instance ??= new Modes();
+    }
+
     public InputAction moveAction;
     public InputAction jumpAction;
     public Vector2 movement;
@@ -64,8 +64,12 @@ public class PlayerController : MonoBehaviour
         get => Vector3Int.FloorToInt(transform.position);
     }
 
-    public Modes modes;
-    public MovementMode currentMode;
+    public Modes modes = Modes.Instance;
+
+    public ModesEnum currentMode;
+    public MovementMode CurrentMode {
+        get => modes.GetType().GetField(currentMode.ToString()).GetValue(modes) as MovementMode;
+    }
 
     public TileBase[] porousTiles;
 
@@ -84,52 +88,46 @@ public class PlayerController : MonoBehaviour
 
     private void OnValidate()
     {
-        //foreach (MovementMode mode in modes) {
-            //mode.SetupJump();
-        //}
-
-        //modes = new MovementMode[]{
-        //    new MovementMode("Water", 3.1f, 0.9f),
-        //    new MovementMode("Underground"){ gravityScale = 0.0f },
-        //    new MovementMode("Ice", 1.05f, 0.5f),
-        //    new MovementMode("Cloud"){ gravityScale = 0.1f }
-        //};
+        modes.Water.SetupJump();
+        modes.Underground.SetupJump();
+        modes.Ice.SetupJump();
+        modes.Cloud.SetupJump();
     }
 
     private void FixedUpdate()
     {
         movement = moveAction.ReadValue<Vector2>();
 
-        if (currentMode == modes.Cloud || currentMode == modes.Underground) {
-            rb.gravityScale = currentMode.gravityScale;
-            rb.drag = currentMode.drag;
+        if (currentMode == ModesEnum.Cloud || currentMode == ModesEnum.Underground) {
+            rb.gravityScale = CurrentMode.gravityScale;
+            rb.drag = CurrentMode.drag;
 
             if (movement.x != 0) // we want to control the speed directly but we dont want to stop instantly, when flying.
-                rb.velocityX = movement.x * currentMode.speed;
+                rb.velocityX = movement.x * CurrentMode.speed;
 
             if (movement.y != 0)
-                rb.velocityY = movement.y * currentMode.speed;
+                rb.velocityY = movement.y * CurrentMode.speed;
 
         }
-        else if (currentMode == modes.Water){
-            rb.gravityScale = currentMode.gravityScale;
-            rb.drag = currentMode.drag;
+        else if (currentMode == ModesEnum.Water){
+            rb.gravityScale = CurrentMode.gravityScale;
+            rb.drag = CurrentMode.drag;
 
-            rb.velocityX = movement.x * currentMode.speed;
+            rb.velocityX = movement.x * CurrentMode.speed;
 
             // jump
             if (jumpAction.IsPressed() && IsOnGround()) {
-                rb.velocityY = currentMode.jumpVelocity;
+                rb.velocityY = CurrentMode.jumpVelocity;
             }
 
         }
 
         if (movement.y < 0 && groundCheck.CheckGround(groundLayers) && IsTilePorous(groundTilemap.GetTile(PlayerTile + Vector3Int.down))) {
-            currentMode = modes.Underground;
+            currentMode = ModesEnum.Underground;
             rb.excludeLayers |= (1 << LayerMask.NameToLayer("GroundPorous")); // exclude collisions with porous ground
         }
         else if (groundTilemap.GetTile(PlayerTile) == null) {
-            currentMode = modes.Water;
+            currentMode = ModesEnum.Water;
             rb.excludeLayers &= ~(1 << LayerMask.NameToLayer("GroundPorous")); // allow collisions with porous ground
         }
     }

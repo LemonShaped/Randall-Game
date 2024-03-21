@@ -420,7 +420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1978acae28cf6d744b44faa34cb24076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 615230378}
   moveAction:
     m_Name: Move
     m_Type: 0
@@ -536,17 +535,48 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   movement: {x: 0, y: 0}
+  rb: {fileID: 615230378}
   groundLayers:
     serializedVersion: 2
     m_Bits: 192
   groundTilemap: {fileID: 2016040481}
   groundCheck: {fileID: 615230385}
-  doHover: 0
-  walkSpeed: 3
-  jumpHeight: 2.2
-  jumpTime: 0.4
-  hoverGravityScale: 0.2
-  hoverDrag: 5
+  modes:
+    Water:
+      _jumpHeight: 0
+      _jumpTime: 0
+      jumpVelocity: NaN
+      gravityScale: NaN
+      drag: 0
+      speed: 0
+    Underground:
+      _jumpHeight: 0
+      _jumpTime: 0
+      jumpVelocity: NaN
+      gravityScale: NaN
+      drag: 0
+      speed: 0
+    Ice:
+      _jumpHeight: 0
+      _jumpTime: 0
+      jumpVelocity: NaN
+      gravityScale: NaN
+      drag: 0
+      speed: 0
+    Cloud:
+      _jumpHeight: 0
+      _jumpTime: 0
+      jumpVelocity: NaN
+      gravityScale: NaN
+      drag: 0
+      speed: 0
+  currentMode:
+    _jumpHeight: 0
+    _jumpTime: 0
+    jumpVelocity: 0
+    gravityScale: 0
+    drag: 0
+    speed: 0
   porousTiles:
   - {fileID: 11400000, guid: f29f441358363c64fa3eae7f63c3a3e2, type: 2}
   - {fileID: 11400000, guid: d91854c588568a44a8674d0373591e21, type: 2}
