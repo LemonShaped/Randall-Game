@@ -1,15 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class FileModificationWarning : AssetModificationProcessor
+public class AutoGitCommitOnSave : AssetModificationProcessor
 {
     public static string[] OnWillSaveAssets(string[] paths)
     {
         foreach (string path in paths)
             if (path.StartsWith("Assets/Scenes/") && path.EndsWith(".unity")) {
-                //Debug.Log("Saved. Do something now.");
+                //Debug.Log("Ctrl+S was pressed. Auto-committing.");
+                
+                //git commit
+                // Process.Start("git", "branch auto-commit-qw123aq");
+                // Process.Start("git", "add .");
+                // Process.Start("git", "commit -m \"Auto-commit\"");
                 break;
             }
         return paths;

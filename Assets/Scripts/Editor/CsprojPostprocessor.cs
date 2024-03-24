@@ -17,7 +17,10 @@ public class CsprojPostprocessor : AssetPostprocessor
 
     private static string PatchCsprojContent(string content)
     {
-        content = Regex.Replace(content, "\\s*<Compile Include=\".*\\.cs\"\\s*/>".ToString(), "").TrimEnd('\n').TrimEnd('\r').TrimEnd(" </Project>".ToCharArray()) + @"
+        content = Regex.Replace(content, "\\s*<Compile Include=\".*\\.cs\"\\s*/>".ToString(), "")
+            .TrimEnd('\n').TrimEnd('\r')
+            .TrimEnd(" </Project>".ToCharArray())
+            + @"
   <ItemGroup>
     <Compile Include=""Assets\**\*.cs"" />
     <Content Include="".gitattributes"" />
