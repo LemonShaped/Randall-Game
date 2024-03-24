@@ -7,6 +7,7 @@ public class GroundCheck : MonoBehaviour
     public Vector2 pointA;
     public Vector2 pointB;
     public bool mirror;
+    public bool showGizmo;
 
     private void OnValidate() {
         if (mirror)
@@ -29,13 +30,15 @@ public class GroundCheck : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        //Gizmos.DrawWireSphere(point, radius);
-        Gizmos.DrawLineStrip( new Vector3[]{
-            TopLeft,
-            new Vector2(BottomRight.x, TopLeft.y),
-            BottomRight,
-            new Vector2(TopLeft.x, BottomRight.y)
-        }, true);
+        if (showGizmo) {
+            //Gizmos.DrawWireSphere(point, radius);
+            Gizmos.DrawLineStrip( new Vector3[]{
+                TopLeft,
+                new Vector2(BottomRight.x, TopLeft.y),
+                BottomRight,
+                new Vector2(TopLeft.x, BottomRight.y)
+            }, true);
+        }
     }
 
 }

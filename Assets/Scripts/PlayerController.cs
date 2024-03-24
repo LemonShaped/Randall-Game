@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,46 +10,32 @@ using UnityEngine.Tilemaps;
 [Serializable]
 public class MovementMode
 {
-    [SerializeField] public string name;
+    [HideInInspector] public string name;
 
-    [SerializeField]
-    [InspectorLabel("(jump height)")]
+    [SerializeField, Tooltip("Max height of jump")]
     private float _jumpHeight;
-    [SerializeField]
-    [InspectorLabel("(jump time)")]
-    private float _jumpTime;
+    [SerializeField, Tooltip("Time until peak of jump")]
+    private float _jumpDuration;
     public float jumpVelocity;
+    [Tooltip("Multiplier applied to gravity")]
     public float gravityScale;
 
+    [Tooltip("Air resistance")]
     public float drag;
+    [Tooltip("Movement speed in blocks/second")]
     public float speed;
 
     public void SetupJump() {
-        if (_jumpHeight == 0 || _jumpTime == 0)
-            return;
-
-        jumpVelocity = 2 * _jumpHeight / _jumpTime;
-        gravityScale = (jumpVelocity / _jumpTime) / -Physics2D.gravity.y;
+        if (_jumpHeight != 0 && _jumpDuration != 0) {
+            jumpVelocity = 2 * _jumpHeight / _jumpDuration;
+            gravityScale = (jumpVelocity / _jumpDuration) / -Physics2D.gravity.y;
+        }
     }
 
 }
 
 public class PlayerController : MonoBehaviour
 {
-    public enum ModesEnum {
-        Water, Underground, Ice, Cloud
-    }
-    [Serializable]
-    public class Modes
-    {
-        public MovementMode Water;
-        public MovementMode Underground;
-        public MovementMode Ice;
-        public MovementMode Cloud;
-        private Modes() { }
-        private static Modes _instance;
-        public static Modes Instance => _instance ??= new Modes();
-    }
 
     public InputAction moveAction;
     public InputAction jumpAction;
@@ -64,11 +51,16 @@ public class PlayerController : MonoBehaviour
         get => Vector3Int.FloorToInt(transform.position);
     }
 
-    public Modes modes = Modes.Instance;
+    public enum ModesEnum {
+        Water, Underground, Cloud, Ice
+    }
+
+    [NonReorderable]
+    public MovementMode[] modes = new MovementMode[4];
 
     public ModesEnum currentMode;
     public MovementMode CurrentMode {
-        get => modes.GetType().GetField(currentMode.ToString()).GetValue(modes) as MovementMode;
+        get => modes[(int)currentMode];
     }
 
     public TileBase[] porousTiles;
@@ -85,13 +77,17 @@ public class PlayerController : MonoBehaviour
         moveAction.Disable();
         jumpAction.Disable();
     }
-
     private void OnValidate()
     {
-        modes.Water.SetupJump();
-        modes.Underground.SetupJump();
-        modes.Ice.SetupJump();
-        modes.Cloud.SetupJump();
+        if (modes.Length != Enum.GetValues(typeof(ModesEnum)).Length) {
+            Array.Resize(ref modes, Enum.GetValues(typeof(ModesEnum)).Length);
+            Debug.LogError("No changing array size!!!");
+        }
+
+        foreach (int i in Enum.GetValues(typeof(ModesEnum))) {
+            modes[i].name = Enum.GetName(typeof(ModesEnum), i);
+            modes[i].SetupJump();
+        }
     }
 
     private void FixedUpdate()
