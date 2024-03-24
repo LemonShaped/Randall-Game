@@ -28,7 +28,8 @@ public class GroundCheck : MonoBehaviour
         //return (bool)Physics2D.OverlapCircle(point, radius, layers);
         return (bool)Physics2D.OverlapArea(TopLeft, BottomRight, layers);
     }
-    private void OnDrawGizmos()
+
+    private void OnDrawGizmosSelected()
     {
         if (showGizmo) {
             //Gizmos.DrawWireSphere(point, radius);

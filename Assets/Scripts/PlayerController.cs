@@ -52,10 +52,10 @@ public class PlayerController : MonoBehaviour
     }
 
     public enum ModesEnum {
-        Water, Underground, Cloud, Ice
+        Water, Water_Underground, Ice, Cloud
     }
 
-    [NonReorderable]
+    //[NonReorderable]
     public MovementMode[] modes = new MovementMode[4];
 
     public ModesEnum currentMode;
@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
         }
 
         foreach (int i in Enum.GetValues(typeof(ModesEnum))) {
-            modes[i].name = Enum.GetName(typeof(ModesEnum), i);
+            //modes[i].name = Enum.GetName(typeof(ModesEnum), i);
             modes[i].SetupJump();
         }
     }
@@ -94,9 +94,10 @@ public class PlayerController : MonoBehaviour
     {
         movement = moveAction.ReadValue<Vector2>();
 
-        if (currentMode == ModesEnum.Cloud || currentMode == ModesEnum.Underground) {
-            rb.gravityScale = CurrentMode.gravityScale;
-            rb.drag = CurrentMode.drag;
+        rb.gravityScale = CurrentMode.gravityScale;
+        rb.drag = CurrentMode.drag;
+
+        if (currentMode == ModesEnum.Cloud || currentMode == ModesEnum.Water_Underground) {
 
             if (movement.x != 0) // we want to control the speed directly but we dont want to stop instantly, when flying.
                 rb.velocityX = movement.x * CurrentMode.speed;
@@ -106,8 +107,6 @@ public class PlayerController : MonoBehaviour
 
         }
         else if (currentMode == ModesEnum.Water){
-            rb.gravityScale = CurrentMode.gravityScale;
-            rb.drag = CurrentMode.drag;
 
             rb.velocityX = movement.x * CurrentMode.speed;
 
@@ -118,11 +117,13 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (movement.y < 0 && groundCheck.CheckGround(groundLayers) && IsTilePorous(groundTilemap.GetTile(PlayerTile + Vector3Int.down))) {
-            currentMode = ModesEnum.Underground;
+        if ((currentMode == ModesEnum.Water || currentMode == ModesEnum.Water_Underground) &&
+                movement.y < 0 && groundCheck.CheckGround(groundLayers) && IsTilePorous(groundTilemap.GetTile(PlayerTile + Vector3Int.down))) {
+            currentMode = ModesEnum.Water_Underground;
             rb.excludeLayers |= (1 << LayerMask.NameToLayer("GroundPorous")); // exclude collisions with porous ground
         }
-        else if (groundTilemap.GetTile(PlayerTile) == null) {
+        else if ((currentMode == ModesEnum.Water_Underground) &&
+                groundTilemap.GetTile(PlayerTile) == null) {
             currentMode = ModesEnum.Water;
             rb.excludeLayers &= ~(1 << LayerMask.NameToLayer("GroundPorous")); // allow collisions with porous ground
         }
