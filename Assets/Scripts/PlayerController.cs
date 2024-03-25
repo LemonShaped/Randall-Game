@@ -14,14 +14,18 @@ public class MovementMode
 
     [SerializeField, Tooltip("Max height of jump")]
     private float _jumpHeight;
+
     [SerializeField, Tooltip("Time until peak of jump")]
     private float _jumpDuration;
+
     public float jumpVelocity;
+
     [Tooltip("Multiplier applied to gravity")]
     public float gravityScale;
 
     [Tooltip("Air resistance")]
     public float drag;
+
     [Tooltip("Movement speed in blocks/second")]
     public float speed;
 
@@ -51,19 +55,20 @@ public class PlayerController : MonoBehaviour
         get => Vector3Int.FloorToInt(transform.position);
     }
 
+    [Range(0,5)]
+    public int health = 5;
+
     public enum ModesEnum {
         Water, Water_Underground, Ice, Cloud
     }
 
-    //[NonReorderable]
+    [NonReorderable]
     public MovementMode[] modes = new MovementMode[4];
 
     public ModesEnum currentMode;
     public MovementMode CurrentMode {
         get => modes[(int)currentMode];
     }
-
-    public TileBase[] porousTiles;
 
     private void OnEnable()
     {
@@ -84,9 +89,9 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("No changing array size!!!");
         }
 
-        foreach (int i in Enum.GetValues(typeof(ModesEnum))) {
-            //modes[i].name = Enum.GetName(typeof(ModesEnum), i);
-            modes[i].SetupJump();
+        foreach (MovementMode mode in modes) {
+            //mode.name = Enum.GetName(typeof(ModesEnum), i);
+            mode.SetupJump();
         }
     }
 
@@ -106,7 +111,7 @@ public class PlayerController : MonoBehaviour
                 rb.velocityY = movement.y * CurrentMode.speed;
 
         }
-        else if (currentMode == ModesEnum.Water){
+        else {
 
             rb.velocityX = movement.x * CurrentMode.speed;
 
@@ -117,33 +122,44 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if ((currentMode == ModesEnum.Water || currentMode == ModesEnum.Water_Underground) &&
-                movement.y < 0 && groundCheck.CheckGround(groundLayers) && IsTilePorous(groundTilemap.GetTile(PlayerTile + Vector3Int.down))) {
+        if ((currentMode == ModesEnum.Water || currentMode == ModesEnum.Water_Underground)
+                && movement.y < 0 && groundCheck.CheckGround(groundLayers) && IsTilePorous(groundTilemap.GetTile(PlayerTile + Vector3Int.down))) {
             currentMode = ModesEnum.Water_Underground;
             rb.excludeLayers |= (1 << LayerMask.NameToLayer("GroundPorous")); // exclude collisions with porous ground
         }
-        else if ((currentMode == ModesEnum.Water_Underground) &&
-                groundTilemap.GetTile(PlayerTile) == null) {
+        else if ((currentMode == ModesEnum.Water_Underground)
+                && groundTilemap.GetTile(PlayerTile) == null) {
             currentMode = ModesEnum.Water;
             rb.excludeLayers &= ~(1 << LayerMask.NameToLayer("GroundPorous")); // allow collisions with porous ground
         }
     }
 
+    private void Hurt() => AddHealth(-1);
+
+    private void AddHealth(int amount) {
+        health += amount;
+        if (health < 0) {
+            health = 0;
+            Debug.Log("Dead");//// go to death screen
+        }
+        else if (health > 5) {
+            health = 5;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.tag.Contains("|HurtOnTouch|")) {
+            Hurt();
+        }
+    }
+
     private bool IsTilePorous(TileBase tile)
     {
-        //if (tile.GetType() == typeof(Tile)) {
-        //    Tile tile_ = (Tile)tile;
-        //    return LayerMask.LayerToName(tile_.gameObject.layer) == "GroundPorous";
-        //}
-        //else if (tile.GetType() == typeof(RuleTile)) {
-        //    RuleTile tile_ = (RuleTile)tile;
-        //    return LayerMask.LayerToName(tile_.m_DefaultGameObject.layer) == "GroundPorous";
-        //}
-        foreach (TileBase porousTile in porousTiles) {
-            if (tile == porousTile)
-                return true;
-        }
-        return false;
+        TileData tileData = default;
+        tile.GetTileData(PlayerTile, groundTilemap, ref tileData);
+
+        return tileData.gameObject.layer == LayerMask.NameToLayer("GroundPorous");
+
     }
 
     private bool IsOnGround()
