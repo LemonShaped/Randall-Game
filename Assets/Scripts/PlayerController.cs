@@ -43,17 +43,13 @@ public class PlayerController : MonoBehaviour
 
     public InputAction moveAction;
     public InputAction jumpAction;
-    public Vector2 movement;
+    public Vector2 movementInput;
 
     public Rigidbody2D rb;
 
     public LayerMask groundLayers;
     public Tilemap groundTilemap;
     public GroundCheck groundCheck;
-
-    public Vector3Int PlayerTile {
-        get => Vector3Int.FloorToInt(transform.position);
-    }
 
     [Range(0,5)]
     public int health = 5;
@@ -69,6 +65,9 @@ public class PlayerController : MonoBehaviour
     public MovementMode CurrentMode {
         get => modes[(int)currentMode];
     }
+    public Vector3Int PlayerTile {
+        get => Vector3Int.FloorToInt(transform.position);
+    }
 
     private void OnEnable()
     {
@@ -82,6 +81,7 @@ public class PlayerController : MonoBehaviour
         moveAction.Disable();
         jumpAction.Disable();
     }
+
     private void OnValidate()
     {
         if (modes.Length != Enum.GetValues(typeof(ModesEnum)).Length) {
@@ -97,23 +97,29 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        movement = moveAction.ReadValue<Vector2>();
+        movementInput = moveAction.ReadValue<Vector2>();
 
         rb.gravityScale = CurrentMode.gravityScale;
         rb.drag = CurrentMode.drag;
 
+        if (movementInput.x < 0)
+            gameObject.GetComponent<SpriteRenderer>().flipX = true;
+        else if (movementInput.x > 0)
+            gameObject.GetComponent<SpriteRenderer>().flipX = false;
+
+
         if (currentMode == ModesEnum.Cloud || currentMode == ModesEnum.Water_Underground) {
 
-            if (movement.x != 0) // we want to control the speed directly but we dont want to stop instantly, when flying.
-                rb.velocityX = movement.x * CurrentMode.speed;
+            if (movementInput.x != 0) // we want to control the speed directly but we dont want to stop instantly, when flying.
+                rb.velocityX = movementInput.x * CurrentMode.speed;
 
-            if (movement.y != 0)
-                rb.velocityY = movement.y * CurrentMode.speed;
+            if (movementInput.y != 0)
+                rb.velocityY = movementInput.y * CurrentMode.speed;
 
         }
         else {
 
-            rb.velocityX = movement.x * CurrentMode.speed;
+            rb.velocityX = movementInput.x * CurrentMode.speed;
 
             // jump
             if (jumpAction.IsPressed() && IsOnGround()) {
@@ -123,7 +129,7 @@ public class PlayerController : MonoBehaviour
         }
 
         if ((currentMode == ModesEnum.Water || currentMode == ModesEnum.Water_Underground)
-                && movement.y < 0 && groundCheck.CheckGround(groundLayers) && IsTilePorous(groundTilemap.GetTile(PlayerTile + Vector3Int.down))) {
+                && movementInput.y < 0 && groundCheck.CheckGround(groundLayers) && IsTilePorous(groundTilemap, PlayerTile + Vector3Int.down)) {
             currentMode = ModesEnum.Water_Underground;
             rb.excludeLayers |= (1 << LayerMask.NameToLayer("GroundPorous")); // exclude collisions with porous ground
         }
@@ -148,18 +154,18 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.tag.Contains("|HurtOnTouch|")) {
+        if (collision.gameObject.name == "Spike") {
             Hurt();
         }
     }
 
-    private bool IsTilePorous(TileBase tile)
+    private bool IsTilePorous(Tilemap tilemap, Vector3Int pos)
     {
         TileData tileData = default;
-        tile.GetTileData(PlayerTile, groundTilemap, ref tileData);
+        tilemap.GetTile(pos).GetTileData(pos, tilemap, ref tileData);
 
         return tileData.gameObject.layer == LayerMask.NameToLayer("GroundPorous");
-
+        
     }
 
     private bool IsOnGround()

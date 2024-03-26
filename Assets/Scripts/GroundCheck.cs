@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class GroundCheck : MonoBehaviour
@@ -25,20 +26,20 @@ public class GroundCheck : MonoBehaviour
 
     public bool CheckGround(LayerMask layers)
     {
-        //return (bool)Physics2D.OverlapCircle(point, radius, layers);
         return (bool)Physics2D.OverlapArea(TopLeft, BottomRight, layers);
     }
 
     private void OnDrawGizmosSelected()
     {
         if (showGizmo) {
-            //Gizmos.DrawWireSphere(point, radius);
-            Gizmos.DrawLineStrip( new Vector3[]{
+            Handles.DrawSolidRectangleWithOutline(new Vector3[]{
                 TopLeft,
                 new Vector2(BottomRight.x, TopLeft.y),
                 BottomRight,
                 new Vector2(TopLeft.x, BottomRight.y)
-            }, true);
+            },
+            CheckGround(GetComponent<PlayerController>().groundLayers) ? new Color(0f, 1f, 0f, 0.3f) : Color.clear,
+            Color.white);
         }
     }
 

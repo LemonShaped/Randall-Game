@@ -285,7 +285,7 @@ Transform:
   m_GameObject: {fileID: 560945354}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.5, y: 1.5, z: -10}
+  m_LocalPosition: {x: -4.57, y: 0.01, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -402,7 +402,7 @@ Transform:
   m_GameObject: {fileID: 615230377}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.5, y: 1.5, z: 0}
+  m_LocalPosition: {x: -4.57, y: 0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -534,13 +534,14 @@ MonoBehaviour:
       m_Action: Jump
       m_Flags: 0
     m_Flags: 0
-  movement: {x: 0, y: 0}
+  movementInput: {x: 0, y: 0}
   rb: {fileID: 615230378}
   groundLayers:
     serializedVersion: 2
     m_Bits: 192
   groundTilemap: {fileID: 2016040481}
   groundCheck: {fileID: 615230385}
+  health: 5
   modes:
   - name: Water
     _jumpHeight: 2.2
@@ -571,10 +572,6 @@ MonoBehaviour:
     drag: 0.2
     speed: 2
   currentMode: 0
-  porousTiles:
-  - {fileID: 11400000, guid: f29f441358363c64fa3eae7f63c3a3e2, type: 2}
-  - {fileID: 11400000, guid: d91854c588568a44a8674d0373591e21, type: 2}
-  - {fileID: 11400000, guid: 4d91aa1e62be79a4c9230324cb515262, type: 2}
 --- !u!60 &615230384
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -645,7 +642,7 @@ MonoBehaviour:
   pointA: {x: 0.43, y: -0.33}
   pointB: {x: -0.43, y: -0.55}
   mirror: 1
-  showGizmo: 0
+  showGizmo: 1
 --- !u!1 &1515811207
 GameObject:
   m_ObjectHideFlags: 3
@@ -778,7 +775,7 @@ Transform:
   m_GameObject: {fileID: 1725682803}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.5, y: 1.5, z: -10}
+  m_LocalPosition: {x: -4.57, y: 0.01, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -795,8 +792,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1888961453}
   - component: {fileID: 1888961452}
+  - component: {fileID: 1888961454}
   m_Layer: 0
-  m_Name: Triangle
+  m_Name: Spike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -865,12 +863,62 @@ Transform:
   m_GameObject: {fileID: 1888961451}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.6847, y: -1.73, z: 0}
-  m_LocalScale: {x: 0.7306, y: 1, z: 1}
+  m_LocalPosition: {x: -0.7532, y: -1.7513, z: 0}
+  m_LocalScale: {x: 0.56614196, y: 0.9295, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &1888961454
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1888961451}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.28866667}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 0.5773587}
+      - {x: -0.5, y: -0.28866667}
+      - {x: 0.5, y: -0.28866667}
+  m_UseDelaunayMesh: 0
 --- !u!1 &2016040478
 GameObject:
   m_ObjectHideFlags: 0
@@ -882,6 +930,7 @@ GameObject:
   - component: {fileID: 2016040479}
   - component: {fileID: 2016040481}
   - component: {fileID: 2016040480}
+  - component: {fileID: 2016040483}
   m_Layer: 0
   m_Name: Ground Tilemap
   m_TagString: Untagged
@@ -2591,6 +2640,33 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!50 &2016040483
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016040478}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
