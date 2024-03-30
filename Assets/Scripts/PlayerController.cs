@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
 
     public Rigidbody2D rb;
     public SpriteRenderer spriteRenderer;
-
+    public MyAnimator animator;
     public GroundCheck groundCheck;
 
     public Tilemap groundTilemap;
@@ -52,11 +52,6 @@ public class PlayerController : MonoBehaviour
     [NonReorderable]
     public ModeTextures[] textures = new ModeTextures[4];
 
-    [Tooltip("frames per second")]
-    public float animationSpeed;
-
-    private bool animating;
-
     public Vector3Int PlayerTile {
         get => Vector3Int.FloorToInt(transform.position);
     }
@@ -77,7 +72,6 @@ public class PlayerController : MonoBehaviour
     {
         moveAction.Disable();
         jumpAction.Disable();
-        animating = false;
     }
 
     private void FixedUpdate()
@@ -215,44 +209,10 @@ public class PlayerController : MonoBehaviour
         Sprite[] sprites = textures[(int)CurrentMode].sizes[CurrentSize].sprites;
         if (sprites.Length == 1 /*|| !Application.isPlaying*/) {
             spriteRenderer.sprite = sprites[0];
-            animating = false;
+            animator.animating = false;
         }
-        else if (!animating) {
-            StartAnimation();
-        }
-        #region new - first document without this, show issue.
         else {
-            // animation is already in progress
-            foreach (Sprite sprite in sprites)
-                if (spriteRenderer.sprite == sprite)
-                    return;
-
-            foreach (var mode in textures) {
-                foreach (var size in mode.sizes) {
-                    for (int i = 0; i < size.sprites.Length; i++) {
-                        if (spriteRenderer.sprite == size.sprites[i]) {
-                            spriteRenderer.sprite = sprites[i];
-                            return;
-                        }
-                    }   // switch the texture early, because animation will take a while to switch.
-                }
-            }
-        }
-
-        #endregion
-    }
-
-
-    public async void StartAnimation()
-    {
-        animating = true;
-        int i = 0;
-
-        while (animating) {
-            Sprite[] sprites = textures[(int)CurrentMode].sizes[CurrentSize].sprites;
-            spriteRenderer.sprite = sprites[i];
-            await Task.Delay((int)(1000 / animationSpeed));
-            i = (i + 1) % sprites.Length;
+            animator.Animate(sprites);
         }
     }
 
@@ -365,4 +325,5 @@ public class ModeTextures
         [Tooltip("Sprite(s) to use for this size. Multiple for idle animation")]
         public Sprite[] sprites = new Sprite[1];
     }
+
 }
