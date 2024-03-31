@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3c414e17234be7a47a099f0592c06d9a
+guid: 081803c92b8d3dd49ad1223c079987ea
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1098286324429101383
-    second: Fire_0
+      213: -620002618529339447
+    second: Invisible Tile Preview_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 1
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Fire_0
+      name: Invisible Tile Preview_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
-        height: 79
+        width: 1
+        height: 1
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -127,8 +127,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7491445d795ed3f00800000000000000
-      internalID: 1098286324429101383
+      spriteID: 9c72fb247ee4567f0800000000000000
+      internalID: -620002618529339447
       vertices: []
       indices: 
       edges: []
@@ -136,14 +136,15 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Invisible Tile Preview_0: -620002618529339447
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

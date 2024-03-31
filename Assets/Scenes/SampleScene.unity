@@ -200,7 +200,7 @@ Transform:
   m_GameObject: {fileID: 30626357}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 46.8, y: 11.06, z: 0}
+  m_LocalPosition: {x: 46.74, y: 11.039, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -219,6 +219,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToSpawn: {fileID: 6576144444010995954, guid: 415b8d9e43ba7f747bfc068c0b3164a8, type: 3}
+  timePerSpawn: 20
+  timeSinceLastSpawn: 0
 --- !u!1 &96271486
 GameObject:
   m_ObjectHideFlags: 0
@@ -91256,11 +91258,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2829569776467050530, guid: 415b8d9e43ba7f747bfc068c0b3164a8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 44.96
+      value: 43.33
       objectReference: {fileID: 0}
     - target: {fileID: 2829569776467050530, guid: 415b8d9e43ba7f747bfc068c0b3164a8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 11.17
+      value: 11.6
       objectReference: {fileID: 0}
     - target: {fileID: 2829569776467050530, guid: 415b8d9e43ba7f747bfc068c0b3164a8, type: 3}
       propertyPath: m_LocalPosition.z

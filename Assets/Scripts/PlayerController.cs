@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
     [NonReorderable]
     public ModeAssets[] assets = new ModeAssets[4];
 
-    public Vector3Int PlayerTile {
+    public Vector3Int GridPosition {
         get => Vector3Int.FloorToInt(transform.position);
     }
 
@@ -127,10 +127,10 @@ public class PlayerController : MonoBehaviour
         }
 
         if ((CurrentMode == ModesEnum.Water || CurrentMode == ModesEnum.Water_Underground)
-                && movementInput.y < 0 && groundCheck.CheckGround(groundLayers) && IsPorous(PlayerTile + Vector3Int.down)) {
+                && movementInput.y < 0 && groundCheck.CheckGround(groundLayers) && IsPorous(GridPosition + Vector3Int.down)) {
             CurrentMode = ModesEnum.Water_Underground;
         }
-        else if ((CurrentMode == ModesEnum.Water_Underground) && groundTilemap.GetTile(PlayerTile) == null) {
+        else if ((CurrentMode == ModesEnum.Water_Underground) && groundTilemap.GetTile(GridPosition) == null) {
             CurrentMode = ModesEnum.Water;
         }
         
