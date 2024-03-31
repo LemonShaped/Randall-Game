@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
 
@@ -14,18 +15,15 @@ public class PlayerController : MonoBehaviour
     public InputAction moveAction;
     public InputAction jumpAction;
 
-    public Rigidbody2D rb;
-    public SpriteRenderer spriteRenderer;
-    public MyAnimator animator;
-    public GroundCheck groundCheck;
+    [HideInInspector] public Rigidbody2D rb;
+    [HideInInspector] public SpriteRenderer spriteRenderer;
+    [HideInInspector] public MyAnimator animator;
+    [HideInInspector] public GroundCheck groundCheck;
 
     public Tilemap groundTilemap;
     public LayerMask groundLayers;
 
-    public enum ModesEnum {
-        Water, Water_Underground, Ice, Cloud
-    }
-
+    public float iceAndCloudTimeout;
 
     [NonReorderable]
     public MovementMode[] modes = new MovementMode[4];
@@ -50,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
 
     [NonReorderable]
-    public ModeTextures[] textures = new ModeTextures[4];
+    public ModeAssets[] assets = new ModeAssets[4];
 
     public Vector3Int PlayerTile {
         get => Vector3Int.FloorToInt(transform.position);
@@ -61,8 +59,19 @@ public class PlayerController : MonoBehaviour
     private float jumpVelocity; //  ''
 
 
+    private Coroutine liquification; // convert back to water after timeout
+
+
+    private void Awake() {
+        animator.StopAnimation();
+    }
     private void OnEnable()
     {
+        rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<MyAnimator>();
+        groundCheck = GetComponent<GroundCheck>();
+
         moveAction.Enable();
         jumpAction.Enable();
         UpdateValues();
@@ -74,29 +83,40 @@ public class PlayerController : MonoBehaviour
         jumpAction.Disable();
     }
 
+    private void Start()
+    {
+        UpdateValues();
+        UpdateTexture();
+    }
+
     private void FixedUpdate()
     {
 
         Vector2 movementInput = moveAction.ReadValue<Vector2>();
         rb.drag = ModeData.drag * SizeData.dragMultiplier;
 
-        if (movementInput.x < 0)
+        if (movementInput.x < 0 && assets[(int)CurrentMode].flippable)
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
-        else if (movementInput.x > 0)
+        else if (movementInput.x > 0 && assets[(int)CurrentMode].flippable)
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
 
+        // jump
+        if (ModeData.doesJump && jumpAction.IsPressed() && IsOnGround()) {
+            rb.velocityY = jumpVelocity;
+        }
 
-        if (ModeData.doesJump) {
+        if (CurrentMode == ModesEnum.Water) {
 
             rb.velocityX = movementInput.x * speed;
 
-            // jump
-            if (jumpAction.IsPressed() && IsOnGround()) {
-                rb.velocityY = jumpVelocity;
-            }
+        }
+        else if (CurrentMode == ModesEnum.Ice) {
+
+            if (movementInput.x != 0)
+                rb.velocityX = movementInput.x * speed;
 
         }
-        else {
+        else if (CurrentMode == ModesEnum.Cloud || CurrentMode == ModesEnum.Water_Underground){
 
             if (movementInput.x != 0) // we want to control the speed directly but we dont want to stop instantly, when flying.
                 rb.velocityX = movementInput.x * speed;
@@ -110,22 +130,26 @@ public class PlayerController : MonoBehaviour
                 && movementInput.y < 0 && groundCheck.CheckGround(groundLayers) && IsPorous(PlayerTile + Vector3Int.down)) {
             CurrentMode = ModesEnum.Water_Underground;
         }
-        else if ((CurrentMode == ModesEnum.Water_Underground)
-                && groundTilemap.GetTile(PlayerTile) == null) {
+        else if ((CurrentMode == ModesEnum.Water_Underground) && groundTilemap.GetTile(PlayerTile) == null) {
             CurrentMode = ModesEnum.Water;
         }
+        
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) => Collision(collision.collider);
-    private void OnTriggerEnter2D(Collider2D collider) => Collision(collider);
-    private void Collision(Collider2D collider)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collider.gameObject.name == "Spike") {
+        if (collision.gameObject.name == "Spike")
             Hurt();
+    }
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("Puddle")) {
+            if (AddHealth(1) == true)
+                Destroy(collider.gameObject);
         }
-        else if (collider.gameObject.tag == "Puddle") {
-            AddHealth(1);
-            Destroy(collider.gameObject);
+        else if (collider.gameObject.TryGetComponent(out PhaseChangingObject phaseChanger)) {
+            phaseChanger.StartChange(this);
+
         }
     }
 
@@ -135,16 +159,16 @@ public class PlayerController : MonoBehaviour
 
     private void Hurt() => AddHealth(-1);
     private bool AddHealth(int amount) {
-        _currentSize += amount;
-        if (_currentSize < 0) {
-            CurrentSize = 0;
-            Debug.Log("Dead");//// go to death screen
-        }
-        else if (_currentSize > 4) {
-            CurrentSize = 4;
+        if (CurrentSize == 4 && amount > 0) {
             return false;
         }
-        CurrentSize = _currentSize;
+        else if (CurrentSize == 0 && amount < 0) {
+            spriteRenderer.enabled = false;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            Debug.Log("Dead");//// go to death screen
+            return true;
+        }
+        CurrentSize += amount;
         return true;
     }
 
@@ -168,6 +192,10 @@ public class PlayerController : MonoBehaviour
             else
                 rb.excludeLayers &= ~(1 << LayerMask.NameToLayer("GroundPorous")); // allow collisions with porous ground
 
+            if (liquification is null && (_currentMode == ModesEnum.Ice || _currentMode == ModesEnum.Cloud)) {
+                liquification = StartCoroutine(DelayedConvert(ModesEnum.Water, iceAndCloudTimeout));
+            }
+
             UpdateValues();
             UpdateTexture();
         }
@@ -179,6 +207,14 @@ public class PlayerController : MonoBehaviour
             UpdateValues();
             UpdateTexture();
         }
+    }
+
+    public IEnumerator DelayedConvert(ModesEnum convertInto, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+
+        CurrentMode = convertInto;
+        liquification = null;
     }
 
     public void UpdateValues()
@@ -204,15 +240,18 @@ public class PlayerController : MonoBehaviour
     public void UpdateTexture()
     {
         foreach (Collider2D collider in GetComponents<Collider2D>())
-            collider.enabled = (collider == textures[(int)CurrentMode].sizes[CurrentSize].collider);
+            collider.enabled = (collider == assets[(int)CurrentMode].sizes[CurrentSize].collider);
+        groundCheck.pointA = assets[(int)CurrentMode].sizes[CurrentSize].groundCheck_A;
+        groundCheck.pointB = assets[(int)CurrentMode].sizes[CurrentSize].groundCheck_B;
 
-        Sprite[] sprites = textures[(int)CurrentMode].sizes[CurrentSize].sprites;
+
+        Sprite[] sprites = assets[(int)CurrentMode].sizes[CurrentSize].sprites;
         if (sprites.Length == 1 /*|| !Application.isPlaying*/) {
             spriteRenderer.sprite = sprites[0];
-            animator.animating = false;
+            animator.StopAnimation();
         }
         else {
-            animator.Animate(sprites);
+            animator.StartAnimation(sprites);
         }
     }
 
@@ -220,18 +259,18 @@ public class PlayerController : MonoBehaviour
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        if (modes.Length != Enum.GetValues(typeof(ModesEnum)).Length || textures.Length != Enum.GetValues(typeof(ModesEnum)).Length || sizes.Length > 5) {
+        if (modes.Length != Enum.GetValues(typeof(ModesEnum)).Length || assets.Length != Enum.GetValues(typeof(ModesEnum)).Length || sizes.Length > 5) {
             Array.Resize(ref modes, Enum.GetValues(typeof(ModesEnum)).Length);
-            Array.Resize(ref textures, Enum.GetValues(typeof(ModesEnum)).Length);
+            Array.Resize(ref assets, Enum.GetValues(typeof(ModesEnum)).Length);
             Array.Resize(ref sizes, 5);
             Debug.LogError("Incorrect array length!");
         }
-        foreach (ModeTextures modeTextures in textures) {
+        foreach (ModeAssets modeTextures in assets) {
             if (modeTextures.sizes.Length != 5) {
                 Debug.LogError("Incorrect array length!");
                 Array.Resize(ref modeTextures.sizes, 5);
             }
-            foreach (ModeTextures.SizeTextures size in modeTextures.sizes) {
+            foreach (ModeAssets.SizeAssets size in modeTextures.sizes) {
                 if (size.sprites.Length < 1) {
                     Debug.LogError("Array must have >= 1 item, even if texture is empty.");
                     Array.Resize(ref size.sprites, 1);
@@ -247,20 +286,26 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < sizes.Length; i++)
             sizes[i]._name = $"Size {i}";
 
-        for (int i = 0; i < textures.Length; i++) {
-            textures[i]._name = Enum.GetName(typeof(ModesEnum), i);
+        for (int i = 0; i < assets.Length; i++) {
+            assets[i]._name = Enum.GetName(typeof(ModesEnum), i);
 
-            for (int j = 0; j < textures[i].sizes.Length; j++) {
-                textures[i].sizes[j]._name = $"Size {j}";
+            for (int j = 0; j < assets[i].sizes.Length; j++) {
+                assets[i].sizes[j]._name = $"Size {j}";
             }
         }
-        CurrentSize = _currentSize;
         CurrentMode = _currentMode;
+        UpdateValues();
+        UpdateTexture();
     }
 #endif
 
 }
 
+
+public enum ModesEnum
+{
+    Water, Water_Underground, Ice, Cloud
+}
 
 [Serializable]
 public class MovementMode
@@ -283,7 +328,6 @@ public class MovementMode
     public float _jumpHeight;
     [Tooltip("Time until peak of jump")]
     public float _jumpDuration;
-
 }
 [Serializable]
 public class PlayerSize
@@ -306,22 +350,25 @@ public class PlayerSize
 
 
 [Serializable]
-public class ModeTextures
+public class ModeAssets
 {
     [HideInInspector]
     public string _name;
 
     public bool flippable;
     [NonReorderable]
-    public SizeTextures[] sizes = new SizeTextures[5];
+    public SizeAssets[] sizes = new SizeAssets[5];
 
     [Serializable]
-    public class SizeTextures
+    public class SizeAssets
     {
         [HideInInspector]
         public string _name;
 
         public Collider2D collider;
+        public Vector2 groundCheck_A;
+        public Vector2 groundCheck_B;
+
         [Tooltip("Sprite(s) to use for this size. Multiple for idle animation")]
         public Sprite[] sprites = new Sprite[1];
     }

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using UnityEngine;
-
 
 public class MyAnimator : MonoBehaviour
 {
@@ -14,39 +11,56 @@ public class MyAnimator : MonoBehaviour
     [Tooltip("frames per second")]
     public float animationSpeed;
 
-    public Sprite[] sprites;
+    public Sprite[] frames;
 
-    [HideInInspector]
-    public bool animating;
+    private bool animating;
 
-    [HideInInspector]
-    public int i;
+    private int i;
 
-    public void Animate(Sprite[] sprites) {
+    private new Coroutine animation;
+
+    public void StartAnimation(Sprite[] sprites) {
+        frames = sprites;
+        // switch out the frames. if animation in progress it will start using these new ones.
+
+        if (frames.Length <= 1) {
+            StopAnimation();
+            if (frames.Length == 1)
+                spriteRenderer.sprite = frames[0];
+            return;
+        }
+
         if (animating) {
-            this.sprites = sprites;
-            spriteRenderer.sprite = sprites[i];
+            spriteRenderer.sprite = frames[i]; // update sprite instantly after frames change because the animation will take long to switch
         }
         else {
-            StartAnimation(sprites);
+            StopAnimation();
+            animation = StartCoroutine(Animate());
         }
     }
 
-
-    private void OnDisable() {
-        animating = false;
-    }
-
-    public async void StartAnimation(Sprite[] sprites) {
-        this.sprites = sprites;
+    private IEnumerator Animate() {
         animating = (animationSpeed > 0);
         i = 0;
 
         while (animating) {
-            spriteRenderer.sprite = this.sprites[i];
-            await Task.Delay((int)(1000 / animationSpeed));
-            i = (i + 1) % this.sprites.Length;
+            i = (i + 1) % frames.Length;
+            spriteRenderer.sprite = frames[i];
+            yield return new WaitForSeconds(1f / animationSpeed);
+
         }
+        frames = new Sprite[0];
+    }
+
+    public void StopAnimation()
+    {
+        animating = false;
+        //if (animation is not null)
+        //    StopCoroutine(animation);
+    }
+
+    private void OnDisable() {
+        StopAnimation();
     }
 
 }

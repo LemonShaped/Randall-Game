@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 35037848563685948}
   - component: {fileID: 5656827952662411775}
-  - component: {fileID: 2502667581584975990}
-  - component: {fileID: 1818739482406017461}
+  - component: {fileID: 1853165183869492700}
+  - component: {fileID: 7195420904591396994}
+  - component: {fileID: 7691974291355514079}
   m_Layer: 0
   m_Name: Freezer
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5857284000816482362}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.72, y: -0.918, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -88,7 +89,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &2502667581584975990
+--- !u!61 &1853165183869492700
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,11 +119,11 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.68, y: 0.65}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: -0, y: 0.09551657}
@@ -132,9 +133,9 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.3533334, y: 1.4133333}
+  m_Size: {x: 1.35, y: 1.4}
   m_EdgeRadius: 0
---- !u!114 &1818739482406017461
+--- !u!114 &7195420904591396994
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,10 +144,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 5857284000816482362}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e25475773ae148e4cb6a0687fbdb6fce, type: 3}
+  m_Script: {fileID: 11500000, guid: ab7f21a4dd7164440928c5b8ced4d00e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  convertInto: 2
+  convertTime: 8
+  offset: {x: 0.6, y: 0.6}
   active:
   - {fileID: 21300000, guid: b60973e1c6975a144927886e25fb7bb2, type: 3}
   inactive:
   - {fileID: 21300000, guid: b7eb7ed1507c93d43827ab4829471721, type: 3}
+  animator: {fileID: 7691974291355514079}
+  spriteRenderer: {fileID: 5656827952662411775}
+--- !u!114 &7691974291355514079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5857284000816482362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d4f83c172180b84ba3bc8c4564a7120, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 5656827952662411775}
+  animationSpeed: 0
+  frames: []
