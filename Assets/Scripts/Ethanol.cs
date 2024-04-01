@@ -45,7 +45,8 @@ public class Ethanol : LiquidCharacter
     void FixedUpdate()
     {
 
-        if (groundTilemap.GetTile(GridPosition + (Vector3Int.right * moveDirection))) {
+        if (groundTilemap.GetTile(GridPosition + (Vector3Int.right * moveDirection)) != null
+                && groundTilemap.GetTile(GridPosition + (Vector3Int.right * moveDirection)) != fireTile) {
 
             if (Random.value > jumpChance) {
                 moveDirection = -moveDirection;
@@ -55,9 +56,9 @@ public class Ethanol : LiquidCharacter
                 rb.velocityY = jumpVelocity;
                 
         }
-        if (groundTilemap.GetTile(GridPosition) is null &&
-                groundTilemap.GetTile(GridPosition + Vector3Int.down) is not null && groundCheck.CheckGround(groundLayers)){
-            groundTilemap.SetTile(GridPosition, fireTile);
+        if (groundCheck.CheckGround(groundLayers) && groundTilemap.GetTile(GridPosition) is null &&
+                groundTilemap.GetTile(GridPosition + Vector3Int.down) is not null && groundTilemap.GetTile(GridPosition + Vector3Int.down) != fireTile){
+            gameManager.PlaceFire(GridPosition);
         }
 
         rb.velocityX = movementSpeed * moveDirection;

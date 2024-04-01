@@ -126,6 +126,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1424577317471799231}
   animator: {fileID: 6078800803635764870}
   groundCheck: {fileID: 3048320699558831311}
+  gameManager: {fileID: 0}
   groundTilemap: {fileID: 0}
   groundLayers:
     serializedVersion: 2

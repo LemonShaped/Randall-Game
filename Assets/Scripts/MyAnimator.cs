@@ -44,6 +44,9 @@ public class MyAnimator : MonoBehaviour
         i = 0;
 
         while (animating) {
+            if (spriteRenderer == null)
+                return;
+
             i = (i + 1) % frames.Length;
             spriteRenderer.sprite = frames[i];
             await Task.Delay((int)(1000 / animationSpeed));

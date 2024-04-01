@@ -16,6 +16,7 @@ public class LiquidCharacter : MonoBehaviour
     [HideInInspector] public SpriteRenderer spriteRenderer;
     [HideInInspector] public MyAnimator animator;
     [HideInInspector] public GroundCheck groundCheck;
+    [HideInInspector] public GameManager gameManager;
 
     public Tilemap groundTilemap;
     public LayerMask groundLayers;
@@ -58,7 +59,7 @@ public class LiquidCharacter : MonoBehaviour
 
 
     private Coroutine liquification; // convert back to water after timeout
-
+    
     /*[HideInInspector]*/ public bool canPickUpPuddles;
     /*[HideInInspector]*/ public bool canInteractWithStateChangerObjects;
     /*[HideInInspector]*/ public bool isHurtByEthanol;
@@ -70,6 +71,8 @@ public class LiquidCharacter : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<MyAnimator>();
         groundCheck = GetComponent<GroundCheck>();
+        gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+        groundTilemap = gameManager.groundTilemap;
 
     }
 

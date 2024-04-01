@@ -25,7 +25,8 @@ public class PlayerController : LiquidCharacter
         moveAction.Enable();
         jumpAction.Enable();
     }
-
+    
+    
     private void OnDisable()
     {
         moveAction.Disable();
