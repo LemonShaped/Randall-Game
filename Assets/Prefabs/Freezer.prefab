@@ -156,6 +156,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b7eb7ed1507c93d43827ab4829471721, type: 3}
   animator: {fileID: 7691974291355514079}
   spriteRenderer: {fileID: 5656827952662411775}
+  reloadTime: 2
+  reloadTimeRemaining: 0
 --- !u!114 &7691974291355514079
 MonoBehaviour:
   m_ObjectHideFlags: 0

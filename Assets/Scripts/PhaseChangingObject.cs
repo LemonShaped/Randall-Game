@@ -21,16 +21,25 @@ public class PhaseChangingObject : MonoBehaviour
     public MyAnimator animator;
     public SpriteRenderer spriteRenderer;
 
-    private void Awake()
+    public float reloadTime;
+    public float reloadTimeRemaining;
+
+    private void Start()
     {
         spriteRenderer.sprite = inactive[0];
         animator.StartAnimation(inactive);
-        
     }
 
-    public void StartChange(PlayerController player) {
-        if (inProgress)
+    private void Update() {
+        if (reloadTimeRemaining > 0)
+            reloadTimeRemaining -= Time.deltaTime;
+    }
+
+    public void StartChange(LiquidCharacter player) {
+        if (inProgress || reloadTimeRemaining > 0)
             return;
+
+        reloadTimeRemaining = convertTime + reloadTime;
 
         player.spriteRenderer.enabled = false;
         inProgress = true;
@@ -39,7 +48,7 @@ public class PhaseChangingObject : MonoBehaviour
         StartCoroutine(Convert(player));
     }
 
-    public IEnumerator Convert(PlayerController player)
+    public IEnumerator Convert(LiquidCharacter player)
     {
         player.rb.position = (Vector2)transform.position + offset;
         player.rb.constraints |= RigidbodyConstraints2D.FreezePosition;

@@ -8,22 +8,18 @@ public class Spawner : MonoBehaviour
     public GameObject objectToSpawn;
     public float timePerSpawn;
 
-    public float timeSinceLastSpawn;
+    public float timeRemainingUntilSpawn;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
-        timeSinceLastSpawn += Time.deltaTime;
-        if (timeSinceLastSpawn >= timePerSpawn) {
-            timeSinceLastSpawn = 0;
+        if (timeRemainingUntilSpawn <= 0) {
             Instantiate(objectToSpawn, transform.position, Quaternion.identity);
+            timeRemainingUntilSpawn = timePerSpawn;
         }
+        else
+            timeRemainingUntilSpawn -= Time.deltaTime;
 
     }
 }

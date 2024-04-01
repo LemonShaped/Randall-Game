@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
+[ExecuteAlways]
 public class MyAnimator : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
@@ -17,50 +19,40 @@ public class MyAnimator : MonoBehaviour
 
     private int i;
 
-    private new Coroutine animation;
+    private void Awake() {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        animating = false;
+    }
 
     public void StartAnimation(Sprite[] sprites) {
+        if (sprites.Length == 0)
+            sprites = new Sprite[1]{null};
+
         frames = sprites;
-        // switch out the frames. if animation in progress it will start using these new ones.
 
-        if (frames.Length <= 1) {
-            StopAnimation();
-            if (frames.Length == 1)
-                spriteRenderer.sprite = frames[0];
-            return;
-        }
-
-        if (animating) {
-            spriteRenderer.sprite = frames[i]; // update sprite instantly after frames change because the animation will take long to switch
+        if (animating || animationSpeed <= 0) {
+            spriteRenderer.sprite = frames[0]; // update sprite instantly after frames change because the animation will take long to switch
         }
         else {
-            StopAnimation();
-            animation = StartCoroutine(Animate());
+            Animate();
         }
     }
 
-    private IEnumerator Animate() {
-        animating = (animationSpeed > 0);
+    private async void Animate() {
+        animating = true;
         i = 0;
 
         while (animating) {
             i = (i + 1) % frames.Length;
             spriteRenderer.sprite = frames[i];
-            yield return new WaitForSeconds(1f / animationSpeed);
-
+            await Task.Delay((int)(1000 / animationSpeed));
         }
-        frames = new Sprite[0];
-    }
-
-    public void StopAnimation()
-    {
-        animating = false;
-        //if (animation is not null)
-        //    StopCoroutine(animation);
     }
 
     private void OnDisable() {
-        StopAnimation();
+        animating = false;
+        frames = new Sprite[1]{null};
     }
 
 }

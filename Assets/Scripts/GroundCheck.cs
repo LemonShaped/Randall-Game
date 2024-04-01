@@ -38,7 +38,7 @@ public class GroundCheck : MonoBehaviour
                 BottomRight,
                 new Vector2(TopLeft.x, BottomRight.y)
             },
-            CheckGround(GetComponent<PlayerController>().groundLayers) ? new Color(0f, 1f, 0f, 0.3f) : Color.clear,
+            CheckGround(GetComponent<LiquidCharacter>().groundLayers) ? new Color(0f, 1f, 0f, 0.3f) : Color.clear,
             Color.white);
         }
     }
