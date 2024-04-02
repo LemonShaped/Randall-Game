@@ -6,9 +6,6 @@ using UnityEngine.Tilemaps;
 public class Ethanol : LiquidCharacter
 {
 
-    public PlayerController player;
-    //public bool takeValuesFromPlayer;
-
     public bool burning;
 
     [Tooltip("Time in seconds between losing 1 health")]
@@ -23,19 +20,8 @@ public class Ethanol : LiquidCharacter
     [Tooltip("Trigger colliders outlining the flames around ethanol")]
     public Collider2D[] flameColliders;
 
-    public TileBase fireTile;
+    public TileBase[] noFiresOnTiles;
 
-    private new void Awake()
-    {
-        base.Awake();
-
-        groundTilemap = GameObject.FindWithTag("Ground Tilemap").GetComponent<Tilemap>();
-        player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-
-        canPickUpPuddles = false;
-        canInteractWithStateChangerObjects = false;
-        isHurtByEthanol = false;
-    }
 
     private new void Start() {
         base.Start();
@@ -44,6 +30,7 @@ public class Ethanol : LiquidCharacter
 
     void FixedUpdate()
     {
+        TileBase fireTile = gameManager.fireTile;
 
         if (groundTilemap.GetTile(GridPosition + (Vector3Int.right * moveDirection)) != null
                 && groundTilemap.GetTile(GridPosition + (Vector3Int.right * moveDirection)) != fireTile) {
@@ -56,12 +43,22 @@ public class Ethanol : LiquidCharacter
                 rb.velocityY = jumpVelocity;
                 
         }
-        if (groundCheck.CheckGround(groundLayers) && groundTilemap.GetTile(GridPosition) is null &&
-                groundTilemap.GetTile(GridPosition + Vector3Int.down) is not null && groundTilemap.GetTile(GridPosition + Vector3Int.down) != fireTile){
-            gameManager.PlaceFire(GridPosition);
+
+        bool doPlaceFire() {
+            if (groundCheck.CheckGround(groundLayers) && groundTilemap.GetTile(GridPosition) == null) {
+                foreach (var tile in noFiresOnTiles)
+                    if (groundTilemap.GetTile(GridPosition + Vector3Int.down) == tile)
+                        return false;
+                return true;
+            }
+            return false;
         }
 
+        if (doPlaceFire())
+            gameManager.SetTile(GridPosition, fireTile);
+
         rb.velocityX = movementSpeed * moveDirection;
+
 
     }
 
@@ -72,6 +69,15 @@ public class Ethanol : LiquidCharacter
             if (burning)
                 Hurt();
         }
+    }
+
+    public override void UpdateTexture() {
+
+        for (int size = 0; size < flameColliders.Length; size++) {
+            flameColliders[size].enabled = (size == CurrentSize);
+        }
+
+        base.UpdateTexture();
     }
 
 }

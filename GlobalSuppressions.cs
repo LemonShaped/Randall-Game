@@ -6,3 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Performance", "UNT0026:GetComponent always allocates", Justification = "<Pending>", Scope = "member", Target = "~M:InteractibleObject.OnEnable")]
+[assembly: SuppressMessage("Style", "IDE0074:Use compound assignment", Justification = "<Pending>", Scope = "member", Target = "~P:LiquidCharacter.CurrentMode")]

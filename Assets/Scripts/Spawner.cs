@@ -4,18 +4,21 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    public GameManager gameManager;
 
     public GameObject objectToSpawn;
+    public Vector2 offset;
+
     public float timePerSpawn;
 
     public float timeRemainingUntilSpawn;
-
+    
 
     // Update is called once per frame
     void Update()
     {
         if (timeRemainingUntilSpawn <= 0) {
-            Instantiate(objectToSpawn, transform.position, Quaternion.identity);
+            Instantiate(objectToSpawn, transform.position + (Vector3)offset, Quaternion.identity).GetComponent<Ethanol>();
             timeRemainingUntilSpawn = timePerSpawn;
         }
         else

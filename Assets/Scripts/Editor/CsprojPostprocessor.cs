@@ -28,6 +28,7 @@ public class CsprojPostprocessor : AssetPostprocessor
     <Content Include="".editorconfig"" />
     <Content Include=""Assets\**\*.png"" />
     <Content Include=""Assets\**\*.ase"" />
+    <Content Include=""*.cs"" />
   </ItemGroup>
 </Project>
 ";

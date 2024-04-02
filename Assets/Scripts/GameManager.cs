@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
@@ -8,44 +10,68 @@ public class GameManager : MonoBehaviour
 
     public Tilemap groundTilemap;
 
-    public List<Fire> fires = new();
     public TileBase fireTile;
     public float fireTimeout;
 
-    void FixedUpdate()
-    {
-        foreach (Fire fire in fires) {
-            fire.remainingTime -= Time.fixedDeltaTime;
-            if (fire.remainingTime <= 0)
-                SetTile(fire.position, null);
-        }
-    }
+    public PlayerController player;
 
-    public void PlaceFire(Vector3Int position) {
-        groundTilemap.SetTile(position, fireTile);
-        fires.Add(new Fire(position, fireTimeout));
-    }
+    public GameObject deathScreen;
+    public GameObject winScreen;
+    public SpriteRenderer door;
+    public Sprite closedDoorSprite;
 
     public void SetTile(Vector3Int position, TileBase tile) {
-        if (tile == fireTile)
-            PlaceFire(position);
+        if (tile == fireTile) {
+            groundTilemap.SetTile(position, fireTile);
+            StartCoroutine(FireExpiry(position));
+        }
         else {
             groundTilemap.SetTile(position, tile);
-            foreach (Fire fire in fires) {
-                if (fire.position == position)
-                    fires.Remove(fire);
-            }
         }
     }
 
-    public class Fire
+    public void GetTile(Vector3Int position)
+        => groundTilemap.GetTile(position);
+
+    IEnumerator FireExpiry(Vector3Int position)
     {
-        public Vector3Int position;
-        public float remainingTime;
-        public Fire(Vector3Int position, float remainingTime) {
-            this.position = position;
-            this.remainingTime = remainingTime;
-        }
+        yield return new WaitForSeconds(fireTimeout);
+        if (groundTilemap.GetTile(position) == fireTile)
+            groundTilemap.SetTile(position, null);
     }
+
+
+    public void LevelComplete() {
+        door.GetComponent<Spawner>().enabled = false;
+        StartCoroutine(CloseDoor());
+    }
+    IEnumerator CloseDoor()
+    {
+        player.spriteRenderer.enabled = false;
+        yield return new WaitForSeconds(0.5f);
+
+        door.sprite = closedDoorSprite;
+        door.sortingLayerName = "Foreground";
+        door.transform.GetChild(0).gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
+        player.gameObject.SetActive(false);
+        winScreen.SetActive(true);
+    }
+
+
+    public void LevelFailed() {
+        deathScreen.SetActive(true);
+    }
+
+    public void RestartGame() {
+        SceneManager.LoadScene("Level 1");
+    }
+    public void MainMenu() {
+        SceneManager.LoadScene("Main Menu");
+    }
+
+
 
 }

@@ -16,7 +16,8 @@ public class LiquidCharacter : MonoBehaviour
     [HideInInspector] public SpriteRenderer spriteRenderer;
     [HideInInspector] public MyAnimator animator;
     [HideInInspector] public GroundCheck groundCheck;
-    [HideInInspector] public GameManager gameManager;
+
+    public GameManager gameManager;
 
     public Tilemap groundTilemap;
     public LayerMask groundLayers;
@@ -30,7 +31,7 @@ public class LiquidCharacter : MonoBehaviour
     public PlayerSize[] sizes = new PlayerSize[5];
 
 
-    public ModesEnum _currentMode = ModesEnum.Water;
+    public ModesEnum _currentMode = ModesEnum.Liquid;
 
     [Range(0, 4)]
     public int _currentSize;
@@ -60,9 +61,6 @@ public class LiquidCharacter : MonoBehaviour
 
     private Coroutine liquification; // convert back to water after timeout
     
-    /*[HideInInspector]*/ public bool canPickUpPuddles;
-    /*[HideInInspector]*/ public bool canInteractWithStateChangerObjects;
-    /*[HideInInspector]*/ public bool isHurtByEthanol;
     public float baseMovementSpeed = 1;
 
     public void Awake()
@@ -72,7 +70,14 @@ public class LiquidCharacter : MonoBehaviour
         animator = GetComponent<MyAnimator>();
         groundCheck = GetComponent<GroundCheck>();
         gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+
         groundTilemap = gameManager.groundTilemap;
+
+        for (int i = 0; i < assets[(int)ModesEnum.Liquid].sizes.Length; i++) {
+            assets[(int)ModesEnum.Liquid_Underground].sizes[i].collider = assets[(int)ModesEnum.Liquid].sizes[i].collider;
+            assets[(int)ModesEnum.Liquid_Underground].sizes[i].groundCheck_A = assets[(int)ModesEnum.Liquid].sizes[i].groundCheck_A;
+            assets[(int)ModesEnum.Liquid_Underground].sizes[i].groundCheck_B = assets[(int)ModesEnum.Liquid].sizes[i].groundCheck_B;
+        }
 
     }
 
@@ -83,46 +88,33 @@ public class LiquidCharacter : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.name == "Spike")
-            Hurt();
-    }
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.gameObject.CompareTag("Puddle") && canPickUpPuddles) {
-            if (AddHealth(1) == true)
-                Destroy(collider.gameObject);
-        }
-        else if (collider.gameObject.TryGetComponent(out PhaseChangingObject phaseChanger) && canInteractWithStateChangerObjects)
-            phaseChanger.StartChange(this);
-        else if (collider.gameObject.TryGetComponent(out Ethanol _) && isHurtByEthanol)
-            Hurt();
-
-    }
 
     public bool IsOnGround() {
         return rb.IsTouchingLayers(groundLayers) && groundCheck.CheckGround(groundLayers);
     }
 
-    public virtual bool Hurt() => AddHealth(-1);
+    public virtual bool Hurt()
+        => AddHealth(-1);
     public bool AddHealth(int amount) {
         if (CurrentSize == 4 && amount > 0) {
             return false;
         }
         else if (CurrentSize == 0 && amount < 0) {
-            spriteRenderer.enabled = false;
-            rb.constraints = RigidbodyConstraints2D.FreezeAll;
-            Debug.Log("Dead");//// go to death screen
-            Destroy(gameObject);
+            Die();
             return true;
         }
         CurrentSize += amount;
         return true;
     }
 
+    public virtual void Die() {
+        //spriteRenderer.enabled = false;
+        //rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        Destroy(gameObject);
+    }
 
-    public bool IsPorous(Vector3Int pos) => IsPorous(pos, groundTilemap);
+    public bool IsPorous(Vector3Int pos)
+        => IsPorous(pos, groundTilemap);
     public bool IsPorous(Vector3Int pos, Tilemap tilemap)
     {
         TileData tileData = default;
@@ -136,14 +128,14 @@ public class LiquidCharacter : MonoBehaviour
         set {
             _currentMode = value;
 
-            if (_currentMode == ModesEnum.Water_Underground)
+            if (_currentMode == ModesEnum.Liquid_Underground)
                 rb.excludeLayers |= (1 << LayerMask.NameToLayer("GroundPorous")); // exclude collisions with porous ground
             else
                 rb.excludeLayers &= ~(1 << LayerMask.NameToLayer("GroundPorous")); // allow collisions with porous ground
 
             if (_currentMode == ModesEnum.Ice || _currentMode == ModesEnum.Cloud) {
                 if (liquification is null)
-                    liquification = StartCoroutine(DelayedConvert(ModesEnum.Water, iceAndCloudTimeout));
+                    liquification = StartCoroutine(DelayedConvert(ModesEnum.Liquid, iceAndCloudTimeout));
             }
             else if (liquification is not null)
                 StopCoroutine(liquification);
@@ -190,7 +182,7 @@ public class LiquidCharacter : MonoBehaviour
         }
     }
 
-    public void UpdateTexture()
+    public virtual void UpdateTexture()
     {
         foreach (Collider2D collider in GetComponents<Collider2D>())
             collider.enabled = (collider == assets[(int)CurrentMode].sizes[CurrentSize].collider);
@@ -250,7 +242,7 @@ public class LiquidCharacter : MonoBehaviour
 
 public enum ModesEnum
 {
-    Water, Water_Underground, Ice, Cloud
+    Liquid, Liquid_Underground, Ice, Cloud
 }
 
 [Serializable]

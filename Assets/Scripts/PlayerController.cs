@@ -12,13 +12,7 @@ public class PlayerController : LiquidCharacter
     public InputAction moveAction;
     public InputAction jumpAction;
 
-    private new void Awake()
-    {
-        base.Awake();
-        canPickUpPuddles = true;
-        canInteractWithStateChangerObjects = true;
-        isHurtByEthanol = true;
-    }
+    private Vector2 movementInput;
 
     void OnEnable()
     {
@@ -42,11 +36,58 @@ public class PlayerController : LiquidCharacter
         return false;
     }
 
+    public override void Die() {
+        gameManager.LevelFailed();
+        Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Spike"))
+            Hurt();
+    }
+    private void OnTriggerStay2D(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("Puddle")) {
+            bool changed = AddHealth(1);
+            if (changed)
+                Destroy(collider.gameObject);
+        }
+        else if (collider.gameObject.TryGetComponent(out PhaseChangingObject phaseChanger))
+            phaseChanger.StartChange(this);
+
+        else if (collider.gameObject.TryGetComponent(out CarnivorousPlant plant) && collider == plant.headCollider)
+            plant.Bite(this);
+
+        else if (collider.gameObject.CompareTag("Roots"))
+            Hurt();
+
+        else if (collider.gameObject.layer == LayerMask.NameToLayer("EthanolFire"))
+            Hurt();
+        
+
+    }
+    private void OnTriggerEnter2D(Collider2D collider) {
+        if (collider.gameObject.CompareTag("Door")){
+            moveAction.Disable();
+            jumpAction.Disable();
+            movementInput = Vector2.right;
+            gameManager.LevelComplete();
+        }
+
+    }
+
     private void FixedUpdate()
     {
+        movementInput = moveAction.ReadValue<Vector2>();
+
+
         hurtTimeoutRemaining -= Time.fixedDeltaTime;
 
-        Vector2 movementInput = moveAction.ReadValue<Vector2>();
+        if (groundTilemap.GetTile(GridPosition) == gameManager.fireTile) {
+            Hurt();
+        }
+
         rb.drag = ModeData.drag * SizeData.dragMultiplier;
 
         if (movementInput.x < 0 && assets[(int)CurrentMode].flippable)
@@ -59,7 +100,7 @@ public class PlayerController : LiquidCharacter
             rb.velocityY = jumpVelocity;
         }
 
-        if (CurrentMode == ModesEnum.Water) {
+        if (CurrentMode == ModesEnum.Liquid) {
 
             rb.velocityX = movementInput.x * movementSpeed;
 
@@ -70,7 +111,7 @@ public class PlayerController : LiquidCharacter
                 rb.velocityX = movementInput.x * movementSpeed;
 
         }
-        else if (CurrentMode == ModesEnum.Cloud || CurrentMode == ModesEnum.Water_Underground) {
+        else if (CurrentMode == ModesEnum.Cloud || CurrentMode == ModesEnum.Liquid_Underground) {
 
             if (movementInput.x != 0) // we want to control the speed directly but we dont want to stop instantly, when flying.
                 rb.velocityX = movementInput.x * movementSpeed;
@@ -80,12 +121,12 @@ public class PlayerController : LiquidCharacter
 
         }
 
-        if ((CurrentMode == ModesEnum.Water || CurrentMode == ModesEnum.Water_Underground)
+        if ((CurrentMode == ModesEnum.Liquid || CurrentMode == ModesEnum.Liquid_Underground)
                 && movementInput.y < 0 && groundCheck.CheckGround(groundLayers) && IsPorous(GridPosition + Vector3Int.down)) {
-            CurrentMode = ModesEnum.Water_Underground;
+            CurrentMode = ModesEnum.Liquid_Underground;
         }
-        else if ((CurrentMode == ModesEnum.Water_Underground) && groundTilemap.GetTile(GridPosition) == null) {
-            CurrentMode = ModesEnum.Water;
+        else if ((CurrentMode == ModesEnum.Liquid_Underground) && groundTilemap.GetTile(GridPosition) == null) {
+            CurrentMode = ModesEnum.Liquid;
         }
 
     }

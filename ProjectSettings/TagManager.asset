@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Puddle
   - Ground Tilemap
+  - Spike
+  - Roots
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -17,7 +20,7 @@ TagManager:
   - GroundPorous
   - Player
   - Ethanol
-  - 
+  - EthanolFire
   - 
   - 
   - 
