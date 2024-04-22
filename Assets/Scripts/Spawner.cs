@@ -15,10 +15,10 @@ public class Spawner : MonoBehaviour
     
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (timeRemainingUntilSpawn <= 0) {
-            Instantiate(objectToSpawn, transform.position + (Vector3)offset, Quaternion.identity).GetComponent<Ethanol>();
+            Instantiate(objectToSpawn, transform.position + (Vector3)offset, Quaternion.identity);
             timeRemainingUntilSpawn = timePerSpawn;
         }
         else

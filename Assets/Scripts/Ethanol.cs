@@ -17,13 +17,13 @@ public class Ethanol : LiquidCharacter
     [Range(0,1)]
     public float jumpChance;
 
-    [Tooltip("Trigger colliders outlining the flames around ethanol")]
+    [Tooltip("Trigger-colliders that outline the flames around ethanol")]
     public Collider2D[] flameColliders;
 
-    public TileBase[] noFiresOnTiles;
+    [Tooltip("Fires will not be placed above these blocks. Include null and fire, to avoid fires in the air.")]
+    public TileBase[] noFiresAbove;
 
-
-    private new void Start() {
+    public override void Start() {
         base.Start();
         StartCoroutine(BurnUp());
     }
@@ -35,18 +35,20 @@ public class Ethanol : LiquidCharacter
         if (groundTilemap.GetTile(GridPosition + (Vector3Int.right * moveDirection)) != null
                 && groundTilemap.GetTile(GridPosition + (Vector3Int.right * moveDirection)) != fireTile) {
 
-            if (Random.value > jumpChance) {
+            if (Random.value <= jumpChance) {
+                if (IsOnGround())
+                    rb.velocityY = jumpVelocity;
+            }
+            else {
                 moveDirection = -moveDirection;
                 spriteRenderer.flipX = moveDirection < 0;
             }
-            else if (IsOnGround())
-                rb.velocityY = jumpVelocity;
-                
+
         }
 
         bool doPlaceFire() {
             if (groundCheck.CheckGround(groundLayers) && groundTilemap.GetTile(GridPosition) == null) {
-                foreach (var tile in noFiresOnTiles)
+                foreach (var tile in noFiresAbove)
                     if (groundTilemap.GetTile(GridPosition + Vector3Int.down) == tile)
                         return false;
                 return true;

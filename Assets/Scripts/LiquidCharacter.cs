@@ -81,12 +81,11 @@ public class LiquidCharacter : MonoBehaviour
 
     }
 
-    public void Start()
+    public virtual void Start()
     {
         UpdateValues();
         UpdateTexture();
     }
-
 
 
     public bool IsOnGround() {
@@ -178,7 +177,6 @@ public class LiquidCharacter : MonoBehaviour
         else {
             rb.gravityScale = ModeData.gravityScale * SizeData.gravityScaleMultiplier;
             rb.drag = ModeData.drag * SizeData.dragMultiplier;
-
         }
     }
 
@@ -189,12 +187,12 @@ public class LiquidCharacter : MonoBehaviour
         groundCheck.pointA = assets[(int)CurrentMode].sizes[CurrentSize].groundCheck_A;
         groundCheck.pointB = assets[(int)CurrentMode].sizes[CurrentSize].groundCheck_B;
 
-        animator.StartAnimation(assets[(int)CurrentMode].sizes[CurrentSize].sprites);
+        if (Application.isPlaying)
+            animator.StartAnimation(assets[(int)CurrentMode].sizes[CurrentSize].sprites);
         
     }
 
 
-#if UNITY_EDITOR
     private void OnValidate()
     {
 
@@ -235,7 +233,6 @@ public class LiquidCharacter : MonoBehaviour
         CurrentMode = _currentMode;
         CurrentSize = _currentSize;
     }
-#endif
 
 }
 

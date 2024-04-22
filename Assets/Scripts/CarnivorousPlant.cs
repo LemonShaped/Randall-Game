@@ -32,8 +32,10 @@ public class CarnivorousPlant : MonoBehaviour
         headCollider.enabled = true;
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
         Gizmos.DrawSphere(transform.position + (Vector3)eatenPosition, 0.1f);
     }
+#endif
 
 }

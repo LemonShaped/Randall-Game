@@ -29,6 +29,7 @@ public class GroundCheck : MonoBehaviour
         return (bool)Physics2D.OverlapArea(TopLeft, BottomRight, layers);
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         if (showGizmo) {
@@ -42,5 +43,6 @@ public class GroundCheck : MonoBehaviour
             Color.white);
         }
     }
+#endif
 
 }

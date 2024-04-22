@@ -7,9 +7,7 @@ public class PhaseChangingObject : MonoBehaviour
 {
 
     public ModesEnum convertInto;
-    //public float timeUntilActivate;
     public float convertTime;
-    //public float rechargeTime;
 
     public Vector2 offset;
 

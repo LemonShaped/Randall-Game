@@ -12,17 +12,13 @@ public class PlayerController : LiquidCharacter
     public InputAction moveAction;
     public InputAction jumpAction;
 
-    private Vector2 movementInput;
+    public Vector2 movementInput;
 
-    void OnEnable()
-    {
+    private void OnEnable() {
         moveAction.Enable();
         jumpAction.Enable();
     }
-    
-    
-    private void OnDisable()
-    {
+    private void OnDisable() {
         moveAction.Disable();
         jumpAction.Disable();
     }
@@ -64,31 +60,29 @@ public class PlayerController : LiquidCharacter
 
         else if (collider.gameObject.layer == LayerMask.NameToLayer("EthanolFire"))
             Hurt();
-        
-
     }
     private void OnTriggerEnter2D(Collider2D collider) {
-        if (collider.gameObject.CompareTag("Door")){
+        if (collider.gameObject.CompareTag("Door")) {
+            hurtTimeoutRemaining = 1000;
             moveAction.Disable();
             jumpAction.Disable();
             movementInput = Vector2.right;
             gameManager.LevelComplete();
         }
-
     }
 
     private void FixedUpdate()
     {
-        movementInput = moveAction.ReadValue<Vector2>();
+        if (moveAction.enabled)
+            movementInput = moveAction.ReadValue<Vector2>();
+
+        if (hurtTimeoutRemaining > 0)
+            hurtTimeoutRemaining -= Time.fixedDeltaTime;
 
 
-        hurtTimeoutRemaining -= Time.fixedDeltaTime;
-
-        if (groundTilemap.GetTile(GridPosition) == gameManager.fireTile) {
+        if (groundTilemap.GetTile(GridPosition) == gameManager.fireTile)
             Hurt();
-        }
 
-        rb.drag = ModeData.drag * SizeData.dragMultiplier;
 
         if (movementInput.x < 0 && assets[(int)CurrentMode].flippable)
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
@@ -96,38 +90,34 @@ public class PlayerController : LiquidCharacter
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
 
         // jump
-        if (ModeData.doesJump && jumpAction.IsPressed() && IsOnGround()) {
+        if (ModeData.doesJump && jumpAction.IsPressed() && IsOnGround()) 
             rb.velocityY = jumpVelocity;
-        }
 
-        if (CurrentMode == ModesEnum.Liquid) {
-
+        if (CurrentMode == ModesEnum.Liquid)
             rb.velocityX = movementInput.x * movementSpeed;
 
-        }
         else if (CurrentMode == ModesEnum.Ice) {
-
             if (movementInput.x != 0)
                 rb.velocityX = movementInput.x * movementSpeed;
-
         }
+
         else if (CurrentMode == ModesEnum.Cloud || CurrentMode == ModesEnum.Liquid_Underground) {
 
             if (movementInput.x != 0) // we want to control the speed directly but we dont want to stop instantly, when flying.
                 rb.velocityX = movementInput.x * movementSpeed;
-
             if (movementInput.y != 0)
                 rb.velocityY = movementInput.y * movementSpeed;
-
         }
 
         if ((CurrentMode == ModesEnum.Liquid || CurrentMode == ModesEnum.Liquid_Underground)
                 && movementInput.y < 0 && groundCheck.CheckGround(groundLayers) && IsPorous(GridPosition + Vector3Int.down)) {
-            CurrentMode = ModesEnum.Liquid_Underground;
-        }
-        else if ((CurrentMode == ModesEnum.Liquid_Underground) && groundTilemap.GetTile(GridPosition) == null) {
-            CurrentMode = ModesEnum.Liquid;
+            if (CurrentMode != ModesEnum.Liquid_Underground)
+                CurrentMode = ModesEnum.Liquid_Underground;
         }
 
+        else if ((CurrentMode == ModesEnum.Liquid_Underground) && groundTilemap.GetTile(GridPosition) == null)
+            CurrentMode = ModesEnum.Liquid;
+
+        
     }
 }

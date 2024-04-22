@@ -29,10 +29,8 @@ public class GameManager : MonoBehaviour
             groundTilemap.SetTile(position, tile);
         }
     }
-
     public void GetTile(Vector3Int position)
         => groundTilemap.GetTile(position);
-
     IEnumerator FireExpiry(Vector3Int position)
     {
         yield return new WaitForSeconds(fireTimeout);
@@ -47,19 +45,17 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator CloseDoor()
     {
-        player.spriteRenderer.enabled = false;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
 
         door.sprite = closedDoorSprite;
         door.sortingLayerName = "Foreground";
         door.transform.GetChild(0).gameObject.SetActive(false);
-
-        yield return new WaitForSeconds(0.5f);
-
         player.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(1.5f);
+
         winScreen.SetActive(true);
     }
-
 
     public void LevelFailed() {
         deathScreen.SetActive(true);
