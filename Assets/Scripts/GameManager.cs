@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
+using UnityEngine.Video;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +21,12 @@ public class GameManager : MonoBehaviour
     public GameObject winScreen;
     public SpriteRenderer door;
     public Sprite closedDoorSprite;
+
+    private void Awake() {
+        Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
+        Debug.Log(System.IO.Path.Combine(Application.streamingAssetsPath));
+        //Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
+    }
 
     public void SetTile(Vector3Int position, TileBase tile) {
         if (tile == fireTile) {
@@ -55,6 +63,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         winScreen.SetActive(true);
+        if (!winScreen.GetComponent<VideoPlayer>().isPlaying)
+            winScreen.GetComponent<VideoPlayer>().Play();
+            
     }
 
     public void LevelFailed() {
