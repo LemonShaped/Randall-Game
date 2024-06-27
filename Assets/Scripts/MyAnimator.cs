@@ -34,18 +34,18 @@ public class MyAnimator : MonoBehaviour
             spriteRenderer.sprite = frames[0]; // update sprite instantly after frames change because the animation will take long to switch
         }
         else {
-            Animate();
+            StartCoroutine(Animate());
         }
     }
 
-    private async void Animate() {
+    private IEnumerator Animate() {
         animating = true;
         i = 0;
 
         while (animating) {
             i = (i + 1) % frames.Length;
             spriteRenderer.sprite = frames[i];
-            await Task.Delay((int)(1000 / animationSpeed));
+            yield return new WaitForSeconds(1 / animationSpeed);
         }
     }
 
