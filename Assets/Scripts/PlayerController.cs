@@ -23,6 +23,7 @@ public class PlayerController : LiquidCharacter
         jumpAction.Disable();
     }
 
+
     public override bool Hurt()
     {
         if (hurtTimeoutRemaining <= 0) {
@@ -37,20 +38,22 @@ public class PlayerController : LiquidCharacter
         Destroy(gameObject);
     }
 
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Spike"))
             Hurt();
     }
+
     private void OnTriggerStay2D(Collider2D collider)
     {
         if (collider.gameObject.CompareTag("Puddle")) {
-            bool changed = AddHealth(1);
-            if (changed)
-                Destroy(collider.gameObject);
+            bool healthChanged = AddHealth(1);
+            if (healthChanged)
+                Destroy(collider.gameObject); // only delete the puddle if it actually increased our health (not if we are already at max)
         }
-        else if (collider.gameObject.TryGetComponent(out PhaseChangingObject phaseChanger))
-            phaseChanger.StartChange(this);
+        else if (collider.gameObject.TryGetComponent(out StateChangingObject stateChanger))
+            stateChanger.StartChange(this);
 
         else if (collider.gameObject.TryGetComponent(out CarnivorousPlant plant) && collider == plant.headCollider)
             plant.Bite(this);
@@ -61,6 +64,7 @@ public class PlayerController : LiquidCharacter
         else if (collider.gameObject.layer == LayerMask.NameToLayer("EthanolFire"))
             Hurt();
     }
+
     private void OnTriggerEnter2D(Collider2D collider) {
         if (collider.gameObject.CompareTag("Door")) {
             hurtTimeoutRemaining = 1000;
@@ -70,6 +74,7 @@ public class PlayerController : LiquidCharacter
             gameManager.LevelComplete();
         }
     }
+
 
     private void FixedUpdate()
     {
@@ -90,7 +95,7 @@ public class PlayerController : LiquidCharacter
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
 
         // jump
-        if (ModeData.doesJump && jumpAction.IsPressed() && IsOnGround()) 
+        if (ModeData.doesJump && jumpAction.IsPressed() && IsOnGround())
             rb.velocityY = jumpVelocity;
 
         if (CurrentMode == ModesEnum.Liquid)
@@ -118,6 +123,6 @@ public class PlayerController : LiquidCharacter
         else if ((CurrentMode == ModesEnum.Liquid_Underground) && groundTilemap.GetTile(GridPosition) == null)
             CurrentMode = ModesEnum.Liquid;
 
-        
+
     }
 }

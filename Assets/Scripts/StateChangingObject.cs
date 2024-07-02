@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class PhaseChangingObject : MonoBehaviour
+public class StateChangingObject : MonoBehaviour
 {
 
     public ModesEnum convertInto;

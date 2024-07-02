@@ -17,9 +17,9 @@ public class LiquidCharacter : MonoBehaviour
     [HideInInspector] public MyAnimator animator;
     [HideInInspector] public GroundCheck groundCheck;
 
-    public GameManager gameManager;
+    [HideInInspector] public GameManager gameManager;
+    [HideInInspector] public Tilemap groundTilemap;
 
-    public Tilemap groundTilemap;
     public LayerMask groundLayers;
 
     public float iceAndCloudTimeout;
@@ -60,7 +60,7 @@ public class LiquidCharacter : MonoBehaviour
 
 
     private Coroutine liquification; // convert back to water after timeout
-    
+
     public float baseMovementSpeed = 1;
 
     public void Awake()
@@ -94,6 +94,7 @@ public class LiquidCharacter : MonoBehaviour
 
     public virtual bool Hurt()
         => AddHealth(-1);
+
     public bool AddHealth(int amount) {
         if (CurrentSize == 4 && amount > 0) {
             return false;
@@ -189,7 +190,7 @@ public class LiquidCharacter : MonoBehaviour
 
         if (Application.isPlaying)
             animator.StartAnimation(assets[(int)CurrentMode].sizes[CurrentSize].sprites);
-        
+
     }
 
 
