@@ -30,7 +30,7 @@ public class MyAnimator : MonoBehaviour
 
         frames = sprites;
 
-        if (animating || animationSpeed <= 0) {
+        if (animating || animationSpeed == 0) {
             spriteRenderer.sprite = frames[0]; // update sprite instantly after frames change because the animation will take long to switch
         }
         else {

@@ -23,9 +23,9 @@ public class GameManager : MonoBehaviour
     public Sprite closedDoorSprite;
 
     private void Awake() {
-        Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
-        Debug.Log(System.IO.Path.Combine(Application.streamingAssetsPath));
-        //Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
+        // Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
+        // Debug.Log(System.IO.Path.Combine(Application.streamingAssetsPath));
+        // Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
     }
 
     public void SetTile(Vector3Int position, TileBase tile) {
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
         winScreen.SetActive(true);
         if (!winScreen.GetComponent<VideoPlayer>().isPlaying)
             winScreen.GetComponent<VideoPlayer>().Play();
-            
+
     }
 
     public void LevelFailed() {

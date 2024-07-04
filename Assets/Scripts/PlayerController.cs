@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
+using System;
 
 public class PlayerController : LiquidCharacter
 {
@@ -52,8 +53,6 @@ public class PlayerController : LiquidCharacter
             if (healthChanged)
                 Destroy(collider.gameObject); // only delete the puddle if it actually increased our health (not if we are already at max)
         }
-        else if (collider.gameObject.TryGetComponent(out StateChangingObject stateChanger))
-            stateChanger.StartChange(this);
 
         else if (collider.gameObject.TryGetComponent(out CarnivorousPlant plant) && collider == plant.headCollider)
             plant.Bite(this);
@@ -66,13 +65,23 @@ public class PlayerController : LiquidCharacter
     }
 
     private void OnTriggerEnter2D(Collider2D collider) {
-        if (collider.gameObject.CompareTag("Door")) {
+
+        if (collider.gameObject.TryGetComponent(out StateChangingObject stateChanger))
+            stateChanger.openWaitingCoroutine = StartCoroutine(stateChanger.Open_WaitingToStart(this));
+
+        else if (collider.gameObject.CompareTag("Door")) {
             hurtTimeoutRemaining = 1000;
             moveAction.Disable();
             jumpAction.Disable();
             movementInput = Vector2.right;
             gameManager.LevelComplete();
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D collider) {
+
+        if (collider.gameObject.TryGetComponent(out StateChangingObject stateChanger))
+            stateChanger.Close_LeftBeforeStarted(this);
     }
 
 

@@ -1,6 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
+using System.Linq;
 
 
 public class StateChangingObject : MonoBehaviour
@@ -11,21 +15,25 @@ public class StateChangingObject : MonoBehaviour
 
     public Vector2 offset;
 
-    private bool inProgress;
+    public bool isOpen;
 
-    public Sprite[] active;
-    public Sprite[] inactive;
+    public bool isRunning;
+
+    public Sprite closed;
+    public Sprite open;
+    public Sprite[] running;
 
     public MyAnimator animator;
     public SpriteRenderer spriteRenderer;
 
+    public float activateTime;
     public float reloadTime;
     public float reloadTimeRemaining;
 
     private void Start()
     {
-        spriteRenderer.sprite = inactive[0];
-        animator.StartAnimation(inactive);
+        spriteRenderer.sprite = closed;
+        animator.StartAnimation(new Sprite[]{closed});
     }
 
     private void Update() {
@@ -33,32 +41,53 @@ public class StateChangingObject : MonoBehaviour
             reloadTimeRemaining -= Time.deltaTime;
     }
 
-    public void StartChange(LiquidCharacter player) {
-        if (inProgress || reloadTimeRemaining > 0)
-            return;
 
-        reloadTimeRemaining = convertTime + reloadTime;
+    public Coroutine openWaitingCoroutine = null;
 
-        player.spriteRenderer.enabled = false;
-        inProgress = true;
-        animator.StartAnimation(active);
+    public IEnumerator Open_WaitingToStart(LiquidCharacter player){
+        if (!isRunning){
+            isOpen = true;
+            animator.StartAnimation(new Sprite[]{open});
+        }
+
+        yield return new WaitForSeconds(activateTime);
 
         StartCoroutine(Convert(player));
     }
 
-    public IEnumerator Convert(LiquidCharacter player)
-    {
+    public void Close_LeftBeforeStarted(LiquidCharacter player) {
+        isOpen = false;
+        animator.StartAnimation(new Sprite[]{closed});
+        if (openWaitingCoroutine != null){
+            StopCoroutine(openWaitingCoroutine);
+            openWaitingCoroutine = null;
+        }
+    }
+
+    public IEnumerator Convert(LiquidCharacter player) {
+        if (isRunning || reloadTimeRemaining > 0)
+            yield break;
+
+        reloadTimeRemaining = convertTime + reloadTime;
+
+        player.spriteRenderer.enabled = false;
+        isRunning = true;
+        isOpen = false;
+        animator.StartAnimation(running);
+
         player.rb.position = (Vector2)transform.position + offset;
         player.rb.constraints |= RigidbodyConstraints2D.FreezePosition;
+        player.transform.parent = this.transform;
 
         yield return new WaitForSeconds(convertTime);
 
+        player.transform.parent = transform.parent;
         player.rb.constraints &= ~RigidbodyConstraints2D.FreezePosition;
 
         player.CurrentMode = convertInto;
         player.spriteRenderer.enabled = true;
-        inProgress = false;
-        animator.StartAnimation(inactive);
+        isRunning = false;
+        isOpen = true;
+        animator.StartAnimation(new Sprite[]{open});
     }
-
 }
