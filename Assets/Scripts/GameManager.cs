@@ -22,11 +22,11 @@ public class GameManager : MonoBehaviour
     public SpriteRenderer door;
     public Sprite closedDoorSprite;
 
-    private void Awake() {
-        // Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
-        // Debug.Log(System.IO.Path.Combine(Application.streamingAssetsPath));
-        // Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
-    }
+    //private void Awake() {
+    //    Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
+    //    Debug.Log(System.IO.Path.Combine(Application.streamingAssetsPath));
+    //    Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
+    //}
 
     public void SetTile(Vector3Int position, TileBase tile) {
         if (tile == fireTile) {

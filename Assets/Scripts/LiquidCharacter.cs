@@ -196,43 +196,44 @@ public class LiquidCharacter : MonoBehaviour
 
     private void OnValidate()
     {
-
-        if (modes.Length != Enum.GetValues(typeof(ModesEnum)).Length || assets.Length != Enum.GetValues(typeof(ModesEnum)).Length || sizes.Length > 5) {
-            Array.Resize(ref modes, Enum.GetValues(typeof(ModesEnum)).Length);
-            Array.Resize(ref assets, Enum.GetValues(typeof(ModesEnum)).Length);
-            Array.Resize(ref sizes, 5);
-            Debug.LogError("Incorrect array length!");
-        }
-        foreach (ModeAssets modeTextures in assets) {
-            if (modeTextures.sizes.Length != 5) {
+        if (!Application.isPlaying) {
+            if (modes.Length != Enum.GetValues(typeof(ModesEnum)).Length || assets.Length != Enum.GetValues(typeof(ModesEnum)).Length || sizes.Length > 5) {
+                Array.Resize(ref modes, Enum.GetValues(typeof(ModesEnum)).Length);
+                Array.Resize(ref assets, Enum.GetValues(typeof(ModesEnum)).Length);
+                Array.Resize(ref sizes, 5);
                 Debug.LogError("Incorrect array length!");
-                Array.Resize(ref modeTextures.sizes, 5);
             }
-            foreach (ModeAssets.SizeAssets size in modeTextures.sizes) {
-                if (size.sprites.Length < 1) {
-                    Debug.LogError("Array must have >= 1 item, even if texture is empty.");
-                    Array.Resize(ref size.sprites, 1);
+            foreach (ModeAssets modeTextures in assets) {
+                if (modeTextures.sizes.Length != 5) {
+                    Debug.LogError("Incorrect array length!");
+                    Array.Resize(ref modeTextures.sizes, 5);
+                }
+                foreach (ModeAssets.SizeAssets size in modeTextures.sizes) {
+                    if (size.sprites.Length < 1) {
+                        Debug.LogError("Array must have >= 1 item, even if texture is empty.");
+                        Array.Resize(ref size.sprites, 1);
+                    }
                 }
             }
-        }
 
 
-        for (int i = 0; i < modes.Length; i++)
-            modes[i]._name = Enum.GetName(typeof(ModesEnum), i);
+            for (int i = 0; i < modes.Length; i++)
+                modes[i]._name = Enum.GetName(typeof(ModesEnum), i);
 
-        for (int i = 0; i < sizes.Length; i++)
-            sizes[i]._name = $"Size {i}";
+            for (int i = 0; i < sizes.Length; i++)
+                sizes[i]._name = $"Size {i}";
 
-        for (int i = 0; i < assets.Length; i++) {
-            assets[i]._name = Enum.GetName(typeof(ModesEnum), i);
+            for (int i = 0; i < assets.Length; i++) {
+                assets[i]._name = Enum.GetName(typeof(ModesEnum), i);
 
-            for (int j = 0; j < assets[i].sizes.Length; j++) {
-                assets[i].sizes[j]._name = $"Size {j}";
+                for (int j = 0; j < assets[i].sizes.Length; j++) {
+                    assets[i].sizes[j]._name = $"Size {j}";
+                }
             }
-        }
 
-        CurrentMode = _currentMode;
-        CurrentSize = _currentSize;
+            CurrentMode = _currentMode;
+            CurrentSize = _currentSize;
+        }
     }
 
 }

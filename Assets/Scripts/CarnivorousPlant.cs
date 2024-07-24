@@ -34,7 +34,8 @@ public class CarnivorousPlant : MonoBehaviour
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
-        Gizmos.DrawSphere(transform.position + (Vector3)eatenPosition, 0.1f);
+        Gizmos.color = Color.blue.MixWith(Color.white, 0.05f);
+        Gizmos.DrawWireSphere(transform.position + (Vector3)eatenPosition, 0.1f);
     }
 #endif
 

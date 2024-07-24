@@ -9,6 +9,8 @@ public class Spawner : MonoBehaviour
     public GameObject objectToSpawn;
     public Vector2 offset;
 
+    public Transform parentObject;
+
     public float timePerSpawn;
 
     public float timeRemainingUntilSpawn;
@@ -18,7 +20,7 @@ public class Spawner : MonoBehaviour
     void FixedUpdate()
     {
         if (timeRemainingUntilSpawn <= 0) {
-            Instantiate(objectToSpawn, transform.position + (Vector3)offset, Quaternion.identity);
+            Instantiate(objectToSpawn, transform.position + (Vector3)offset, Quaternion.identity, parentObject);
             timeRemainingUntilSpawn = timePerSpawn;
         }
         else

@@ -67,7 +67,7 @@ public class PlayerController : LiquidCharacter
     private void OnTriggerEnter2D(Collider2D collider) {
 
         if (collider.gameObject.TryGetComponent(out StateChangingObject stateChanger))
-            stateChanger.openWaitingCoroutine = StartCoroutine(stateChanger.Open_WaitingToStart(this));
+            stateChanger.WaitingToStart(this);
 
         else if (collider.gameObject.CompareTag("Door")) {
             hurtTimeoutRemaining = 1000;
@@ -81,7 +81,7 @@ public class PlayerController : LiquidCharacter
     private void OnTriggerExit2D(Collider2D collider) {
 
         if (collider.gameObject.TryGetComponent(out StateChangingObject stateChanger))
-            stateChanger.Close_LeftBeforeStarted(this);
+            stateChanger.CancelBeforeStarted(this);
     }
 
 

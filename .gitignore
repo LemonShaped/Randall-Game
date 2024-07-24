@@ -1,6 +1,5 @@
-# UNITY
-#
-#
+### UNITY
+
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
 /[Ll]ibrary/
@@ -74,9 +73,8 @@ crashlytics-build.properties
 
 
 
-# WINDOWS
-#
-#
+### WINDOWS
+
 # Windows thumbnail cache files
 Thumbs.db
 Thumbs.db:encryptable
@@ -104,9 +102,8 @@ $RECYCLE.BIN/
 
 
 
-# Replit
-#
-#
+### REPLIT
+
 /.replit
 /replit.nix
 /.local/

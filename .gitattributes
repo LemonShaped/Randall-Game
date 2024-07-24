@@ -7,7 +7,7 @@ eol=lf
 .editorconfig text=auto
 .gitignore text=auto
 .gitattributes text=auto
-
+GlobalSuppresssions.cs text=auto
 
 
 # Collapse Unity-generated files on GitHub
