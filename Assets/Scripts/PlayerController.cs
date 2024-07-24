@@ -62,6 +62,9 @@ public class PlayerController : LiquidCharacter
 
         else if (collider.gameObject.layer == LayerMask.NameToLayer("EthanolFire"))
             Hurt();
+
+        else if (collider.gameObject.CompareTag("Fire"))
+            Hurt();
     }
 
     private void OnTriggerEnter2D(Collider2D collider) {
@@ -94,10 +97,6 @@ public class PlayerController : LiquidCharacter
             hurtTimeoutRemaining -= Time.fixedDeltaTime;
 
 
-        if (groundTilemap.GetTile(GridPosition) == gameManager.fireTile)
-            Hurt();
-
-
         if (movementInput.x < 0 && assets[(int)CurrentMode].flippable)
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
         else if (movementInput.x > 0 && assets[(int)CurrentMode].flippable)
@@ -124,12 +123,12 @@ public class PlayerController : LiquidCharacter
         }
 
         if ((CurrentMode == ModesEnum.Liquid || CurrentMode == ModesEnum.Liquid_Underground)
-                && movementInput.y < 0 && groundCheck.CheckGround(groundLayers) && IsPorous(GridPosition + Vector3Int.down)) {
+                && movementInput.y < 0 && groundCheck.CheckGround(groundLayers) && gameManager.IsPorousGround((Vector2)transform.position + Vector2.down)) {
             if (CurrentMode != ModesEnum.Liquid_Underground)
                 CurrentMode = ModesEnum.Liquid_Underground;
         }
 
-        else if ((CurrentMode == ModesEnum.Liquid_Underground) && groundTilemap.GetTile(GridPosition) == null)
+        else if ((CurrentMode == ModesEnum.Liquid_Underground) && gameManager.GetMaterial((Vector2)transform.position) == GroundMaterial.None)
             CurrentMode = ModesEnum.Liquid;
 
 

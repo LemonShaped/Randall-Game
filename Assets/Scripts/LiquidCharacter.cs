@@ -18,7 +18,6 @@ public class LiquidCharacter : MonoBehaviour
     [HideInInspector] public GroundCheck groundCheck;
 
     [HideInInspector] public GameManager gameManager;
-    [HideInInspector] public Tilemap groundTilemap;
 
     public LayerMask groundLayers;
 
@@ -48,9 +47,6 @@ public class LiquidCharacter : MonoBehaviour
     [NonReorderable]
     public ModeAssets[] assets = new ModeAssets[4];
 
-    public Vector3Int GridPosition {
-        get => Vector3Int.FloorToInt(transform.position);
-    }
 
 
     [HideInInspector]
@@ -70,8 +66,7 @@ public class LiquidCharacter : MonoBehaviour
         animator = GetComponent<MyAnimator>();
         groundCheck = GetComponent<GroundCheck>();
         gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
-
-        groundTilemap = gameManager.groundTilemap;
+        groundLayers = gameManager.groundLayers;
 
         for (int i = 0; i < assets[(int)ModesEnum.Liquid].sizes.Length; i++) {
             assets[(int)ModesEnum.Liquid_Underground].sizes[i].collider = assets[(int)ModesEnum.Liquid].sizes[i].collider;
@@ -113,15 +108,6 @@ public class LiquidCharacter : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public bool IsPorous(Vector3Int pos)
-        => IsPorous(pos, groundTilemap);
-    public bool IsPorous(Vector3Int pos, Tilemap tilemap)
-    {
-        TileData tileData = default;
-        tilemap.GetTile(pos).GetTileData(pos, tilemap, ref tileData);
-
-        return tileData.gameObject != null && tileData.gameObject.layer == LayerMask.NameToLayer("GroundPorous");
-    }
 
     public ModesEnum CurrentMode {
         get => _currentMode;

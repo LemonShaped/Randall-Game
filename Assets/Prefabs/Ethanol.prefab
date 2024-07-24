@@ -314,7 +314,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 591620827
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: b837074cc317e83438dca1fc6b3a4c3f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -344,7 +344,6 @@ MonoBehaviour:
   animator: {fileID: 6078800803635764870}
   groundCheck: {fileID: 3048320699558831311}
   gameManager: {fileID: 0}
-  groundTilemap: {fileID: 0}
   groundLayers:
     serializedVersion: 2
     m_Bits: 192
@@ -567,10 +566,7 @@ MonoBehaviour:
   - {fileID: 3637897052569448475}
   - {fileID: 1488831661322119949}
   - {fileID: 9126924745505661754}
-  noFiresAbove:
-  - {fileID: 0}
-  - {fileID: 11400000, guid: 2769b16d951cf2740b283ce0f9055bac, type: 2}
-  - {fileID: 11400000, guid: ba8788661b93d0f4d849997ae8246205, type: 2}
+  noFiresAbove: 000000000000000000000000
 --- !u!50 &8178093781479820468
 Rigidbody2D:
   serializedVersion: 4

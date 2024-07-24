@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public static class HelperMethods
 {
@@ -47,3 +47,93 @@ public static class HelperMethods
 
 
 }
+
+#if false
+public class Test : MonoBehaviour
+{
+
+    /// <summary>
+    /// Must create a non-generic version before usage, eg:
+    /// [Serializable] class MeshDictionary : SerializableDict<string, Mesh> { }
+    /// [SerializeField] MeshDictionary test = new();
+    /// </summary>
+    [Serializable]
+    private class SerializableDict<TKey, TValue> : Dictionary<TKey, TValue>
+    {
+
+        [SerializeField] private Item_[] _items_;
+
+        public SerializableDict() {
+            EditorApplication.update += Update;
+            EditorApplication.update += OnValidate;
+        }
+
+        [Serializable]
+        private struct Item_
+        {
+            public TKey key;
+            public TValue value;
+            public Item_(KeyValuePair<TKey, TValue> keyValuePair)
+                => (key, value) = keyValuePair;
+        }
+
+        private void Update() {
+            if (!Application.isPlaying) {
+                if (!_writeMode)
+                    _items_ = this.Select((kvp) => new Item_(kvp)).ToArray();
+            }
+            else if (_writeMode)
+                _writeMode = false;
+        }
+
+
+        // To be editable:
+
+        [Tooltip("Dangerous (completely overwrites every time).\nDisable as soon as done.")]
+        [SerializeField]
+        private bool _writeMode = false;
+
+        private void OnValidate() {
+            if (_writeMode) {
+                this.Clear();
+                foreach (Item_ item_ in _items_) {
+                    this[item_.key] = item_.value;
+                }
+            }
+        }
+    }
+}
+#endif
+
+
+#if false
+private class Chunk
+{
+    public static int sizeX;
+    public static int sizeZ;
+    public static int minY; // <= 0
+    public static int maxY; // >= 0
+    public static int sizeY = maxY - minY + 1;
+    // -8 -7 -6 -5 -4 -3 -2 -1 0  1  2  3  4  5  6  7  8
+
+    private Block[,,] positiveY = new Block[sizeX, maxY + 1, sizeZ];
+    private Block[,,] negativeY = new Block[sizeX, -minY, sizeZ];
+
+    public Block this[int x, int y, int z] {
+        get {
+            if (y < 0)
+                return negativeY[x, -y - 1, z];
+            else
+                return positiveY[x, y, z];
+        }
+        set {
+            if (y < 0)
+                negativeY[x, -y - 1, z] = value;
+            else
+                positiveY[x, y, z] = value;
+        }
+    }
+    public class Block { }
+}
+
+#endif

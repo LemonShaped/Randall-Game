@@ -20,8 +20,8 @@ public class Ethanol : LiquidCharacter
     [Tooltip("Trigger-colliders that outline the flames around ethanol")]
     public Collider2D[] flameColliders;
 
-    [Tooltip("Fires will not be placed above these blocks. Include null and fire, to avoid fires in the air.")]
-    public TileBase[] noFiresAbove;
+    [Tooltip("Fires will not be placed above these blocks. Do include null to avoid fires in the air.")]
+    public GroundMaterial[] noFiresAbove;
 
     public override void Start() {
         base.Start();
@@ -30,10 +30,8 @@ public class Ethanol : LiquidCharacter
 
     void FixedUpdate()
     {
-        TileBase fireTile = gameManager.fireTile;
 
-        if (groundTilemap.GetTile(GridPosition + (Vector3Int.right * moveDirection)) != null
-                && groundTilemap.GetTile(GridPosition + (Vector3Int.right * moveDirection)) != fireTile) {
+        if (gameManager.GetMaterial((Vector2)transform.position + (Vector2.right * moveDirection)) != GroundMaterial.None) {
 
             if (Random.value <= jumpChance) {
                 if (IsOnGround())
@@ -47,9 +45,9 @@ public class Ethanol : LiquidCharacter
         }
 
         bool doPlaceFire() {
-            if (groundCheck.CheckGround(groundLayers) && groundTilemap.GetTile(GridPosition) == null) {
-                foreach (var tile in noFiresAbove)
-                    if (groundTilemap.GetTile(GridPosition + Vector3Int.down) == tile)
+            if (groundCheck.CheckGround(groundLayers) && gameManager.GetMaterial((Vector2)transform.position) == GroundMaterial.None) {
+                foreach (var material in noFiresAbove)
+                    if (gameManager.GetMaterial((Vector2)transform.position + Vector2.down) == material)
                         return false;
                 return true;
             }
@@ -57,7 +55,7 @@ public class Ethanol : LiquidCharacter
         }
 
         if (doPlaceFire())
-            gameManager.SetTile(GridPosition, fireTile);
+            gameManager.PlaceFire(Vector3Int.FloorToInt(transform.position));
 
         rb.velocityX = movementSpeed * moveDirection;
 
