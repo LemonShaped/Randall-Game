@@ -33,7 +33,7 @@ public class GenerateMesh : MonoBehaviour
                 || (collider2d && Selection.activeGameObject == collider2d.gameObject)
                 || (meshFilter && Selection.activeGameObject == meshFilter.gameObject))) {
 
-            if (meshFilter && meshFilter.sharedMesh != meshAsset)
+            if (!meshAsset || (meshFilter && meshFilter.sharedMesh != meshAsset))
                 saveNow = true;
 
             if (meshName is null or "")
