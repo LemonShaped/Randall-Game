@@ -94,16 +94,14 @@ public class GenerateMesh : MonoBehaviour
                 Undo.RecordObject(generatedMeshes, "Save mesh to GeneratedMeshes");
 
 
-                Mesh match = (Mesh)AssetDatabase.LoadAllAssetsAtPath(GeneratedMeshes.assetPath).FirstOrDefault(obj => obj is Mesh && obj.name == meshName);
-                if (!match) {
+                meshAsset = (Mesh)AssetDatabase.LoadAllAssetsAtPath(GeneratedMeshes.assetPath).FirstOrDefault(obj => obj is Mesh && obj.name == meshName);
+                if (!meshAsset) {
                     AssetDatabase.AddObjectToAsset(mesh, generatedMeshes);
                     EditorUtility.SetDirty(generatedMeshes);
                     AssetDatabase.SaveAssets();
                     AssetDatabase.Refresh();
-                    match = (Mesh)AssetDatabase.LoadAllAssetsAtPath(GeneratedMeshes.assetPath).First(obj => obj is Mesh && obj.name == meshName);
+                    meshAsset = (Mesh)AssetDatabase.LoadAllAssetsAtPath(GeneratedMeshes.assetPath).First(obj => obj is Mesh && obj.name == meshName);
                 }
-
-                meshAsset = match;
 
                 meshAsset.triangles = mesh.triangles;
                 meshAsset.vertices = mesh.vertices;
@@ -129,11 +127,11 @@ public class GenerateMesh : MonoBehaviour
     }
 
     private void OnDrawGizmosSelected() {
-        Gizmos.color = new Color().Orange();
+        Gizmos.color = Colours.Orange;
         if (collider2d is PolygonCollider2D polygon)
             Gizmos.DrawLineStrip(polygon.points.Select(v2 => (Vector3)v2 + transform.position).ToArray(), true);
-        else if (meshFilter)
-            Gizmos.DrawWireMesh(meshFilter.sharedMesh, transform.position);
+        //else if (meshFilter)
+        //    Gizmos.DrawWireMesh(meshFilter.sharedMesh, transform.position);
     }
 
 

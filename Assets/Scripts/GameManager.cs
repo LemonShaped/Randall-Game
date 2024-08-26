@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.U2D;
 using UnityEngine.Video;
 
 public class GameManager : MonoBehaviour
@@ -12,6 +13,8 @@ public class GameManager : MonoBehaviour
     public PlayerController player;
     public LayerMask groundLayers;
 
+    public SpriteShapeRenderer[] fireSpriteShapeFrames;
+    public float fireFrame = 0;
 
     public GameObject firePrefab;
     public float fireTimeout;
@@ -28,17 +31,38 @@ public class GameManager : MonoBehaviour
     //    Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
     //}
 
-    public void PlaceFire(Vector3Int position) {
-        if (!fires.ContainsKey(position)) {
-            GameObject fire = Instantiate(firePrefab, position, Quaternion.identity, transform);
-            fires.Add(position, (fire, FireExpiry(position)));
-            StartCoroutine(fires[position].coroutine);
+    private void Start() {
+        StartCoroutine(FireAnimation());
+    }
+
+    private IEnumerator FireAnimation() {
+        while (true) {
+            for (int i = 0; i < fireSpriteShapeFrames.Length; i++) {
+                if (i == fireFrame)
+                    fireSpriteShapeFrames[i].gameObject.SetActive(true);
+                else
+                    fireSpriteShapeFrames[i].gameObject.SetActive(false);
+            }
+            fireFrame = (fireFrame + 1) % 2;
+            yield return new WaitForSeconds(0.4f);
         }
-        else {
-            StopCoroutine(fires[position].coroutine);
-            fires[position] = (fires[position].fireObj, FireExpiry(position));
-            StartCoroutine(fires[position].coroutine);
+    }
+
+
+    /// <param name="angle">Angle in degrees clockwise from Up</param>
+    public void PlaceFire(Vector3 position, float angle) {
+
+        foreach (Vector3 pos in fires.Keys) {
+            if (Vector3.Distance(pos, position) < 0.5f) {
+                StopCoroutine(fires[pos].coroutine);
+                fires[pos] = (fires[pos].fireObj, FireExpiry(pos));
+                StartCoroutine(fires[pos].coroutine);
+                return;
+            }
         }
+        GameObject fire = Instantiate(firePrefab, position, Quaternion.AngleAxis(angle, Vector3.forward), transform);
+        fires.Add(position, (fire, FireExpiry(position)));
+        StartCoroutine(fires[position].coroutine);
     }
 
     private IEnumerator FireExpiry(Vector3 position) {
@@ -101,6 +125,17 @@ public class GameManager : MonoBehaviour
         else
             return GroundMaterial.None;
     }
+    public GroundMaterial GetMaterial(int layer) {
+        if (layer == LayerMask.NameToLayer("GroundNonPorous"))
+            return GroundMaterial.Stone;
+        else if (layer == LayerMask.NameToLayer("GroundPorous"))
+            return GroundMaterial.Dirt;
+        else if (layer == LayerMask.NameToLayer("Water"))
+            return GroundMaterial.Water;
+        else
+            return GroundMaterial.None;
+    }
+
     public void SetMaterial(Mesh area, GroundMaterial material) => throw new NotImplementedException();
     public void SetMaterial(Rect area, GroundMaterial material) => throw new NotImplementedException();
     public void SetMaterial(PhysicsShape2D area, GroundMaterial material) => throw new NotImplementedException();

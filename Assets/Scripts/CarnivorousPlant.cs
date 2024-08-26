@@ -14,9 +14,8 @@ public class CarnivorousPlant : MonoBehaviour
 
     public Vector2 eatenPosition;
 
-    public void Bite(LiquidCharacter player)
-    {
-        player.rb.MovePosition((Vector2)transform.position + eatenPosition);
+    public void Bite(LiquidCharacter player) {
+        player.rb.MovePosition((Vector2)transform.position + Vector2.Scale(eatenPosition, transform.lossyScale));
         player.Hurt();
         spriteRenderer.sprite = closed;
         headCollider.enabled = false;
@@ -24,8 +23,7 @@ public class CarnivorousPlant : MonoBehaviour
         StartCoroutine(Reopen());
     }
 
-    IEnumerator Reopen()
-    {
+    private IEnumerator Reopen() {
         yield return new WaitForSeconds(timeClosed);
 
         spriteRenderer.sprite = open;
@@ -35,7 +33,7 @@ public class CarnivorousPlant : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.blue.MixWith(Color.white, 0.05f);
-        Gizmos.DrawWireSphere(transform.position + (Vector3)eatenPosition, 0.1f);
+        Gizmos.DrawWireSphere(transform.position + Vector3.Scale(eatenPosition, transform.lossyScale), 0.1f);
     }
 #endif
 

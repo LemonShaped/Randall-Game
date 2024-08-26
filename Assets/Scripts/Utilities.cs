@@ -1,33 +1,72 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Runtime.CompilerServices;
+using UnityEngine;
+
+
+public static class Colours
+{
+    /// <summary> Solid red. RGBA is (1, 0, 0, 1). </summary>
+    public static Color Red => Color.red;
+
+    /// <summary> Solid green. RGBA is (0, 1, 0, 1). </summary>
+    public static Color Green => Color.green;
+
+    /// <summary> Solid blue. RGBA is (0, 0, 1, 1). </summary>
+    public static Color Blue => Color.blue;
+
+    /// <summary> Solid white. RGBA is (1, 1, 1, 1). </summary>
+    public static Color White => Color.white;
+
+    /// <summary> Solid black. RGBA is (0, 0, 0, 1). </summary>
+    public static Color Black => Color.black;
+
+    /// <summary> Cyan. RGBA is (0, 1, 1, 1). </summary>
+    public static Color Cyan => Color.cyan;
+
+    /// <summary> Magenta. RGBA is (1, 0, 1, 1). </summary>
+    public static Color Magenta => Color.magenta;
+
+    /// <summary> Gray. RGBA is (0.5, 0.5, 0.5, 1). </summary>
+    public static Color Gray => Color.gray;
+
+    /// <summary> Grey. RGBA is (0.5, 0.5, 0.5, 1). </summary>
+    public static Color Grey => Color.grey;
+
+    /// <summary> Completely transparent. RGBA is (0, 0, 0, 0). </summary>
+    public static Color Clear => Color.clear;
+
+    /// <summary> A nice yellow, but the RGBA is (1, 0.92, 0.016, 1) </summary>
+    public static Color Yellow2 => Color.yellow;
+
+    /// <summary> Yellow. RGBA is (1, 1, 0, 1) </summary>
+    public static Color Yellow => new Color(1, 1, 0, 1);
+
+    public static Color Orange => Color.red.MixWith(Colours.Yellow);
+
+    public static Color Purple => Color.red.MixWith(Color.blue);
+}
+
 
 public static class HelperMethods
 {
-    public static Color WithAlpha(this Color color, float a) {
-        return new Color(color.r, color.g, color.b, a);
+    public static Color WithAlpha(this Color colour, float a) {
+        return new Color(colour.r, colour.g, colour.b, a);
     }
-    public static Color MixWith(this Color thisColor, Color color) {
-        return thisColor.MixWith(color, 0.5f);
+    public static Color MixWith(this Color thisColour, Color colour) {
+        return thisColour.MixWith(colour, 0.5f);
     }
-    /// <summary>Lerps colours. ratio = percent being the new color.</summary>
-    public static Color MixWith(this Color thisColor, Color color, float ratio) {
-        return Color.Lerp(thisColor, color, ratio);
+    /// <summary> Mix (lerp) with the given colour </summary>
+    /// <param name="ratio"> ratio: percent of the added colour </param>
+    public static Color MixWith(this Color thisColour, Color colour, float ratio) {
+        return Color.Lerp(thisColour, colour, ratio);
     }
-
-    /// <summary> Set to the color yellow (RGB: 1, 1, 0) </summary>
-    public static Color Yellow(this Color _)
-        => new Color(1, 1, 0, 1);
-    public static Color Orange(this Color _)
-        => Color.red.MixWith(new Color().Yellow());
-    public static Color Purple(this Color _)
-        => Color.red.MixWith(Color.blue);
-
 
 
     /// <summary> Extension method to check if a layer is in a layermask </summary>
-    public static bool ContainsLayer(this LayerMask layerMask, string layerName)
-        => layerMask.ContainsLayer(LayerMask.NameToLayer(layerName));
+    public static bool Contains(this LayerMask layerMask, string layerName)
+        => layerMask.Contains(LayerMask.NameToLayer(layerName));
     /// <summary> Extension method to check if a layer is in a layermask </summary>
-    public static bool ContainsLayer(this LayerMask layerMask, int layerIndex)
+    public static bool Contains(this LayerMask layerMask, int layerIndex)
         => (layerMask & (1 << layerIndex)) != 0;
 
 
@@ -44,9 +83,8 @@ public static class HelperMethods
     public static LayerMask Excluding(this LayerMask layerMask, string layer)
         => layerMask.Excluding(LayerMask.NameToLayer(layer));
 
-
-
 }
+
 
 #if false
 public class Test : MonoBehaviour

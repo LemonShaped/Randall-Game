@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -11,10 +12,10 @@ public class Ethanol : LiquidCharacter
     [Tooltip("Time in seconds between losing 1 health")]
     public float burnTime;
 
-    [Range(-1,1)]
+    [Range(-1, 1)]
     public int moveDirection;
 
-    [Range(0,1)]
+    [Range(0, 1)]
     public float jumpChance;
 
     [Tooltip("Trigger-colliders that outline the flames around ethanol")]
@@ -28,8 +29,7 @@ public class Ethanol : LiquidCharacter
         StartCoroutine(BurnUp());
     }
 
-    void FixedUpdate()
-    {
+    private void FixedUpdate() {
 
         if (gameManager.GetMaterial((Vector2)transform.position + (Vector2.right * moveDirection)) != GroundMaterial.None) {
 
@@ -44,26 +44,24 @@ public class Ethanol : LiquidCharacter
 
         }
 
-        bool doPlaceFire() {
-            if (groundCheck.CheckGround(groundLayers) && gameManager.GetMaterial((Vector2)transform.position) == GroundMaterial.None) {
-                foreach (var material in noFiresAbove)
-                    if (gameManager.GetMaterial((Vector2)transform.position + Vector2.down) == material)
-                        return false;
-                return true;
-            }
-            return false;
-        }
-
-        if (doPlaceFire())
-            gameManager.PlaceFire(Vector3Int.FloorToInt(transform.position));
 
         rb.velocityX = movementSpeed * moveDirection;
 
 
     }
 
-    IEnumerator BurnUp()
-    {
+    private void OnCollisionStay2D(Collision2D collision) {
+        if (groundLayers.Contains(collision.collider.gameObject.layer) && !noFiresAbove.Contains(gameManager.GetMaterial(collision.gameObject.layer))) {
+            for (int i = 0; i < collision.contactCount; i++) {
+                float angle = Vector2.SignedAngle(Vector2.up, collision.GetContact(i).normal);
+                if (-60f < angle && angle < 60f) {
+                    gameManager.PlaceFire(collision.GetContact(i).point, angle);
+                }
+            }
+        }
+    }
+
+    private IEnumerator BurnUp() {
         while (true) {
             yield return new WaitForSeconds(burnTime);
             if (burning)
@@ -74,7 +72,7 @@ public class Ethanol : LiquidCharacter
     public override void UpdateTexture() {
 
         for (int size = 0; size < flameColliders.Length; size++) {
-            flameColliders[size].enabled = (size == CurrentSize);
+            flameColliders[size].enabled = size == CurrentSize;
         }
 
         base.UpdateTexture();

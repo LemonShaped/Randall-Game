@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grass
-  m_Shader: {fileID: 10750, guid: 0000000000000000f000000000000000, type: 0}
-  m_Parent: {fileID: 2100000, guid: afdeb773c302d914fbe99feb02333f7c, type: 2}
+  m_Name: World Edge
+  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 2100000, guid: 1a603d8fe99d34e46955f25b6c2e5618, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -22,13 +22,10 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 54618fd16be14a74d960daea697dfa1c, type: 3}
-        m_Scale: {x: 0.72, y: 0.83}
-        m_Offset: {x: 0.08, y: 0.06}
+    m_TexEnvs: []
     m_Ints: []
     m_Floats: []
-    m_Colors: []
+    m_Colors:
+    - _Color: {r: 0.14150932, g: 0.14150932, b: 0.14150932, a: 0.16470589}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

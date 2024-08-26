@@ -24,14 +24,12 @@ public class GroundCheck : MonoBehaviour
         set => pointB = value - (Vector2)transform.position;
     }
 
-    public bool CheckGround(LayerMask layers)
-    {
+    public bool CheckGround(LayerMask layers) {
         return (bool)Physics2D.OverlapArea(TopLeft, BottomRight, layers);
     }
 
 #if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
-    {
+    private void OnDrawGizmosSelected() {
         if (showGizmo) {
             Handles.DrawSolidRectangleWithOutline(new Vector3[]{
                 TopLeft,
@@ -39,7 +37,8 @@ public class GroundCheck : MonoBehaviour
                 BottomRight,
                 new Vector2(TopLeft.x, BottomRight.y)
             },
-            CheckGround(GetComponent<LiquidCharacter>().groundLayers) ? new Color(0f, 1f, 0f, 0.3f) : Color.clear,
+
+            (TryGetComponent(out LiquidCharacter player) && CheckGround(player.groundLayers)) ? Color.green.WithAlpha(0.3f) : Color.clear,
             Color.white);
         }
     }

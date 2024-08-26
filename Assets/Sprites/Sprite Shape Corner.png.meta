@@ -117,9 +117,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 86
-        width: 42
-        height: 42
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,10 +137,10 @@ TextureImporter:
       name: Sprite Shape Corner_1
       rect:
         serializedVersion: 2
-        x: 42
-        y: 86
-        width: 42
-        height: 42
+        x: 64
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,10 +158,10 @@ TextureImporter:
       name: Sprite Shape Corner_2
       rect:
         serializedVersion: 2
-        x: 84
-        y: 86
-        width: 42
-        height: 42
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,10 +179,10 @@ TextureImporter:
       name: Sprite Shape Corner_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 44
-        width: 42
-        height: 42
+        x: 64
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -192,111 +192,6 @@ TextureImporter:
       bones: []
       spriteID: 4d163d36a592a9e409c23aadfdc4dad4
       internalID: 551722305
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite Shape Corner_4
-      rect:
-        serializedVersion: 2
-        x: 42
-        y: 44
-        width: 42
-        height: 42
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6b942bda1706dec44951a076376db083
-      internalID: 1906318808
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite Shape Corner_5
-      rect:
-        serializedVersion: 2
-        x: 84
-        y: 44
-        width: 42
-        height: 42
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 53aedc2d03d5adb45b61d915c5612b5f
-      internalID: 1922629764
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite Shape Corner_6
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 2
-        width: 42
-        height: 42
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5a8c6b614b9b84f4fbb2dba49a19baa9
-      internalID: 1639544127
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite Shape Corner_7
-      rect:
-        serializedVersion: 2
-        x: 42
-        y: 2
-        width: 42
-        height: 42
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7826f9a50b6a72b46a947b1463fe2431
-      internalID: 559524995
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite Shape Corner_8
-      rect:
-        serializedVersion: 2
-        x: 84
-        y: 2
-        width: 42
-        height: 42
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7bd73da8f40d8424a865bfec58402342
-      internalID: 960617123
       vertices: []
       indices: 
       edges: []
@@ -316,11 +211,6 @@ TextureImporter:
       Sprite Shape Corner_1: 202856117
       Sprite Shape Corner_2: -1735701401
       Sprite Shape Corner_3: 551722305
-      Sprite Shape Corner_4: 1906318808
-      Sprite Shape Corner_5: 1922629764
-      Sprite Shape Corner_6: 1639544127
-      Sprite Shape Corner_7: 559524995
-      Sprite Shape Corner_8: 960617123
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -59,8 +59,7 @@ public class LiquidCharacter : MonoBehaviour
 
     public float baseMovementSpeed = 1;
 
-    public void Awake()
-    {
+    public void Awake() {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<MyAnimator>();
@@ -76,8 +75,7 @@ public class LiquidCharacter : MonoBehaviour
 
     }
 
-    public virtual void Start()
-    {
+    public virtual void Start() {
         UpdateValues();
         UpdateTexture();
     }
@@ -108,14 +106,13 @@ public class LiquidCharacter : MonoBehaviour
         Destroy(gameObject);
     }
 
-
     public ModesEnum CurrentMode {
         get => _currentMode;
         set {
             _currentMode = value;
 
             if (_currentMode == ModesEnum.Liquid_Underground)
-                rb.excludeLayers |= (1 << LayerMask.NameToLayer("GroundPorous")); // exclude collisions with porous ground
+                rb.excludeLayers |= 1 << LayerMask.NameToLayer("GroundPorous"); // exclude collisions with porous ground
             else
                 rb.excludeLayers &= ~(1 << LayerMask.NameToLayer("GroundPorous")); // allow collisions with porous ground
 
@@ -140,16 +137,14 @@ public class LiquidCharacter : MonoBehaviour
         }
     }
 
-    public IEnumerator DelayedConvert(ModesEnum convertInto, float seconds)
-    {
+    public IEnumerator DelayedConvert(ModesEnum convertInto, float seconds) {
         yield return new WaitForSeconds(seconds);
 
         CurrentMode = convertInto;
         liquification = null;
     }
 
-    public void UpdateValues()
-    {
+    public void UpdateValues() {
         movementSpeed = baseMovementSpeed * ModeData.speed * SizeData.speedMultiplier;
         jumpVelocity = 0;
 
@@ -158,7 +153,7 @@ public class LiquidCharacter : MonoBehaviour
             float jumpDuration = ModeData._jumpDuration * SizeData._jumpDurationMultiplier;
 
             jumpVelocity = 2 * jumpHeight / jumpDuration;
-            rb.gravityScale = (jumpVelocity / jumpDuration) / -Physics2D.gravity.y;
+            rb.gravityScale = jumpVelocity / jumpDuration / -Physics2D.gravity.y;
             rb.drag = ModeData.drag * SizeData.dragMultiplier;
         }
         else {
@@ -167,10 +162,9 @@ public class LiquidCharacter : MonoBehaviour
         }
     }
 
-    public virtual void UpdateTexture()
-    {
+    public virtual void UpdateTexture() {
         foreach (Collider2D collider in GetComponents<Collider2D>())
-            collider.enabled = (collider == assets[(int)CurrentMode].sizes[CurrentSize].collider);
+            collider.enabled = collider == assets[(int)CurrentMode].sizes[CurrentSize].collider;
         groundCheck.pointA = assets[(int)CurrentMode].sizes[CurrentSize].groundCheck_A;
         groundCheck.pointB = assets[(int)CurrentMode].sizes[CurrentSize].groundCheck_B;
 
@@ -180,8 +174,7 @@ public class LiquidCharacter : MonoBehaviour
     }
 
 
-    private void OnValidate()
-    {
+    private void OnValidate() {
         if (!Application.isPlaying) {
             if (modes.Length != Enum.GetValues(typeof(ModesEnum)).Length || assets.Length != Enum.GetValues(typeof(ModesEnum)).Length || sizes.Length > 5) {
                 Array.Resize(ref modes, Enum.GetValues(typeof(ModesEnum)).Length);
