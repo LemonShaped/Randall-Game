@@ -18,7 +18,9 @@ public class GameManager : MonoBehaviour
 
     public GameObject firePrefab;
     public float fireTimeout;
-    public Dictionary<Vector3, (GameObject fireObj, IEnumerator coroutine)> fires = new();
+
+    public class FireData { public GameObject fireObj; public IEnumerator coroutine; }
+    public Dictionary<int, FireData> fires = new();
 
     public GameObject deathScreen;
     public GameObject winScreen;
@@ -52,26 +54,26 @@ public class GameManager : MonoBehaviour
     /// <param name="angle">Angle in degrees clockwise from Up</param>
     public void PlaceFire(Vector3 position, float angle) {
 
-        foreach (Vector3 pos in fires.Keys) {
-            if (Vector3.Distance(pos, position) < 0.5f) {
-                StopCoroutine(fires[pos].coroutine);
-                fires[pos] = (fires[pos].fireObj, FireExpiry(pos));
-                StartCoroutine(fires[pos].coroutine);
+        foreach (int ID in fires.Keys) {
+            if (Vector3.Distance(fires[ID].fireObj.transform.position, position) < 0.5f) {
+                StopCoroutine(fires[ID].coroutine);
+                fires[ID].coroutine = FireExpiry(fires[ID].fireObj.GetInstanceID());
+                StartCoroutine(fires[ID].coroutine);
                 return;
             }
         }
-        GameObject fire = Instantiate(firePrefab, position, Quaternion.AngleAxis(angle, Vector3.forward), transform);
-        fires.Add(position, (fire, FireExpiry(position)));
-        StartCoroutine(fires[position].coroutine);
+        GameObject newFire = Instantiate(firePrefab, position, Quaternion.AngleAxis(angle, Vector3.forward), transform);
+        fires.Add(newFire.GetInstanceID(), new FireData { fireObj = newFire, coroutine = FireExpiry(newFire.GetInstanceID()) });
+        StartCoroutine(fires[newFire.GetInstanceID()].coroutine);
     }
 
-    private IEnumerator FireExpiry(Vector3 position) {
+    private IEnumerator FireExpiry(int ID) {
         yield return new WaitForSeconds(fireTimeout);
-        RemoveFire(position);
+        RemoveFire(ID);
     }
-    public void RemoveFire(Vector3 position) {
-        Destroy(fires[position].fireObj);
-        fires.Remove(position);
+    public void RemoveFire(int ID) {
+        Destroy(fires[ID].fireObj);
+        fires.Remove(ID);
     }
 
 
