@@ -1,8 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.InputSystem;
 using UnityEngine;
-using System;
+using UnityEngine.InputSystem;
 
 public class PlayerController : LiquidCharacter
 {
@@ -25,8 +25,7 @@ public class PlayerController : LiquidCharacter
     }
 
 
-    public override bool Hurt()
-    {
+    public override bool Hurt() {
         if (hurtTimeoutRemaining <= 0) {
             hurtTimeoutRemaining = hurtTimeout;
             return AddHealth(-1);
@@ -40,14 +39,12 @@ public class PlayerController : LiquidCharacter
     }
 
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
+    private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Spike"))
             Hurt();
     }
 
-    private void OnTriggerStay2D(Collider2D collider)
-    {
+    private void OnTriggerStay2D(Collider2D collider) {
         if (collider.gameObject.CompareTag("Puddle")) {
             bool healthChanged = AddHealth(1);
             if (healthChanged)
@@ -88,8 +85,7 @@ public class PlayerController : LiquidCharacter
     }
 
 
-    private void FixedUpdate()
-    {
+    private void FixedUpdate() {
         if (moveAction.enabled)
             movementInput = moveAction.ReadValue<Vector2>();
 
@@ -102,9 +98,9 @@ public class PlayerController : LiquidCharacter
         else if (movementInput.x > 0 && assets[(int)CurrentMode].flippable)
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
 
-        // jump
-        if (ModeData.doesJump && jumpAction.IsPressed() && IsOnGround())
-            rb.velocityY = jumpVelocity;
+        if (ModeData.doesJump && jumpAction.IsPressed() && IsOnGround()) {
+            Jump();
+        }
 
         if (CurrentMode == ModesEnum.Liquid)
             rb.velocityX = movementInput.x * movementSpeed;
@@ -130,7 +126,6 @@ public class PlayerController : LiquidCharacter
 
         else if ((CurrentMode == ModesEnum.Liquid_Underground) && gameManager.GetMaterial((Vector2)transform.position) == GroundMaterial.None)
             CurrentMode = ModesEnum.Liquid;
-
 
     }
 }

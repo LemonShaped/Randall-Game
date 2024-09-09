@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
-using System.Linq;
 
 
 public class StateChangingObject : MonoBehaviour
@@ -30,10 +30,9 @@ public class StateChangingObject : MonoBehaviour
     public float reloadTime;
     public float reloadTimeRemaining;
 
-    private void Start()
-    {
+    private void Start() {
         spriteRenderer.sprite = closed;
-        animator.StartAnimation(new Sprite[] { closed });
+        animator.Animate(closed);
     }
 
     private void Update() {
@@ -43,16 +42,15 @@ public class StateChangingObject : MonoBehaviour
 
     public Dictionary<int, IEnumerator> PlayersWaitingToStartCoroutines = new();
 
-    public void WaitingToStart(LiquidCharacter player)
-    {
-        var coroutine = WaitingToStart_Coroutine(player);
+    public void WaitingToStart(LiquidCharacter player) {
+        IEnumerator coroutine = WaitingToStart_Coroutine(player);
         StartCoroutine(coroutine);
         PlayersWaitingToStartCoroutines[player.GetInstanceID()] = coroutine;
     }
-    private IEnumerator WaitingToStart_Coroutine(LiquidCharacter player){
-        if (!isRunning){
+    private IEnumerator WaitingToStart_Coroutine(LiquidCharacter player) {
+        if (!isRunning) {
             isOpen = true;
-            animator.StartAnimation(new Sprite[]{open});
+            animator.Animate(open);
         }
 
         yield return new WaitForSeconds(activateTime);
@@ -61,8 +59,8 @@ public class StateChangingObject : MonoBehaviour
 
     public void CancelBeforeStarted(LiquidCharacter player) {
         isOpen = false;
-        animator.StartAnimation(new Sprite[]{closed});
-        if ( PlayersWaitingToStartCoroutines.Remove(player.GetInstanceID(), out IEnumerator coroutine) )
+        animator.Animate(closed);
+        if (PlayersWaitingToStartCoroutines.Remove(player.GetInstanceID(), out IEnumerator coroutine))
             StopCoroutine(coroutine);
     }
 
@@ -75,13 +73,14 @@ public class StateChangingObject : MonoBehaviour
         player.spriteRenderer.enabled = false;
         isRunning = true;
         isOpen = false;
-        animator.StartAnimation(running);
+        animator.Animate(running);
 
         player.rb.position = (Vector2)transform.position + offset;
         player.rb.constraints |= RigidbodyConstraints2D.FreezePosition;
         player.transform.parent = this.transform;
 
         yield return new WaitForSeconds(convertTime);
+        yield return new WaitForFixedUpdate();
 
         player.transform.parent = transform.parent;
         player.rb.constraints &= ~RigidbodyConstraints2D.FreezePosition;
@@ -90,6 +89,6 @@ public class StateChangingObject : MonoBehaviour
         player.spriteRenderer.enabled = true;
         isRunning = false;
         isOpen = true;
-        animator.StartAnimation(new Sprite[]{open});
+        animator.Animate(open);
     }
 }

@@ -9,6 +9,7 @@ TagManager:
   - Spike
   - Roots
   - Door
+  - Fire
   layers:
   - Default
   - TransparentFX

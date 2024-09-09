@@ -24,9 +24,12 @@ public class MyAnimator : MonoBehaviour
         animating = false;
     }
 
-    public void StartAnimation(Sprite[] sprites) {
+    public void Animate(Sprite sprite) {
+        Animate(new Sprite[] { sprite });
+    }
+    public void Animate(Sprite[] sprites) {
         if (sprites.Length == 0)
-            sprites = new Sprite[1]{null};
+            sprites = new Sprite[1] { null };
 
         frames = sprites;
 
@@ -34,11 +37,11 @@ public class MyAnimator : MonoBehaviour
             spriteRenderer.sprite = frames[0]; // update sprite instantly after frames change because the animation will take long to switch
         }
         else {
-            StartCoroutine(Animate());
+            StartCoroutine(Animation());
         }
     }
 
-    private IEnumerator Animate() {
+    private IEnumerator Animation() {
         animating = true;
         i = 0;
 
@@ -51,7 +54,7 @@ public class MyAnimator : MonoBehaviour
 
     private void OnDisable() {
         animating = false;
-        frames = new Sprite[1]{null};
+        frames = new Sprite[1] { null };
     }
 
 }

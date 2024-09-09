@@ -59,6 +59,14 @@ public class LiquidCharacter : MonoBehaviour
 
     public float baseMovementSpeed = 1;
 
+
+    public MovementState movementState = MovementState.Idle;
+    public enum MovementState
+    {
+        Idle, // or moving
+        Jumping,
+    }
+
     public void Awake() {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -105,6 +113,41 @@ public class LiquidCharacter : MonoBehaviour
         //rb.constraints = RigidbodyConstraints2D.FreezeAll;
         Destroy(gameObject);
     }
+
+    private Coroutine j = null;
+    public void Jump() {
+        IEnumerator Jump() {
+            movementState = MovementState.Jumping;
+
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.squash);
+
+            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForFixedUpdate();
+            rb.velocityY = jumpVelocity;
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.rising);
+
+            yield return new WaitUntil(() => Mathf.Abs(rb.velocityY) < jumpVelocity * 0.3f);
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.midair);
+
+            yield return new WaitUntil(() => Mathf.Abs(rb.velocityY) > jumpVelocity * 0.3f);
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.falling);
+
+            yield return new WaitUntil(() => groundCheck.CheckGround(groundLayers));
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.landing);
+
+            yield return new WaitForSeconds(0.15f);
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].idle);
+            movementState = MovementState.Idle;
+            UpdateTexture();
+        }
+
+        if (j is not null) {
+            StopCoroutine(j);
+            j = null;
+        }
+        j = StartCoroutine(Jump());
+    }
+
 
     public ModesEnum CurrentMode {
         get => _currentMode;
@@ -168,9 +211,8 @@ public class LiquidCharacter : MonoBehaviour
         groundCheck.pointA = assets[(int)CurrentMode].sizes[CurrentSize].groundCheck_A;
         groundCheck.pointB = assets[(int)CurrentMode].sizes[CurrentSize].groundCheck_B;
 
-        if (Application.isPlaying)
-            animator.StartAnimation(assets[(int)CurrentMode].sizes[CurrentSize].sprites);
-
+        if (Application.isPlaying && movementState == MovementState.Idle)
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].idle);
     }
 
 
@@ -188,9 +230,9 @@ public class LiquidCharacter : MonoBehaviour
                     Array.Resize(ref modeTextures.sizes, 5);
                 }
                 foreach (ModeAssets.SizeAssets size in modeTextures.sizes) {
-                    if (size.sprites.Length < 1) {
+                    if (size.idle.Length < 1) {
                         Debug.LogError("Array must have >= 1 item, even if texture is empty.");
-                        Array.Resize(ref size.sprites, 1);
+                        Array.Resize(ref size.idle, 1);
                     }
                 }
             }
@@ -214,6 +256,7 @@ public class LiquidCharacter : MonoBehaviour
             CurrentSize = _currentSize;
         }
     }
+
 
 }
 
@@ -285,8 +328,19 @@ public class ModeAssets
         public Vector2 groundCheck_A;
         public Vector2 groundCheck_B;
 
-        [Tooltip("Sprite(s) to use for this size. Multiple for idle animation")]
-        public Sprite[] sprites = new Sprite[1];
+        public Sprite[] idle;
+
+        public JumpSprites Jump;
+
+        [Serializable]
+        public class JumpSprites
+        {
+            public Sprite squash;
+            public Sprite rising;
+            public Sprite midair;
+            public Sprite falling;
+            public Sprite landing;
+        }
     }
 
 }

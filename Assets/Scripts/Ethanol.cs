@@ -44,10 +44,12 @@ public class Ethanol : LiquidCharacter
 
         }
 
-
         rb.velocityX = movementSpeed * moveDirection;
 
+    }
 
+    private void OnCollisionEnter2D(Collision2D collision) {
+        OnCollisionStay2D(collision);
     }
 
     private void OnCollisionStay2D(Collision2D collision) {
