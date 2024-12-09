@@ -377,6 +377,13 @@ MonoBehaviour:
     doesJump: 0
     _jumpHeight: 0
     _jumpDuration: 0
+  - _name: Jelly
+    speed: 1
+    drag: 0
+    gravityScale: 1
+    doesJump: 0
+    _jumpHeight: 0
+    _jumpDuration: 0
   sizes:
   - _name: Size 0
     speedMultiplier: 1
@@ -667,6 +674,69 @@ MonoBehaviour:
       idle:
       - {fileID: 21300000, guid: afd7e01a2cc7a0746bb4da8041709f77, type: 3}
       - {fileID: 21300000, guid: 71c1b9f173d15cd4191c50ac33a90b9a, type: 3}
+      Jump:
+        squash: {fileID: 0}
+        rising: {fileID: 0}
+        midair: {fileID: 0}
+        falling: {fileID: 0}
+        landing: {fileID: 0}
+  - _name: Jelly
+    flippable: 0
+    sizes:
+    - _name: Size 0
+      collider: {fileID: 0}
+      groundCheck_A: {x: 0, y: 0}
+      groundCheck_B: {x: 0, y: 0}
+      idle:
+      - {fileID: 0}
+      Jump:
+        squash: {fileID: 0}
+        rising: {fileID: 0}
+        midair: {fileID: 0}
+        falling: {fileID: 0}
+        landing: {fileID: 0}
+    - _name: Size 1
+      collider: {fileID: 0}
+      groundCheck_A: {x: 0, y: 0}
+      groundCheck_B: {x: 0, y: 0}
+      idle:
+      - {fileID: 0}
+      Jump:
+        squash: {fileID: 0}
+        rising: {fileID: 0}
+        midair: {fileID: 0}
+        falling: {fileID: 0}
+        landing: {fileID: 0}
+    - _name: Size 2
+      collider: {fileID: 0}
+      groundCheck_A: {x: 0, y: 0}
+      groundCheck_B: {x: 0, y: 0}
+      idle:
+      - {fileID: 0}
+      Jump:
+        squash: {fileID: 0}
+        rising: {fileID: 0}
+        midair: {fileID: 0}
+        falling: {fileID: 0}
+        landing: {fileID: 0}
+    - _name: Size 3
+      collider: {fileID: 0}
+      groundCheck_A: {x: 0, y: 0}
+      groundCheck_B: {x: 0, y: 0}
+      idle:
+      - {fileID: 0}
+      Jump:
+        squash: {fileID: 0}
+        rising: {fileID: 0}
+        midair: {fileID: 0}
+        falling: {fileID: 0}
+        landing: {fileID: 0}
+    - _name: Size 4
+      collider: {fileID: 0}
+      groundCheck_A: {x: 0, y: 0}
+      groundCheck_B: {x: 0, y: 0}
+      idle:
+      - {fileID: 0}
       Jump:
         squash: {fileID: 0}
         rising: {fileID: 0}

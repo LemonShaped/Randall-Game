@@ -20,7 +20,7 @@ public class FireMask : MonoBehaviour
     private void OnValidate()
     {
         SpriteMask mask = gameObject.GetComponent<SpriteMask>();
-        Debug.Log(AssetDatabase.GetAssetPath(this));
+        //Debug.Log(AssetDatabase.GetAssetPath(this));
         mask.sprite = Sprite.Create(new Texture2D(Mathf.CeilToInt(size.x), Mathf.CeilToInt(size.y)), new Rect(Vector2.zero, size), new Vector2(0.5f, 0) + offset, 1f);
         mask.sprite.name = "Generated sprite";
     }

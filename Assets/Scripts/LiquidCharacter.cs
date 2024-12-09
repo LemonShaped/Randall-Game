@@ -263,7 +263,7 @@ public class LiquidCharacter : MonoBehaviour
 
 public enum ModesEnum
 {
-    Liquid, Liquid_Underground, Ice, Cloud
+    Liquid, Liquid_Underground, Ice, Cloud, Jelly
 }
 
 [Serializable]
@@ -273,7 +273,7 @@ public class MovementMode
     public string _name;
 
     [Tooltip("Movement speed in blocks/second")]
-    public float speed;
+    public float speed = 1;
 
     [Tooltip("Air resistance")]
     public float drag = 0;

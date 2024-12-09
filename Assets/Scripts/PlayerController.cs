@@ -42,6 +42,10 @@ public class PlayerController : LiquidCharacter
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Spike"))
             Hurt();
+        else if (CurrentMode == ModesEnum.Jelly && (collision.gameObject.layer == LayerMask.NameToLayer("GroundPorous") || collision.gameObject.layer == LayerMask.NameToLayer("GroundPorous")))
+        {
+            Jump();//~~movementInput~~ movement.y = 1;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collider) {
@@ -62,6 +66,12 @@ public class PlayerController : LiquidCharacter
 
         else if (collider.gameObject.CompareTag("Fire"))
             Hurt();
+        else if (collider.gameObject.CompareTag("PickupObject")) {
+            PickupObject pickupObject = collider.gameObject.GetComponent<PickupObject>();
+            if (pickupObject.CanPickUp(this)) {
+                pickupObject.OnPickup(this);
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collider) {
@@ -102,7 +112,7 @@ public class PlayerController : LiquidCharacter
             Jump();
         }
 
-        if (CurrentMode == ModesEnum.Liquid)
+        if (CurrentMode == ModesEnum.Liquid || CurrentMode == ModesEnum.Jelly)
             rb.velocityX = movementInput.x * movementSpeed;
 
         else if (CurrentMode == ModesEnum.Ice) {
