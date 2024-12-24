@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 public static class Colours
@@ -26,6 +24,12 @@ public static class Colours
     /// <summary> Magenta. RGBA is (1, 0, 1, 1). </summary>
     public static Color Magenta => Color.magenta;
 
+    /// <summary> Yellow. RGBA is (1, 1, 0, 1) </summary>
+    public static Color Yellow => new Color(1, 1, 0, 1);
+
+    /// <summary> A nice yellow, but the RGBA is (1, 0.92, 0.016, 1) </summary>
+    public static Color Yellow2 => Color.yellow;
+
     /// <summary> Gray. RGBA is (0.5, 0.5, 0.5, 1). </summary>
     public static Color Gray => Color.gray;
 
@@ -35,40 +39,31 @@ public static class Colours
     /// <summary> Completely transparent. RGBA is (0, 0, 0, 0). </summary>
     public static Color Clear => Color.clear;
 
-    /// <summary> A nice yellow, but the RGBA is (1, 0.92, 0.016, 1) </summary>
-    public static Color Yellow2 => Color.yellow;
+    public static Color Orange => Colours.Red.MixWith(Colours.Yellow);
 
-    /// <summary> Yellow. RGBA is (1, 1, 0, 1) </summary>
-    public static Color Yellow => new Color(1, 1, 0, 1);
-
-    public static Color Orange => Color.red.MixWith(Colours.Yellow);
-
-    public static Color Purple => Color.red.MixWith(Color.blue);
+    public static Color Purple => Colours.Red.MixWith(Color.blue);
 }
 
 
 public static class HelperMethods
 {
-    public static Color WithAlpha(this Color colour, float a) {
-        return new Color(colour.r, colour.g, colour.b, a);
-    }
-    public static Color MixWith(this Color thisColour, Color colour) {
-        return thisColour.MixWith(colour, 0.5f);
-    }
+    public static Color WithAlpha(this Color colour, float a)
+        => new Color(colour.r, colour.g, colour.b, a);
+
     /// <summary> Mix (lerp) with the given colour </summary>
     /// <param name="ratio"> ratio: percent of the added colour </param>
-    public static Color MixWith(this Color thisColour, Color colour, float ratio) {
-        return Color.Lerp(thisColour, colour, ratio);
-    }
+    public static Color MixWith(this Color thisColour, Color colour, float ratio)
+        => Color.Lerp(thisColour, colour, ratio);
+    public static Color MixWith(this Color thisColour, Color colour)
+        => thisColour.MixWith(colour, 0.5f);
 
 
-    /// <summary> Extension method to check if a layer is in a layermask </summary>
-    public static bool Contains(this LayerMask layerMask, string layerName)
-        => layerMask.Contains(LayerMask.NameToLayer(layerName));
-    /// <summary> Extension method to check if a layer is in a layermask </summary>
+    /// <summary> Extension method to check if a layer is in the layermask </summary>
     public static bool Contains(this LayerMask layerMask, int layerIndex)
         => (layerMask & (1 << layerIndex)) != 0;
-
+    /// <summary> Extension method to check if a layer is in the layermask </summary>
+    public static bool Contains(this LayerMask layerMask, string layerName)
+        => layerMask.Contains(LayerMask.NameToLayer(layerName));
 
     public static LayerMask Union(this LayerMask mask1, LayerMask mask2)
         => mask1 | mask2;

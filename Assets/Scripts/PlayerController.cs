@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,31 +12,42 @@ public class PlayerController : LiquidCharacter
 
     public Vector2 movementInput;
 
-    private void OnEnable() {
+    public void EnableActions()
+    {
         moveAction.Enable();
         jumpAction.Enable();
     }
-    private void OnDisable() {
+    public void DisableActions()
+    {
         moveAction.Disable();
         jumpAction.Disable();
+        movementInput = Vector2.zero;
     }
 
 
-    public override bool Hurt() {
-        if (hurtTimeoutRemaining <= 0) {
+    public override bool Hurt()
+    {
+        if (hurtTimeoutRemaining <= 0)
+        {
             hurtTimeoutRemaining = hurtTimeout;
             return AddHealth(-1);
         }
         return false;
     }
 
-    public override void Die() {
+    public override void Die()
+    {
         gameManager.LevelFailed();
         Destroy(gameObject);
     }
 
 
-    private void OnCollisionEnter2D(Collision2D collision) {
+
+    private void OnEnable() => EnableActions();
+    private void OnDisable() => DisableActions();
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
         if (collision.gameObject.CompareTag("Spike"))
             Hurt();
         else if (CurrentMode == ModesEnum.Jelly && (collision.gameObject.layer == LayerMask.NameToLayer("GroundPorous") || collision.gameObject.layer == LayerMask.NameToLayer("GroundPorous")))
@@ -48,8 +56,25 @@ public class PlayerController : LiquidCharacter
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collider) {
-        if (collider.gameObject.CompareTag("Puddle")) {
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+
+        if (collider.gameObject.TryGetComponent(out StateChangingObject stateChanger))
+            stateChanger.WaitingToStart(this);
+
+        else if (collider.gameObject.CompareTag("Door"))
+        {
+            hurtTimeoutRemaining = 3000;
+            DisableActions();
+            movementInput = Vector2.right;
+            gameManager.LevelComplete();
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("Puddle"))
+        {
             bool healthChanged = AddHealth(1);
             if (healthChanged)
                 Destroy(collider.gameObject); // only delete the puddle if it actually increased our health (not if we are already at max)
@@ -66,36 +91,26 @@ public class PlayerController : LiquidCharacter
 
         else if (collider.gameObject.CompareTag("Fire"))
             Hurt();
-        else if (collider.gameObject.CompareTag("PickupObject")) {
+        else if (collider.gameObject.CompareTag("PickupObject"))
+        {
             PickupObject pickupObject = collider.gameObject.GetComponent<PickupObject>();
-            if (pickupObject.CanPickUp(this)) {
+            if (pickupObject.CanPickUp(this))
+            {
                 pickupObject.OnPickup(this);
             }
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collider) {
-
-        if (collider.gameObject.TryGetComponent(out StateChangingObject stateChanger))
-            stateChanger.WaitingToStart(this);
-
-        else if (collider.gameObject.CompareTag("Door")) {
-            hurtTimeoutRemaining = 1000;
-            moveAction.Disable();
-            jumpAction.Disable();
-            movementInput = Vector2.right;
-            gameManager.LevelComplete();
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collider) {
+    private void OnTriggerExit2D(Collider2D collider)
+    {
 
         if (collider.gameObject.TryGetComponent(out StateChangingObject stateChanger))
             stateChanger.CancelBeforeStarted(this);
     }
 
 
-    private void FixedUpdate() {
+    private void FixedUpdate()
+    {
         if (moveAction.enabled)
             movementInput = moveAction.ReadValue<Vector2>();
 
@@ -108,19 +123,22 @@ public class PlayerController : LiquidCharacter
         else if (movementInput.x > 0 && assets[(int)CurrentMode].flippable)
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
 
-        if (ModeData.doesJump && jumpAction.IsPressed() && IsOnGround()) {
+        if (ModeData.doesJump && jumpAction.IsPressed() && IsOnGround())
+        {
             Jump();
         }
 
         if (CurrentMode == ModesEnum.Liquid || CurrentMode == ModesEnum.Jelly)
             rb.velocityX = movementInput.x * movementSpeed;
 
-        else if (CurrentMode == ModesEnum.Ice) {
+        else if (CurrentMode == ModesEnum.Ice)
+        {
             if (movementInput.x != 0)
                 rb.velocityX = movementInput.x * movementSpeed;
         }
 
-        else if (CurrentMode == ModesEnum.Cloud || CurrentMode == ModesEnum.Liquid_Underground) {
+        else if (CurrentMode == ModesEnum.Cloud || CurrentMode == ModesEnum.Liquid_Underground)
+        {
 
             if (movementInput.x != 0) // we want to control the speed directly but we dont want to stop instantly, when flying.
                 rb.velocityX = movementInput.x * movementSpeed;
@@ -129,7 +147,8 @@ public class PlayerController : LiquidCharacter
         }
 
         if ((CurrentMode == ModesEnum.Liquid || CurrentMode == ModesEnum.Liquid_Underground)
-                && movementInput.y < 0 && groundCheck.CheckGround(groundLayers) && gameManager.IsPorousGround((Vector2)transform.position + Vector2.down)) {
+                && movementInput.y < 0 && groundCheck.CheckGround(groundLayers) && gameManager.IsPorousGround((Vector2)transform.position + Vector2.down))
+        {
             if (CurrentMode != ModesEnum.Liquid_Underground)
                 CurrentMode = ModesEnum.Liquid_Underground;
         }

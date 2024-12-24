@@ -1,12 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Unity.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
-using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer), typeof(MyAnimator)), RequireComponent(typeof(GroundCheck))]
 public class LiquidCharacter : MonoBehaviour
@@ -24,7 +18,7 @@ public class LiquidCharacter : MonoBehaviour
     public float iceAndCloudTimeout;
 
     [NonReorderable]
-    public MovementMode[] modes = new MovementMode[4];
+    public MovementMode[] modes = new MovementMode[typeof(ModesEnum).GetEnumValues().Length];
 
     [NonReorderable]
     public PlayerSize[] sizes = new PlayerSize[5];
@@ -36,10 +30,12 @@ public class LiquidCharacter : MonoBehaviour
     public int _currentSize;
 
 
-    public MovementMode ModeData {
+    public MovementMode ModeData
+    {
         get => modes[(int)CurrentMode];
     }
-    public PlayerSize SizeData {
+    public PlayerSize SizeData
+    {
         get => sizes[CurrentSize];
     }
 
@@ -49,10 +45,12 @@ public class LiquidCharacter : MonoBehaviour
 
 
 
+    /// <summary> calculated from size and movement mode </summary>
     [HideInInspector]
-    public float movementSpeed; // calculated based on size and movement mode
+    public float movementSpeed;
+    /// <summary> calculated from size and movement mode </summary>
     [HideInInspector]
-    public float jumpVelocity; //  ''
+    public float jumpVelocity;
 
 
     private Coroutine liquification; // convert back to water after timeout
@@ -67,7 +65,8 @@ public class LiquidCharacter : MonoBehaviour
         Jumping,
     }
 
-    public void Awake() {
+    public void Awake()
+    {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<MyAnimator>();
@@ -75,7 +74,8 @@ public class LiquidCharacter : MonoBehaviour
         gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
         groundLayers = gameManager.groundLayers;
 
-        for (int i = 0; i < assets[(int)ModesEnum.Liquid].sizes.Length; i++) {
+        for (int i = 0; i < assets[(int)ModesEnum.Liquid].sizes.Length; i++)
+        {
             assets[(int)ModesEnum.Liquid_Underground].sizes[i].collider = assets[(int)ModesEnum.Liquid].sizes[i].collider;
             assets[(int)ModesEnum.Liquid_Underground].sizes[i].groundCheck_A = assets[(int)ModesEnum.Liquid].sizes[i].groundCheck_A;
             assets[(int)ModesEnum.Liquid_Underground].sizes[i].groundCheck_B = assets[(int)ModesEnum.Liquid].sizes[i].groundCheck_B;
@@ -83,24 +83,29 @@ public class LiquidCharacter : MonoBehaviour
 
     }
 
-    public virtual void Start() {
+    public virtual void Start()
+    {
         UpdateValues();
         UpdateTexture();
     }
 
 
-    public bool IsOnGround() {
+    public bool IsOnGround()
+    {
         return rb.IsTouchingLayers(groundLayers) && groundCheck.CheckGround(groundLayers);
     }
 
     public virtual bool Hurt()
         => AddHealth(-1);
 
-    public bool AddHealth(int amount) {
-        if (CurrentSize == 4 && amount > 0) {
+    public bool AddHealth(int amount)
+    {
+        if (CurrentSize == 4 && amount > 0)
+        {
             return false;
         }
-        else if (CurrentSize == 0 && amount < 0) {
+        else if (CurrentSize == 0 && amount < 0)
+        {
             Die();
             return true;
         }
@@ -108,15 +113,18 @@ public class LiquidCharacter : MonoBehaviour
         return true;
     }
 
-    public virtual void Die() {
+    public virtual void Die()
+    {
         //spriteRenderer.enabled = false;
         //rb.constraints = RigidbodyConstraints2D.FreezeAll;
         Destroy(gameObject);
     }
 
     private Coroutine j = null;
-    public void Jump() {
-        IEnumerator Jump() {
+    public void Jump()
+    {
+        IEnumerator Jump()
+        {
             movementState = MovementState.Jumping;
 
             animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.squash);
@@ -141,7 +149,8 @@ public class LiquidCharacter : MonoBehaviour
             UpdateTexture();
         }
 
-        if (j is not null) {
+        if (j is not null)
+        {
             StopCoroutine(j);
             j = null;
         }
@@ -149,17 +158,20 @@ public class LiquidCharacter : MonoBehaviour
     }
 
 
-    public ModesEnum CurrentMode {
+    public ModesEnum CurrentMode
+    {
         get => _currentMode;
-        set {
+        set
+        {
             _currentMode = value;
 
             if (_currentMode == ModesEnum.Liquid_Underground)
-                rb.excludeLayers |= 1 << LayerMask.NameToLayer("GroundPorous"); // exclude collisions with porous ground
+                rb.excludeLayers = rb.excludeLayers.Including("GroundPorous"); // exclude collisions with porous ground
             else
-                rb.excludeLayers &= ~(1 << LayerMask.NameToLayer("GroundPorous")); // allow collisions with porous ground
+                rb.excludeLayers = rb.excludeLayers.Excluding("GroundPorous"); // allow collisions with porous ground
 
-            if (_currentMode == ModesEnum.Ice || _currentMode == ModesEnum.Cloud) {
+            if (_currentMode == ModesEnum.Ice || _currentMode == ModesEnum.Cloud)
+            {
                 if (liquification is null)
                     liquification = StartCoroutine(DelayedConvert(ModesEnum.Liquid, iceAndCloudTimeout));
             }
@@ -171,27 +183,32 @@ public class LiquidCharacter : MonoBehaviour
             UpdateTexture();
         }
     }
-    public int CurrentSize {
+    public int CurrentSize
+    {
         get => _currentSize;
-        set {
+        set
+        {
             _currentSize = value;
             UpdateValues();
             UpdateTexture();
         }
     }
 
-    public IEnumerator DelayedConvert(ModesEnum convertInto, float seconds) {
+    public IEnumerator DelayedConvert(ModesEnum convertInto, float seconds)
+    {
         yield return new WaitForSeconds(seconds);
 
         CurrentMode = convertInto;
         liquification = null;
     }
 
-    public void UpdateValues() {
+    public void UpdateValues()
+    {
         movementSpeed = baseMovementSpeed * ModeData.speed * SizeData.speedMultiplier;
         jumpVelocity = 0;
 
-        if (ModeData.doesJump) {
+        if (ModeData.doesJump)
+        {
             float jumpHeight = ModeData._jumpHeight * SizeData._jumpHeightMultiplier;
             float jumpDuration = ModeData._jumpDuration * SizeData._jumpDurationMultiplier;
 
@@ -199,13 +216,15 @@ public class LiquidCharacter : MonoBehaviour
             rb.gravityScale = jumpVelocity / jumpDuration / -Physics2D.gravity.y;
             rb.drag = ModeData.drag * SizeData.dragMultiplier;
         }
-        else {
+        else
+        {
             rb.gravityScale = ModeData.gravityScale * SizeData.gravityScaleMultiplier;
             rb.drag = ModeData.drag * SizeData.dragMultiplier;
         }
     }
 
-    public virtual void UpdateTexture() {
+    public virtual void UpdateTexture()
+    {
         foreach (Collider2D collider in GetComponents<Collider2D>())
             collider.enabled = collider == assets[(int)CurrentMode].sizes[CurrentSize].collider;
         groundCheck.pointA = assets[(int)CurrentMode].sizes[CurrentSize].groundCheck_A;
@@ -216,21 +235,28 @@ public class LiquidCharacter : MonoBehaviour
     }
 
 
-    private void OnValidate() {
-        if (!Application.isPlaying) {
-            if (modes.Length != Enum.GetValues(typeof(ModesEnum)).Length || assets.Length != Enum.GetValues(typeof(ModesEnum)).Length || sizes.Length > 5) {
+    private void OnValidate()
+    {
+        if (!Application.isPlaying)
+        {
+            if (modes.Length != Enum.GetValues(typeof(ModesEnum)).Length || assets.Length != Enum.GetValues(typeof(ModesEnum)).Length || sizes.Length > 5)
+            {
                 Array.Resize(ref modes, Enum.GetValues(typeof(ModesEnum)).Length);
                 Array.Resize(ref assets, Enum.GetValues(typeof(ModesEnum)).Length);
                 Array.Resize(ref sizes, 5);
                 Debug.LogError("Incorrect array length!");
             }
-            foreach (ModeAssets modeTextures in assets) {
-                if (modeTextures.sizes.Length != 5) {
+            foreach (ModeAssets modeTextures in assets)
+            {
+                if (modeTextures.sizes.Length != 5)
+                {
                     Debug.LogError("Incorrect array length!");
                     Array.Resize(ref modeTextures.sizes, 5);
                 }
-                foreach (ModeAssets.SizeAssets size in modeTextures.sizes) {
-                    if (size.idle.Length < 1) {
+                foreach (ModeAssets.SizeAssets size in modeTextures.sizes)
+                {
+                    if (size.idle.Length < 1)
+                    {
                         Debug.LogError("Array must have >= 1 item, even if texture is empty.");
                         Array.Resize(ref size.idle, 1);
                     }
@@ -244,10 +270,12 @@ public class LiquidCharacter : MonoBehaviour
             for (int i = 0; i < sizes.Length; i++)
                 sizes[i]._name = $"Size {i}";
 
-            for (int i = 0; i < assets.Length; i++) {
+            for (int i = 0; i < assets.Length; i++)
+            {
                 assets[i]._name = Enum.GetName(typeof(ModesEnum), i);
 
-                for (int j = 0; j < assets[i].sizes.Length; j++) {
+                for (int j = 0; j < assets[i].sizes.Length; j++)
+                {
                     assets[i].sizes[j]._name = $"Size {j}";
                 }
             }
