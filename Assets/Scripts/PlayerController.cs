@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerController : LiquidCharacter
 {
@@ -7,23 +6,20 @@ public class PlayerController : LiquidCharacter
     public float hurtTimeout;
     public float hurtTimeoutRemaining;
 
-    public InputAction moveAction;
-    public InputAction jumpAction;
+    public Controls.PlayerMovementActions Actions => gameManager.controls.PlayerMovement;
 
-    public Vector2 movementInput;
 
-    public void EnableActions()
+    public Vector2 movement;
+
+    public void EnableInput()
     {
-        moveAction.Enable();
-        jumpAction.Enable();
+        Actions.Enable();
     }
-    public void DisableActions()
+    public void DisableInput()
     {
-        moveAction.Disable();
-        jumpAction.Disable();
-        movementInput = Vector2.zero;
+        Actions.Disable();
+        movement = Vector2.zero;
     }
-
 
     public override bool Hurt()
     {
@@ -43,18 +39,9 @@ public class PlayerController : LiquidCharacter
 
 
 
-    private void OnEnable() => EnableActions();
-    private void OnDisable() => DisableActions();
+    private void OnEnable() => EnableInput();
+    private void OnDisable() => DisableInput();
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Spike"))
-            Hurt();
-        else if (CurrentMode == ModesEnum.Jelly && (collision.gameObject.layer == LayerMask.NameToLayer("GroundPorous") || collision.gameObject.layer == LayerMask.NameToLayer("GroundPorous")))
-        {
-            Jump();//~~movementInput~~ movement.y = 1;
-        }
-    }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -65,8 +52,8 @@ public class PlayerController : LiquidCharacter
         else if (collider.gameObject.CompareTag("Door"))
         {
             hurtTimeoutRemaining = 3000;
-            DisableActions();
-            movementInput = Vector2.right;
+            DisableInput();
+            movement = Vector2.right;
             gameManager.LevelComplete();
         }
     }
@@ -103,51 +90,54 @@ public class PlayerController : LiquidCharacter
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-
         if (collider.gameObject.TryGetComponent(out StateChangingObject stateChanger))
             stateChanger.CancelBeforeStarted(this);
     }
 
 
-    private void FixedUpdate()
+    public override void FixedUpdate()
     {
-        if (moveAction.enabled)
-            movementInput = moveAction.ReadValue<Vector2>();
+        base.FixedUpdate();
+
+        if (Actions.Move2D.enabled)
+            movement = Actions.Move2D.ReadValue<Vector2>();
+        else if (Actions.Sideways.enabled)
+            movement = new Vector2(Actions.Sideways.ReadValue<float>(), 0);
 
         if (hurtTimeoutRemaining > 0)
             hurtTimeoutRemaining -= Time.fixedDeltaTime;
 
 
-        if (movementInput.x < 0 && assets[(int)CurrentMode].flippable)
+        if (movement.x < 0 && assets[(int)CurrentMode].flippable)
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
-        else if (movementInput.x > 0 && assets[(int)CurrentMode].flippable)
+        else if (movement.x > 0 && assets[(int)CurrentMode].flippable)
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
 
-        if (ModeData.doesJump && jumpAction.IsPressed() && IsOnGround())
+        if (ModeData.doesJump && Actions.Jump.IsPressed() && IsOnGround())
         {
             Jump();
         }
 
         if (CurrentMode == ModesEnum.Liquid || CurrentMode == ModesEnum.Jelly)
-            rb.velocityX = movementInput.x * movementSpeed;
+            rb.velocityX = movement.x * movementSpeed;
 
         else if (CurrentMode == ModesEnum.Ice)
         {
-            if (movementInput.x != 0)
-                rb.velocityX = movementInput.x * movementSpeed;
+            if (movement.x != 0)
+                rb.velocityX = movement.x * movementSpeed;
         }
 
         else if (CurrentMode == ModesEnum.Cloud || CurrentMode == ModesEnum.Liquid_Underground)
         {
-
-            if (movementInput.x != 0) // we want to control the speed directly but we dont want to stop instantly, when flying.
-                rb.velocityX = movementInput.x * movementSpeed;
-            if (movementInput.y != 0)
-                rb.velocityY = movementInput.y * movementSpeed;
+            if (movement.x != 0) // we want to control the speed directly but we dont want to stop instantly, when flying.
+                rb.velocityX = movement.x * movementSpeed;
+            if (movement.y != 0)
+                rb.velocityY = movement.y * movementSpeed;
         }
 
+
         if ((CurrentMode == ModesEnum.Liquid || CurrentMode == ModesEnum.Liquid_Underground)
-                && movementInput.y < 0 && groundCheck.CheckGround(groundLayers) && gameManager.IsPorousGround((Vector2)transform.position + Vector2.down))
+                && Actions.Down.IsPressed() && groundCheck.CheckGround(groundLayers) && gameManager.IsPorousGround((Vector2)transform.position + Vector2.down))
         {
             if (CurrentMode != ModesEnum.Liquid_Underground)
                 CurrentMode = ModesEnum.Liquid_Underground;

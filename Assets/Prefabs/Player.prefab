@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7728558390827499046}
   - component: {fileID: 3468729874632668460}
-  - component: {fileID: 4482333105400101336}
   - component: {fileID: 3128680460566213785}
+  - component: {fileID: 4482333105400101336}
   - component: {fileID: 8536958015950733179}
   - component: {fileID: 4774543986910369624}
   - component: {fileID: 2049274942893574433}
@@ -105,33 +105,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &4482333105400101336
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3676224179324160962}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 5.6065235
-  m_Material: {fileID: 6200000, guid: 8e1b6542138ea6344ad36b12a5eac247, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
 --- !u!114 &3128680460566213785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,124 +532,40 @@ MonoBehaviour:
   movementSpeed: 3
   jumpVelocity: 11
   baseMovementSpeed: 1
+  jellyBouncePercent: 0.9
+  jellyMinBounceVelocity: 5
   movementState: 0
+  incomingVelocity: {x: 0, y: 0}
   hurtTimeout: 1
   hurtTimeoutRemaining: 10
-  moveAction:
-    m_Name: Move
-    m_Type: 0
-    m_ExpectedControlType: Vector2
-    m_Id: acb1b568-9f12-4043-9fbd-7a66105741f3
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: WASD
-      m_Id: b1efdeff-04b5-4dd4-82d9-b386768078cd
-      m_Path: 2DVector(mode=1)
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move
-      m_Flags: 4
-    - m_Name: up
-      m_Id: 7d2eb2bb-2b3f-448b-9174-055f306ea31d
-      m_Path: <Keyboard>/w
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move
-      m_Flags: 8
-    - m_Name: down
-      m_Id: 7575a705-dc6d-46e2-9420-612edad6d800
-      m_Path: <Keyboard>/s
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move
-      m_Flags: 8
-    - m_Name: left
-      m_Id: 3b168a55-17af-4977-ac0a-dd052b015db9
-      m_Path: <Keyboard>/a
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move
-      m_Flags: 8
-    - m_Name: right
-      m_Id: 1e197ace-e282-4053-a3d1-10e1416ece8e
-      m_Path: <Keyboard>/d
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move
-      m_Flags: 8
-    - m_Name: Arrows
-      m_Id: a121796d-4fe2-4f51-9acd-62630ad0a34d
-      m_Path: 2DVector(mode=1)
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move
-      m_Flags: 4
-    - m_Name: up
-      m_Id: 26c1f62e-61b5-4ccc-880b-582d2f9ed2d8
-      m_Path: <Keyboard>/upArrow
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move
-      m_Flags: 8
-    - m_Name: down
-      m_Id: 053d6426-cff6-4024-b0d0-eda83d64dc0a
-      m_Path: <Keyboard>/downArrow
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move
-      m_Flags: 8
-    - m_Name: left
-      m_Id: 48a881bf-3793-4df8-91ea-71d0c597b37d
-      m_Path: <Keyboard>/leftArrow
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move
-      m_Flags: 8
-    - m_Name: right
-      m_Id: 90d3b68f-3f15-4952-91ba-25d2923a206e
-      m_Path: <Keyboard>/rightArrow
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move
-      m_Flags: 8
-    m_Flags: 0
-  jumpAction:
-    m_Name: Jump
-    m_Type: 1
-    m_ExpectedControlType: Button
-    m_Id: ace40ca5-039c-4758-987e-0f5a9b3ecc38
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 1fb9e49e-558f-48c5-91cf-89e0ca55a8d6
-      m_Path: <Keyboard>/upArrow
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Jump
-      m_Flags: 0
-    - m_Name: 
-      m_Id: dfae8b2d-5e34-45da-9066-e303e2ec8cca
-      m_Path: <Keyboard>/w
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Jump
-      m_Flags: 0
-    m_Flags: 0
-  movementInput: {x: 0, y: 0}
+  movement: {x: 0, y: 0}
+--- !u!50 &4482333105400101336
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3676224179324160962}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 5.6065235
+  m_Material: {fileID: 6200000, guid: 8e1b6542138ea6344ad36b12a5eac247, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!114 &8536958015950733179
 MonoBehaviour:
   m_ObjectHideFlags: 0

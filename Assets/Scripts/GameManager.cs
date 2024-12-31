@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
@@ -9,6 +8,7 @@ using UnityEngine.Video;
 
 public class GameManager : MonoBehaviour
 {
+    public Controls controls;
 
     public PlayerController player;
     public LayerMask groundLayers;
@@ -33,13 +33,22 @@ public class GameManager : MonoBehaviour
     //    Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
     //}
 
-    private void Start() {
+    private void Awake()
+    {
+        controls = new Controls();
+    }
+
+    private void Start()
+    {
         StartCoroutine(FireAnimation());
     }
 
-    private IEnumerator FireAnimation() {
-        while (true) {
-            for (int i = 0; i < fireSpriteShapeFrames.Length; i++) {
+    private IEnumerator FireAnimation()
+    {
+        while (true)
+        {
+            for (int i = 0; i < fireSpriteShapeFrames.Length; i++)
+            {
                 if (i == fireFrame)
                     fireSpriteShapeFrames[i].gameObject.SetActive(true);
                 else
@@ -52,10 +61,13 @@ public class GameManager : MonoBehaviour
 
 
     /// <param name="angle">Angle in degrees clockwise from Up</param>
-    public void PlaceFire(Vector3 position, float angle) {
+    public void PlaceFire(Vector3 position, float angle)
+    {
 
-        foreach (int ID in fires.Keys) {
-            if (Vector3.Distance(fires[ID].fireObj.transform.position, position) < 0.5f) {
+        foreach (int ID in fires.Keys)
+        {
+            if (Vector3.Distance(fires[ID].fireObj.transform.position, position) < 0.5f)
+            {
                 StopCoroutine(fires[ID].coroutine);
                 fires[ID].coroutine = FireExpiry(fires[ID].fireObj.GetInstanceID());
                 StartCoroutine(fires[ID].coroutine);
@@ -67,23 +79,27 @@ public class GameManager : MonoBehaviour
         StartCoroutine(fires[newFire.GetInstanceID()].coroutine);
     }
 
-    private IEnumerator FireExpiry(int ID) {
+    private IEnumerator FireExpiry(int ID)
+    {
         yield return new WaitForSeconds(fireTimeout);
         RemoveFire(ID);
     }
-    public void RemoveFire(int ID) {
+    public void RemoveFire(int ID)
+    {
         Destroy(fires[ID].fireObj);
         fires.Remove(ID);
     }
 
 
 
-    public void LevelComplete() {
+    public void LevelComplete()
+    {
         door.GetComponent<Spawner>().enabled = false;
         StartCoroutine(CloseDoor());
     }
 
-    private IEnumerator CloseDoor() {
+    private IEnumerator CloseDoor()
+    {
         yield return new WaitForSeconds(1.5f);
 
         door.sprite = closedDoorSprite;
@@ -99,22 +115,27 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void LevelFailed() {
+    public void LevelFailed()
+    {
         deathScreen.SetActive(true);
     }
 
-    public void RestartGame() {
+    public void RestartGame()
+    {
         SceneManager.LoadScene("Level 1");
     }
-    public void MainMenu() {
+    public void MainMenu()
+    {
         SceneManager.LoadScene("Main Menu");
     }
 
 
 
-    public GroundMaterial GetMaterial(Vector2 position) {
+    public GroundMaterial GetMaterial(Vector2 position)
+    {
         Collider2D obj = Physics2D.OverlapPoint(position, groundLayers.Including("Water"));
-        if (obj != null) {
+        if (obj != null)
+        {
             if (obj.gameObject.layer == LayerMask.NameToLayer("GroundNonPorous"))
                 return GroundMaterial.Stone;
             else if (obj.gameObject.layer == LayerMask.NameToLayer("GroundPorous"))
@@ -127,7 +148,8 @@ public class GameManager : MonoBehaviour
         else
             return GroundMaterial.None;
     }
-    public GroundMaterial GetMaterial(int layer) {
+    public GroundMaterial GetMaterial(int layer)
+    {
         if (layer == LayerMask.NameToLayer("GroundNonPorous"))
             return GroundMaterial.Stone;
         else if (layer == LayerMask.NameToLayer("GroundPorous"))
@@ -146,8 +168,10 @@ public class GameManager : MonoBehaviour
 
     public bool IsPorousGround(Vector2 position) =>
         IsPorous(GetMaterial(position));
-    public bool IsPorous(GroundMaterial material) {
-        switch (material) {
+    public bool IsPorous(GroundMaterial material)
+    {
+        switch (material)
+        {
             case GroundMaterial.Dirt:
                 return true;
             case GroundMaterial.Stone:

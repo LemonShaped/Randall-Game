@@ -1,14 +1,19 @@
-# no eol conversions on most files.
-# lf endings on scripts in Assets.
+# lf endings
 eol=lf
-* -text
-/Assets/* text=auto
-/Assets/**/* text=auto
-.editorconfig text=auto
-.gitignore text=auto
-.gitattributes text=auto
-GlobalSuppresssions.cs text=auto
+* eol=lf
 
+# only convert eol on files in Assets
+* -text
+/Assets/* text=auto eol=lf
+/Assets/**/* text=auto eol=lf
+
+.editorconfig text=auto eol=lf
+.gitignore text=auto eol=lf
+.gitattributes text=auto eol=lf
+GlobalSuppresssions.cs text=auto eol=crlf
+
+# Dont touch line endings
+/Assets/TextMesh[:space:]]Pro/**/* -text
 
 # Collapse Unity-generated files on GitHub
 *.asset linguist-generated -text
@@ -16,5 +21,4 @@ GlobalSuppresssions.cs text=auto
 *.meta linguist-generated -text
 *.prefab linguist-generated -text
 *.unity linguist-generated -text
-
 

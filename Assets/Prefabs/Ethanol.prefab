@@ -746,7 +746,10 @@ MonoBehaviour:
   movementSpeed: 3
   jumpVelocity: 11.785715
   baseMovementSpeed: 1.2
+  jellyBouncePercent: 0
+  jellyMinBounceVelocity: 0
   movementState: 0
+  incomingVelocity: {x: 0, y: 0}
   burning: 1
   burnTime: 20
   moveDirection: -1
