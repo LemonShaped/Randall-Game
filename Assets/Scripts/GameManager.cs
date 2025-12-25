@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     //    Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
     //}
 
-    private void Awake()
+    private void OnEnable()
     {
         controls = new Controls();
     }
@@ -45,10 +45,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator FireAnimation()
     {
-        while (true)
-        {
-            for (int i = 0; i < fireSpriteShapeFrames.Length; i++)
-            {
+        while (true) {
+            for (int i = 0; i < fireSpriteShapeFrames.Length; i++) {
                 if (i == fireFrame)
                     fireSpriteShapeFrames[i].gameObject.SetActive(true);
                 else
@@ -64,10 +62,8 @@ public class GameManager : MonoBehaviour
     public void PlaceFire(Vector3 position, float angle)
     {
 
-        foreach (int ID in fires.Keys)
-        {
-            if (Vector3.Distance(fires[ID].fireObj.transform.position, position) < 0.5f)
-            {
+        foreach (int ID in fires.Keys) {
+            if (Vector3.Distance(fires[ID].fireObj.transform.position, position) < 0.5f) {
                 StopCoroutine(fires[ID].coroutine);
                 fires[ID].coroutine = FireExpiry(fires[ID].fireObj.GetInstanceID());
                 StartCoroutine(fires[ID].coroutine);
@@ -134,8 +130,7 @@ public class GameManager : MonoBehaviour
     public GroundMaterial GetMaterial(Vector2 position)
     {
         Collider2D obj = Physics2D.OverlapPoint(position, groundLayers.Including("Water"));
-        if (obj != null)
-        {
+        if (obj != null) {
             if (obj.gameObject.layer == LayerMask.NameToLayer("GroundNonPorous"))
                 return GroundMaterial.Stone;
             else if (obj.gameObject.layer == LayerMask.NameToLayer("GroundPorous"))
@@ -170,8 +165,7 @@ public class GameManager : MonoBehaviour
         IsPorous(GetMaterial(position));
     public bool IsPorous(GroundMaterial material)
     {
-        switch (material)
-        {
+        switch (material) {
             case GroundMaterial.Dirt:
                 return true;
             case GroundMaterial.Stone:

@@ -13,7 +13,7 @@ public class LiquidCharacter : MonoBehaviour
 
     [HideInInspector] public GameManager gameManager;
 
-    public LayerMask groundLayers;
+    public LayerMask GroundLayers => gameManager.groundLayers;
 
     public float iceAndCloudTimeout;
 
@@ -66,14 +66,13 @@ public class LiquidCharacter : MonoBehaviour
         Jumping,
     }
 
-    public void Awake()
+    public virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<MyAnimator>();
         groundCheck = GetComponent<GroundCheck>();
         gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
-        groundLayers = gameManager.groundLayers;
 
         for (int i = 0; i < assets[(int)ModesEnum.Liquid].sizes.Length; i++) {
             assets[(int)ModesEnum.Liquid_Underground].sizes[i].collider = assets[(int)ModesEnum.Liquid].sizes[i].collider;
@@ -94,7 +93,7 @@ public class LiquidCharacter : MonoBehaviour
 
     public virtual void FixedUpdate()
     {
-        incomingVelocity = rb.velocity;
+        incomingVelocity = rb.linearVelocity;
     }
 
     public virtual void OnCollisionEnter2D(Collision2D collision)
@@ -122,7 +121,7 @@ public class LiquidCharacter : MonoBehaviour
 
     public bool IsOnGround()
     {
-        return rb.IsTouchingLayers(groundLayers) && groundCheck.CheckGround(groundLayers);
+        return rb.IsTouchingLayers(GroundLayers) && groundCheck.CheckGround(GroundLayers);
     }
 
     public virtual bool Hurt()
@@ -162,16 +161,16 @@ public class LiquidCharacter : MonoBehaviour
 
             yield return new WaitForSeconds(0.1f);
             yield return new WaitForFixedUpdate();
-            rb.velocityY = velocity;
+            rb.linearVelocityY = velocity;
             animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.rising);
 
-            yield return new WaitUntil(() => Mathf.Abs(rb.velocityY) < velocity * 0.3f);
+            yield return new WaitUntil(() => Mathf.Abs(rb.linearVelocityY) < velocity * 0.3f);
             animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.midair);
 
-            yield return new WaitUntil(() => Mathf.Abs(rb.velocityY) > velocity * 0.3f);
+            yield return new WaitUntil(() => Mathf.Abs(rb.linearVelocityY) > velocity * 0.3f);
             animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.falling);
 
-            yield return new WaitUntil(() => groundCheck.CheckGround(groundLayers));
+            yield return new WaitUntil(() => groundCheck.CheckGround(GroundLayers));
             animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.landing);
 
             yield return new WaitForSeconds(0.15f);
@@ -200,16 +199,16 @@ public class LiquidCharacter : MonoBehaviour
 
             yield return new WaitForSeconds(0.1f);
             yield return new WaitForFixedUpdate();
-            rb.velocityY = velocity;
+            rb.linearVelocityY = velocity;
             animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.rising);
 
-            yield return new WaitUntil(() => Mathf.Abs(rb.velocityY) < velocity * 0.3f);
+            yield return new WaitUntil(() => Mathf.Abs(rb.linearVelocityY) < velocity * 0.3f);
             animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.midair);
 
-            yield return new WaitUntil(() => Mathf.Abs(rb.velocityY) > velocity * 0.3f);
+            yield return new WaitUntil(() => Mathf.Abs(rb.linearVelocityY) > velocity * 0.3f);
             animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.falling);
 
-            yield return new WaitUntil(() => groundCheck.CheckGround(groundLayers));
+            yield return new WaitUntil(() => groundCheck.CheckGround(GroundLayers));
             animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.landing);
 
             UpdateTexture();
@@ -273,11 +272,11 @@ public class LiquidCharacter : MonoBehaviour
 
             jumpVelocity = 2 * jumpHeight / jumpDuration;
             rb.gravityScale = jumpVelocity / jumpDuration / -Physics2D.gravity.y;
-            rb.drag = ModeData.drag * SizeData.dragMultiplier;
+            rb.linearDamping = ModeData.drag * SizeData.dragMultiplier;
         }
         else {
             rb.gravityScale = ModeData.gravityScale * SizeData.gravityScaleMultiplier;
-            rb.drag = ModeData.drag * SizeData.dragMultiplier;
+            rb.linearDamping = ModeData.drag * SizeData.dragMultiplier;
         }
     }
 

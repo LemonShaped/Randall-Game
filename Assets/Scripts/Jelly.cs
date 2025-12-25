@@ -6,21 +6,17 @@ public class Jelly : PickupObject
     public SpriteRenderer sprite;
 
 
-    public override bool CanPickUp(PlayerController player)
+    protected override void OnPickUp(PlayerController player)
     {
-        return player.CurrentMode == ModesEnum.Liquid;
-    }
-    public override void OnPickup(PlayerController player)
-    {
-        base.OnPickup(player);
+        base.OnPickUp(player);
         sprite.enabled = false;
         player.CurrentMode = ModesEnum.Jelly;
     }
-    public override void OnDrop(PlayerController player)
+    protected override void OnDrop(PlayerController player)
     {
+        base.OnDrop(player);
         sprite.enabled = true;
         if (player.CurrentMode == ModesEnum.Jelly)
             player.CurrentMode = ModesEnum.Liquid;
-        base.OnDrop(player);
     }
 }

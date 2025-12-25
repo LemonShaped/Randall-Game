@@ -38,7 +38,7 @@ public class CsprojPostprocessor : AssetPostprocessor
     }
 
     public static string OnGeneratedSlnSolution(string path, string content)
-    {
+    {/*
         Match projectsMatch = Regex.Match(content, @"^# Visual Studio \d\d(?:\r\n?|\n)+(^Project\("".*^EndProject$(?:\r\n?|\n))^Global$", RegexOptions.Multiline | RegexOptions.Singleline);
 
         if (!projectsMatch.Success)
@@ -54,6 +54,7 @@ public class CsprojPostprocessor : AssetPostprocessor
 
 
         return content.Replace(projects, assemblyCsharp + content.Replace(assemblyCsharp, ""));
-
+        */
+        return content;
     }
 }

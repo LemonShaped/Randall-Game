@@ -36,7 +36,7 @@ public class Ethanol : LiquidCharacter
 
             if (Random.value <= jumpChance) {
                 if (IsOnGround())
-                    rb.velocityY = jumpVelocity;
+                    rb.linearVelocityY = jumpVelocity;
             }
             else {
                 moveDirection = -moveDirection;
@@ -45,18 +45,18 @@ public class Ethanol : LiquidCharacter
 
         }
 
-        rb.velocityX = movementSpeed * moveDirection;
+        rb.linearVelocityX = movementSpeed * moveDirection;
 
     }
 
-    private new void OnCollisionEnter2D(Collision2D collision)
+    public override void OnCollisionEnter2D(Collision2D collision)
     {
         OnCollisionStay2D(collision);
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (groundLayers.Contains(collision.collider.gameObject.layer) && !noFiresAbove.Contains(gameManager.GetMaterial(collision.gameObject.layer))) {
+        if (GroundLayers.Contains(collision.collider.gameObject.layer) && !noFiresAbove.Contains(gameManager.GetMaterial(collision.gameObject.layer))) {
             for (int i = 0; i < collision.contactCount; i++) {
                 float angle = Vector2.SignedAngle(Vector2.up, collision.GetContact(i).normal);
                 if (-60f < angle && angle < 60f) {

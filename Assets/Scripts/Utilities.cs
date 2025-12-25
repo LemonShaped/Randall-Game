@@ -45,7 +45,7 @@ public static class Colours
 }
 
 
-public static class HelperMethods
+public static class ExtensionMethods
 {
     public static Color WithAlpha(this Color colour, float a)
         => new Color(colour.r, colour.g, colour.b, a);
@@ -78,6 +78,29 @@ public static class HelperMethods
     public static LayerMask Excluding(this LayerMask layerMask, string layer)
         => layerMask.Excluding(LayerMask.NameToLayer(layer));
 
+}
+
+/// <summary>Constants</summary>
+public readonly struct Const
+{
+    public static class Vector2
+    {
+        public static readonly UnityEngine.Vector2 NaN = new UnityEngine.Vector2(float.NaN, float.NaN);
+    }
+}
+public static class MyPhysics
+{
+    public static Vector2 CalculateDisplacement(Vector2 force, float mass, float time)
+    {
+        // F=ma
+        Vector2 acceleration = force / mass;
+        // v=a*t
+        Vector2 velocity = acceleration * time;
+        // s=v*t
+        Vector2 displacement = velocity * time;
+
+        return displacement;
+    }
 }
 
 

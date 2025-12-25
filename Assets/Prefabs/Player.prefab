@@ -70,6 +70,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -122,9 +123,6 @@ MonoBehaviour:
   animator: {fileID: 4774543986910369624}
   groundCheck: {fileID: 8536958015950733179}
   gameManager: {fileID: 0}
-  groundLayers:
-    serializedVersion: 2
-    m_Bits: 192
   iceAndCloudTimeout: 20
   modes:
   - _name: Liquid
@@ -539,9 +537,10 @@ MonoBehaviour:
   hurtTimeout: 1
   hurtTimeoutRemaining: 10
   movement: {x: 0, y: 0}
+  inventory: {fileID: 7728558390827499046}
 --- !u!50 &4482333105400101336
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -552,8 +551,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_GravityScale: 5.6065235
   m_Material: {fileID: 6200000, guid: 8e1b6542138ea6344ad36b12a5eac247, type: 2}
   m_IncludeLayers:

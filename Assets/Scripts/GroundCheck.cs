@@ -38,7 +38,7 @@ public class GroundCheck : MonoBehaviour
                 new Vector2(TopLeft.x, BottomRight.y)
             },
 
-            (TryGetComponent(out LiquidCharacter player) && CheckGround(player.groundLayers)) ? Color.green.WithAlpha(0.3f) : Color.clear,
+            (TryGetComponent(out LiquidCharacter player) && CheckGround(player.GroundLayers)) ? Color.green.WithAlpha(0.3f) : Color.clear,
             Color.white);
         }
     }

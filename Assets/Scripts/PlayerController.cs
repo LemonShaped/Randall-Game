@@ -8,8 +8,11 @@ public class PlayerController : LiquidCharacter
 
     public Controls.PlayerMovementActions Actions => gameManager.controls.PlayerMovement;
 
-
     public Vector2 movement;
+
+    [Tooltip("Stores held items.\nShould be an empty object that is a child of the player.")]
+    public Transform inventory;
+
 
     public void EnableInput()
     {
@@ -23,8 +26,7 @@ public class PlayerController : LiquidCharacter
 
     public override bool Hurt()
     {
-        if (hurtTimeoutRemaining <= 0)
-        {
+        if (hurtTimeoutRemaining <= 0) {
             hurtTimeoutRemaining = hurtTimeout;
             return AddHealth(-1);
         }
@@ -42,6 +44,14 @@ public class PlayerController : LiquidCharacter
     private void OnEnable() => EnableInput();
     private void OnDisable() => DisableInput();
 
+    public override void Awake()
+    {
+        if (inventory == null) {
+            Debug.LogWarning("PlayerController: inventory not set, using self as inventory by default");
+            inventory = transform;
+        }
+        base.Awake();
+    }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -49,8 +59,7 @@ public class PlayerController : LiquidCharacter
         if (collider.gameObject.TryGetComponent(out StateChangingObject stateChanger))
             stateChanger.WaitingToStart(this);
 
-        else if (collider.gameObject.CompareTag("Door"))
-        {
+        else if (collider.gameObject.CompareTag("Door")) {
             hurtTimeoutRemaining = 3000;
             DisableInput();
             movement = Vector2.right;
@@ -60,8 +69,7 @@ public class PlayerController : LiquidCharacter
 
     private void OnTriggerStay2D(Collider2D collider)
     {
-        if (collider.gameObject.CompareTag("Puddle"))
-        {
+        if (collider.gameObject.CompareTag("Puddle")) {
             bool healthChanged = AddHealth(1);
             if (healthChanged)
                 Destroy(collider.gameObject); // only delete the puddle if it actually increased our health (not if we are already at max)
@@ -78,13 +86,9 @@ public class PlayerController : LiquidCharacter
 
         else if (collider.gameObject.CompareTag("Fire"))
             Hurt();
-        else if (collider.gameObject.CompareTag("PickupObject"))
-        {
+        else if (collider.gameObject.CompareTag("PickupObject")) {
             PickupObject pickupObject = collider.gameObject.GetComponent<PickupObject>();
-            if (pickupObject.CanPickUp(this))
-            {
-                pickupObject.OnPickup(this);
-            }
+            pickupObject.PickUp(this);
         }
     }
 
@@ -113,32 +117,31 @@ public class PlayerController : LiquidCharacter
         else if (movement.x > 0 && assets[(int)CurrentMode].flippable)
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
 
-        if (ModeData.doesJump && Actions.Jump.IsPressed() && IsOnGround())
-        {
+        if (ModeData.doesJump && Actions.Jump.IsPressed() && IsOnGround()) {
             Jump();
         }
 
         if (CurrentMode == ModesEnum.Liquid || CurrentMode == ModesEnum.Jelly)
-            rb.velocityX = movement.x * movementSpeed;
+            rb.linearVelocityX = movement.x * movementSpeed;
 
-        else if (CurrentMode == ModesEnum.Ice)
-        {
+        else if (CurrentMode == ModesEnum.Ice) {
             if (movement.x != 0)
-                rb.velocityX = movement.x * movementSpeed;
+                rb.linearVelocityX = movement.x * movementSpeed;
         }
 
-        else if (CurrentMode == ModesEnum.Cloud || CurrentMode == ModesEnum.Liquid_Underground)
-        {
+        else if (CurrentMode == ModesEnum.Cloud || CurrentMode == ModesEnum.Liquid_Underground) {
             if (movement.x != 0) // we want to control the speed directly but we dont want to stop instantly, when flying.
-                rb.velocityX = movement.x * movementSpeed;
+                rb.linearVelocityX = movement.x * movementSpeed;
             if (movement.y != 0)
-                rb.velocityY = movement.y * movementSpeed;
+                rb.linearVelocityY = movement.y * movementSpeed;
         }
 
 
-        if ((CurrentMode == ModesEnum.Liquid || CurrentMode == ModesEnum.Liquid_Underground)
-                && Actions.Down.IsPressed() && groundCheck.CheckGround(groundLayers) && gameManager.IsPorousGround((Vector2)transform.position + Vector2.down))
-        {
+        if ((CurrentMode == ModesEnum.Liquid || CurrentMode == ModesEnum.Liquid_Underground || CurrentMode == ModesEnum.Jelly)
+                && Actions.Down.IsPressed() && groundCheck.CheckGround(GroundLayers) && gameManager.IsPorousGround((Vector2)transform.position + Vector2.down)) {
+            foreach (var item in inventory.GetComponentsInChildren<PickupObject>()) {
+                item.Drop(this);
+            }
             if (CurrentMode != ModesEnum.Liquid_Underground)
                 CurrentMode = ModesEnum.Liquid_Underground;
         }
