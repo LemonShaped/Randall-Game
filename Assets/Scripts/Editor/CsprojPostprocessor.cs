@@ -8,8 +8,7 @@ public class CsprojPostprocessor : AssetPostprocessor
 {
     public static string OnGeneratedCSProject(string path, string content)
     {
-        try
-        {
+        try {
 
             if (!path.EndsWith("Assembly-CSharp.csproj"))
                 return content;
@@ -31,29 +30,32 @@ public class CsprojPostprocessor : AssetPostprocessor
 </Project>
 ";
         }
-        catch (Exception)
-        {
+        catch (Exception) {
             return content;
         }
     }
 
     public static string OnGeneratedSlnSolution(string path, string content)
-    {/*
-        Match projectsMatch = Regex.Match(content, @"^# Visual Studio \d\d(?:\r\n?|\n)+(^Project\("".*^EndProject$(?:\r\n?|\n))^Global$", RegexOptions.Multiline | RegexOptions.Singleline);
+    {
+        /*
+        Debug.Log("generating sln");
+        Debug.Log(content);
 
-        if (!projectsMatch.Success)
+        Match projectsMatch = Regex.Match(content, @"^# Visual Studio \d+(?:\r\n?|\n)+(^Project\("".*)(^Project\(""[^""]*""\) = ""[^""]*"", ""Assembly-CSharp\.csproj"", ""[^""]+""(?:\r\n?|\n)^EndProject(?:\r\n?|\n))(.*^EndProject$(?:\r\n?|\n))^Global$",
+            RegexOptions.Multiline | RegexOptions.Singleline
+        );
+
+        if (!projectsMatch.Success) {
+            Debug.Log("sadface");
             return content;
-        string projects = projectsMatch.Result("$1");
+        }
 
+        string projects = projectsMatch.Groups[1].Value + projectsMatch.Groups[2].Value + projectsMatch.Groups[3].Value;
+        string assemblyCsharp = projectsMatch.Groups[2].Value;
 
-        Match assemblyCsharpMatch = Regex.Match(projects, @"(^Project\(""[^""]*""\) = ""[^""]*"", ""Assembly-CSharp\.csproj"", ""[^""]+""(?:\r\n?|\n)^EndProject(?:\r\n?|\n))", RegexOptions.Multiline | RegexOptions.Singleline);
+        Debug.Log("game assembly: " + assemblyCsharp);
 
-        if (!assemblyCsharpMatch.Success)
-            return content;
-        string assemblyCsharp = assemblyCsharpMatch.Result("$1");
-
-
-        return content.Replace(projects, assemblyCsharp + content.Replace(assemblyCsharp, ""));
+        return Regex.Replace(content, Regex.Escape(projects), assemblyCsharp + projectsMatch.Groups[1].Value + projectsMatch.Groups[3].Value);
         */
         return content;
     }
