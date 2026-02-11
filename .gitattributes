@@ -10,10 +10,10 @@ eol=lf
 .editorconfig text=auto eol=lf
 .gitignore text=auto eol=lf
 .gitattributes text=auto eol=lf
-GlobalSuppresssions.cs text=auto eol=crlf
+GlobalSuppressions.cs text=auto eol=native
 
 # Dont touch line endings
-/Assets/TextMesh[:space:]]Pro/**/* -text
+/Assets/TextMesh?Pro/**/* -text
 
 # Collapse Unity-generated files on GitHub
 *.asset linguist-generated -text
