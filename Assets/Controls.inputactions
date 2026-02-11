@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "Controls",
     "maps": [
         {
@@ -242,72 +243,6 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "AD",
-                    "id": "efd490e8-5b89-4519-927e-bba4679df257",
-                    "path": "1DAxis(mode=1)",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Sideways",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "Negative",
-                    "id": "6a2d02ea-5911-4ef0-a285-5b5e47eab9a4",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Sideways",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Positive",
-                    "id": "a1a4914f-2522-4251-893d-6c78680c370a",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Sideways",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Arrows",
-                    "id": "211ad427-cb9a-4c90-a5fa-18e52e3cbca6",
-                    "path": "1DAxis(mode=1)",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Sideways",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "Negative",
-                    "id": "1692c45c-d16a-4d34-8630-e7fb2c669533",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Sideways",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Positive",
-                    "id": "730e1aaf-92b6-4306-89e1-bc5965da6dac",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Sideways",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "d2c0e063-7316-4f0a-a749-4106211bb380",
                     "path": "<Keyboard>/upArrow",
@@ -359,6 +294,83 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Arrows",
+                    "id": "cc14f2ab-6112-45c0-a4be-05e181c39bdc",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sideways",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "984112b1-5591-4c0e-a0cc-fb2af24acf04",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sideways",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "5c3c322d-a9d7-403c-b7a0-0869d1d10f43",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sideways",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "AD",
+                    "id": "4607a0c0-8c04-4c8b-9276-c7a2e5026969",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sideways",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "fb85747c-243a-4ffa-aa44-0ff72f3118b8",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sideways",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "cc35ccda-3a0d-4718-9d95-14ad12b51d4d",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sideways",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "f228fd3e-68ac-482d-b95c-a7c708a6e749",
+                    "path": "<Gamepad>/dpad/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sideways",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

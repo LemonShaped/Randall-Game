@@ -125,7 +125,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 9104914425540656580}
   player: {fileID: 0}
-  relativePos: {x: 3.4028235e+38, y: 3.4028235e+38}
   sprite: {fileID: 646927934366056040}
 --- !u!50 &9104914425540656580 stripped
 Rigidbody2D:

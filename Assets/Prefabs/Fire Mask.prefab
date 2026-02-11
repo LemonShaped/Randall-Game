@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 956633018008035541}
   - component: {fileID: 4244364915479507399}
-  - component: {fileID: 9097828585270073923}
   - component: {fileID: 859959123697382569}
+  - component: {fileID: 8857288063066178706}
   m_Layer: 0
   m_Name: Fire Mask
   m_TagString: Fire
@@ -54,6 +54,8 @@ SpriteMask:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -75,9 +77,11 @@ SpriteMask:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
   m_MaskAlphaCutoff: 0.2
   m_FrontSortingLayerID: 0
@@ -89,21 +93,6 @@ SpriteMask:
   m_IsCustomRangeActive: 0
   m_SpriteSortPoint: 1
   m_MaskSource: 0
---- !u!114 &9097828585270073923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6595092619742758193}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97bf9702de90479449a41ad541d17fed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mask: {fileID: 4244364915479507399}
-  size: {x: 1, y: 0.75}
-  offset: {x: 0, y: 0.1}
 --- !u!61 &859959123697382569
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -150,3 +139,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 0.4}
   m_EdgeRadius: 0
+--- !u!114 &8857288063066178706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6595092619742758193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97bf9702de90479449a41ad541d17fed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireMask
+  mask: {fileID: 4244364915479507399}
+  size: {x: 1, y: 1}
+  offset: {x: 0, y: 0}

@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags:
   - Puddle
   - Ground
@@ -45,11 +45,11 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Ground
-    uniqueID: 4214560749
-    locked: 0
   - name: Background
     uniqueID: 2702308899
+    locked: 0
+  - name: Ground
+    uniqueID: 4214560749
     locked: 0
   - name: Default
     uniqueID: 0
@@ -66,3 +66,5 @@ TagManager:
   - name: Foreground
     uniqueID: 1652702739
     locked: 0
+  m_RenderingLayers:
+  - Default
