@@ -25,9 +25,11 @@ public class GenerateMesh : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    [HideInInspector] public bool saveNow;
+    public bool saveNow;
 
-    private void Update() {
+    public bool delete;
+
+    void Update() {
 
         if (!Application.isPlaying && (Selection.activeGameObject == gameObject
                 || (collider2d && Selection.activeGameObject == collider2d.gameObject)
@@ -68,6 +70,21 @@ public class GenerateMesh : MonoBehaviour
                         Mathf.InverseLerp(colliderMesh.bounds.min.y, colliderMesh.bounds.max.y, vertex.y))
                 );
 
+            }
+
+            if (delete)
+            {
+                var mesh = AssetDatabase.LoadAllAssetsAtPath(GeneratedMeshes.AssetPath)
+                    .FirstOrDefault(obj => obj is Mesh && obj.name == meshName);
+                    // .Select((Object obj) => obj.name);
+                // foreach (var s in mesh)
+                //     Debug.Log(s);
+                if (mesh)
+                    AssetDatabase.RemoveObjectFromAsset(mesh);
+
+                saveNow = false;
+                delete = false;
+                return;
             }
 
             // Save mesh to file
