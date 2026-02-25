@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -14,11 +11,11 @@ public class MyAnimator : MonoBehaviour
 
     public Sprite[] frames;
 
-    private bool animating;
+    bool animating;
 
-    private int i;
+    int i;
 
-    private void Awake() {
+    void Awake() {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         animating = false;
@@ -29,7 +26,7 @@ public class MyAnimator : MonoBehaviour
     }
     public void Animate(Sprite[] sprites) {
         if (sprites.Length == 0)
-            sprites = new Sprite[1] { null };
+            sprites = new Sprite[] { null };
 
         frames = sprites;
 
@@ -41,7 +38,7 @@ public class MyAnimator : MonoBehaviour
         }
     }
 
-    private IEnumerator Animation() {
+    IEnumerator Animation() {
         animating = true;
         i = 0;
 
@@ -52,9 +49,9 @@ public class MyAnimator : MonoBehaviour
         }
     }
 
-    private void OnDisable() {
+    void OnDisable() {
         animating = false;
-        frames = new Sprite[1] { null };
+        frames = new Sprite[] { null };
     }
 
 }

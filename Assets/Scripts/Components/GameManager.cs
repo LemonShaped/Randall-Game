@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public Controls controls;
 
     public PlayerController player;
+
     public LayerMask groundLayers;
 
     public SpriteShapeRenderer[] fireSpriteShapeFrames;
@@ -36,17 +37,17 @@ public class GameManager : MonoBehaviour
     //    Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
     //}
 
-    private void OnEnable()
+    void OnEnable()
     {
         controls = new Controls();
     }
 
-    private void Start()
+    void Start()
     {
         StartCoroutine(FireAnimation());
     }
 
-    private IEnumerator FireAnimation()
+    IEnumerator FireAnimation()
     {
         while (true) {
             for (int i = 0; i < fireSpriteShapeFrames.Length; i++) {
@@ -65,11 +66,11 @@ public class GameManager : MonoBehaviour
     public void PlaceFire(Vector3 position, float angle)
     {
 
-        foreach (int ID in fires.Keys) {
-            if (Vector3.Distance(fires[ID].fireObj.transform.position, position) < 0.5f) {
-                StopCoroutine(fires[ID].coroutine);
-                fires[ID].coroutine = FireExpiry(fires[ID].fireObj.GetInstanceID());
-                StartCoroutine(fires[ID].coroutine);
+        foreach (int id in fires.Keys) {
+            if (Vector3.Distance(fires[id].fireObj.transform.position, position) < 0.5f) {
+                StopCoroutine(fires[id].coroutine);
+                fires[id].coroutine = FireExpiry(fires[id].fireObj.GetInstanceID());
+                StartCoroutine(fires[id].coroutine);
                 return;
             }
         }
@@ -78,15 +79,15 @@ public class GameManager : MonoBehaviour
         StartCoroutine(fires[newFire.GetInstanceID()].coroutine);
     }
 
-    private IEnumerator FireExpiry(int ID)
+    IEnumerator FireExpiry(int id)
     {
         yield return new WaitForSeconds(fireTimeout);
-        RemoveFire(ID);
+        RemoveFire(id);
     }
-    public void RemoveFire(int ID)
+    public void RemoveFire(int id)
     {
-        Destroy(fires[ID].fireObj);
-        fires.Remove(ID);
+        Destroy(fires[id].fireObj);
+        fires.Remove(id);
     }
 
 
@@ -97,7 +98,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(CloseDoor());
     }
 
-    private IEnumerator CloseDoor()
+    IEnumerator CloseDoor()
     {
         yield return new WaitForSeconds(1.5f);
 
@@ -133,7 +134,7 @@ public class GameManager : MonoBehaviour
     public GroundMaterial GetMaterial(Vector2 position)
     {
         Collider2D obj = Physics2D.OverlapPoint(position, groundLayers.Including("Water"));
-        if (obj != null) {
+        if (obj) {
             if (obj.gameObject.layer == LayerMask.NameToLayer("GroundNonPorous"))
                 return GroundMaterial.Stone;
             else if (obj.gameObject.layer == LayerMask.NameToLayer("GroundPorous"))

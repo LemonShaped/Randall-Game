@@ -136,7 +136,7 @@ MonoBehaviour:
     doesJump: 1
     _jumpHeight: 2.2
     _jumpDuration: 0.4
-  - _name: Liquid_Underground
+  - _name: LiquidUnderground
     speed: 1.8
     drag: 7
     gravityScale: 0
@@ -203,12 +203,12 @@ MonoBehaviour:
     sizes:
     - _name: Size 0
       collider: {fileID: 2049274942893574433}
-      groundCheck_A: {x: -0.19, y: -0.42}
-      groundCheck_B: {x: 0.19, y: -0.57}
+      groundCheckA: {x: -0.19, y: -0.42}
+      groundCheckB: {x: 0.19, y: -0.57}
       idle:
       - {fileID: 21300000, guid: d6bce712adda5ac40baf86b857424243, type: 3}
       - {fileID: 21300000, guid: 613eacdf938031d45b8493d275c991ba, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -216,12 +216,12 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 1
       collider: {fileID: 3197583372005618721}
-      groundCheck_A: {x: -0.28, y: -0.42}
-      groundCheck_B: {x: 0.28, y: -0.57}
+      groundCheckA: {x: -0.28, y: -0.42}
+      groundCheckB: {x: 0.28, y: -0.57}
       idle:
       - {fileID: 21300000, guid: ccd76db7ae93d3b4ca9b89fc1b46dddb, type: 3}
       - {fileID: 21300000, guid: 158aaed1fd1bca349ac8785dcb3c0964, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -229,12 +229,12 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 2
       collider: {fileID: 4259650935268546935}
-      groundCheck_A: {x: -0.38, y: -0.42}
-      groundCheck_B: {x: 0.38, y: -0.57}
+      groundCheckA: {x: -0.38, y: -0.42}
+      groundCheckB: {x: 0.38, y: -0.57}
       idle:
       - {fileID: 21300000, guid: 5a7c7b1822f8e6c4a84321a431e28f22, type: 3}
       - {fileID: 21300000, guid: e35c42a29edef264b9db5c4aa9e9b0c2, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -242,11 +242,11 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 3
       collider: {fileID: 6003903751117190865}
-      groundCheck_A: {x: -0.4, y: -0.42}
-      groundCheck_B: {x: 0.4, y: -0.57}
+      groundCheckA: {x: -0.4, y: -0.42}
+      groundCheckB: {x: 0.4, y: -0.57}
       idle:
       - {fileID: 21300000, guid: 1df3c9ae9fdb68542bea8a7332459f56, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 21300000, guid: e13949d57096a4c4f81cf744c77164d0, type: 3}
         rising: {fileID: 21300000, guid: b6597c5fe0131a2459f06920d0860457, type: 3}
         midair: {fileID: 21300000, guid: 7f1ff8ea9a7bcf54fbed5c66ddd3dc09, type: 3}
@@ -254,28 +254,28 @@ MonoBehaviour:
         landing: {fileID: 21300000, guid: c04ab715d2b73e743b3a484177965315, type: 3}
     - _name: Size 4
       collider: {fileID: 2286364110019228330}
-      groundCheck_A: {x: -0.4, y: -0.42}
-      groundCheck_B: {x: 0.4, y: -0.57}
+      groundCheckA: {x: -0.4, y: -0.42}
+      groundCheckB: {x: 0.4, y: -0.57}
       idle:
       - {fileID: 21300000, guid: 6d6c6af489aa1044abac16aed0004daa, type: 3}
       - {fileID: 21300000, guid: 7ceb784c6450c7e4ba01e01ed9140a18, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
         falling: {fileID: 0}
         landing: {fileID: 0}
-  - _name: Liquid_Underground
+  - _name: LiquidUnderground
     flippable: 1
     sizes:
     - _name: Size 0
       collider: {fileID: 9208148068077739041}
-      groundCheck_A: {x: 0, y: 0}
-      groundCheck_B: {x: 0, y: 0}
+      groundCheckA: {x: 0, y: 0}
+      groundCheckB: {x: 0, y: 0}
       idle:
       - {fileID: 21300000, guid: d6bce712adda5ac40baf86b857424243, type: 3}
       - {fileID: 21300000, guid: 613eacdf938031d45b8493d275c991ba, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -283,12 +283,12 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 1
       collider: {fileID: 5574433924978727664}
-      groundCheck_A: {x: 0, y: 0}
-      groundCheck_B: {x: 0, y: 0}
+      groundCheckA: {x: 0, y: 0}
+      groundCheckB: {x: 0, y: 0}
       idle:
       - {fileID: 21300000, guid: ccd76db7ae93d3b4ca9b89fc1b46dddb, type: 3}
       - {fileID: 21300000, guid: 158aaed1fd1bca349ac8785dcb3c0964, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -296,12 +296,12 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 2
       collider: {fileID: 8252887788133038035}
-      groundCheck_A: {x: 0, y: 0}
-      groundCheck_B: {x: 0, y: 0}
+      groundCheckA: {x: 0, y: 0}
+      groundCheckB: {x: 0, y: 0}
       idle:
       - {fileID: 21300000, guid: 5a7c7b1822f8e6c4a84321a431e28f22, type: 3}
       - {fileID: 21300000, guid: e35c42a29edef264b9db5c4aa9e9b0c2, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -309,12 +309,12 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 3
       collider: {fileID: 1861996249105699753}
-      groundCheck_A: {x: 0, y: 0}
-      groundCheck_B: {x: 0, y: 0}
+      groundCheckA: {x: 0, y: 0}
+      groundCheckB: {x: 0, y: 0}
       idle:
       - {fileID: 21300000, guid: 91d58037fbc544741b090c82459d76cb, type: 3}
       - {fileID: 21300000, guid: 9aaef7eeea9f8f5478eb130c8d2925d0, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -322,12 +322,12 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 4
       collider: {fileID: 1880304120119031965}
-      groundCheck_A: {x: 0, y: 0}
-      groundCheck_B: {x: 0, y: 0}
+      groundCheckA: {x: 0, y: 0}
+      groundCheckB: {x: 0, y: 0}
       idle:
       - {fileID: 21300000, guid: 6d6c6af489aa1044abac16aed0004daa, type: 3}
       - {fileID: 21300000, guid: 7ceb784c6450c7e4ba01e01ed9140a18, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -338,11 +338,11 @@ MonoBehaviour:
     sizes:
     - _name: Size 0
       collider: {fileID: 2215921126269057713}
-      groundCheck_A: {x: -0.15, y: -0.4}
-      groundCheck_B: {x: 0.15, y: -0.6}
+      groundCheckA: {x: -0.15, y: -0.4}
+      groundCheckB: {x: 0.15, y: -0.6}
       idle:
       - {fileID: 21300000, guid: 0e19206cd1c52dd48b7ec06d84623704, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -350,11 +350,11 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 1
       collider: {fileID: 6097794316822675204}
-      groundCheck_A: {x: -0.25, y: -0.4}
-      groundCheck_B: {x: 0.25, y: -0.6}
+      groundCheckA: {x: -0.25, y: -0.4}
+      groundCheckB: {x: 0.25, y: -0.6}
       idle:
       - {fileID: 21300000, guid: 6b2fa6d882af32144830fe4ba2975c57, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -362,11 +362,11 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 2
       collider: {fileID: 4396172710407924650}
-      groundCheck_A: {x: -0.35, y: -0.4}
-      groundCheck_B: {x: 0.35, y: -0.6}
+      groundCheckA: {x: -0.35, y: -0.4}
+      groundCheckB: {x: 0.35, y: -0.6}
       idle:
       - {fileID: 21300000, guid: fd60eb8cd921cfa449dcb17caba4b3be, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -374,11 +374,11 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 3
       collider: {fileID: 7938473534488787200}
-      groundCheck_A: {x: -0.45, y: -0.4}
-      groundCheck_B: {x: 0.45, y: -0.6}
+      groundCheckA: {x: -0.45, y: -0.4}
+      groundCheckB: {x: 0.45, y: -0.6}
       idle:
       - {fileID: 21300000, guid: 2de3b01ca9484f64493f821213dec6be, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -386,11 +386,11 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 4
       collider: {fileID: 367201251716810917}
-      groundCheck_A: {x: -0.55, y: -0.4}
-      groundCheck_B: {x: 0.55, y: -0.6}
+      groundCheckA: {x: -0.55, y: -0.4}
+      groundCheckB: {x: 0.55, y: -0.6}
       idle:
       - {fileID: 21300000, guid: 08622a2379e19b64191f2147a660de59, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -401,12 +401,12 @@ MonoBehaviour:
     sizes:
     - _name: Size 0
       collider: {fileID: 9208148068077739041}
-      groundCheck_A: {x: 0, y: 0}
-      groundCheck_B: {x: 0, y: 0}
+      groundCheckA: {x: 0, y: 0}
+      groundCheckB: {x: 0, y: 0}
       idle:
       - {fileID: 21300000, guid: 9b8a0036a4c2325449ebb2c8851d44e4, type: 3}
       - {fileID: 21300000, guid: 4db442f6a6aad1149a08902c7d1edce7, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -414,12 +414,12 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 1
       collider: {fileID: 5574433924978727664}
-      groundCheck_A: {x: 0, y: 0}
-      groundCheck_B: {x: 0, y: 0}
+      groundCheckA: {x: 0, y: 0}
+      groundCheckB: {x: 0, y: 0}
       idle:
       - {fileID: 21300000, guid: 265dcb880e9acd440b4d584cf57ffdb6, type: 3}
       - {fileID: 21300000, guid: 0b6de0bf29cdab2468c1700de0a3381a, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -427,12 +427,12 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 2
       collider: {fileID: 8252887788133038035}
-      groundCheck_A: {x: 0, y: 0}
-      groundCheck_B: {x: 0, y: 0}
+      groundCheckA: {x: 0, y: 0}
+      groundCheckB: {x: 0, y: 0}
       idle:
       - {fileID: 21300000, guid: 18e79218e0f463848a4c190c0e86d5b6, type: 3}
       - {fileID: 21300000, guid: 587031c4e99c6394aad8d93f25b6bb86, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -440,12 +440,12 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 3
       collider: {fileID: 1861996249105699753}
-      groundCheck_A: {x: 0, y: 0}
-      groundCheck_B: {x: 0, y: 0}
+      groundCheckA: {x: 0, y: 0}
+      groundCheckB: {x: 0, y: 0}
       idle:
       - {fileID: 21300000, guid: b5d4049fc3f30e445a52bae9057d904e, type: 3}
       - {fileID: 21300000, guid: c8e9ed8578f2acd41859999a04262c0a, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -453,12 +453,12 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 4
       collider: {fileID: 1880304120119031965}
-      groundCheck_A: {x: 0, y: 0}
-      groundCheck_B: {x: 0, y: 0}
+      groundCheckA: {x: 0, y: 0}
+      groundCheckB: {x: 0, y: 0}
       idle:
       - {fileID: 21300000, guid: afd7e01a2cc7a0746bb4da8041709f77, type: 3}
       - {fileID: 21300000, guid: 71c1b9f173d15cd4191c50ac33a90b9a, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -469,12 +469,12 @@ MonoBehaviour:
     sizes:
     - _name: Size 0
       collider: {fileID: 2049274942893574433}
-      groundCheck_A: {x: -0.19, y: -0.42}
-      groundCheck_B: {x: 0.19, y: -0.57}
+      groundCheckA: {x: -0.19, y: -0.42}
+      groundCheckB: {x: 0.19, y: -0.57}
       idle:
       - {fileID: 21300000, guid: d6bce712adda5ac40baf86b857424243, type: 3}
       - {fileID: 21300000, guid: 613eacdf938031d45b8493d275c991ba, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -482,12 +482,12 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 1
       collider: {fileID: 3197583372005618721}
-      groundCheck_A: {x: -0.28, y: -0.42}
-      groundCheck_B: {x: 0.28, y: -0.57}
+      groundCheckA: {x: -0.28, y: -0.42}
+      groundCheckB: {x: 0.28, y: -0.57}
       idle:
       - {fileID: 21300000, guid: ccd76db7ae93d3b4ca9b89fc1b46dddb, type: 3}
       - {fileID: 21300000, guid: 158aaed1fd1bca349ac8785dcb3c0964, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -495,12 +495,12 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 2
       collider: {fileID: 4259650935268546935}
-      groundCheck_A: {x: -0.38, y: -0.42}
-      groundCheck_B: {x: 0.38, y: -0.57}
+      groundCheckA: {x: -0.38, y: -0.42}
+      groundCheckB: {x: 0.38, y: -0.57}
       idle:
       - {fileID: 21300000, guid: 5a7c7b1822f8e6c4a84321a431e28f22, type: 3}
       - {fileID: 21300000, guid: e35c42a29edef264b9db5c4aa9e9b0c2, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}
@@ -508,11 +508,11 @@ MonoBehaviour:
         landing: {fileID: 0}
     - _name: Size 3
       collider: {fileID: 6003903751117190865}
-      groundCheck_A: {x: -0.4, y: -0.42}
-      groundCheck_B: {x: 0.4, y: -0.57}
+      groundCheckA: {x: -0.4, y: -0.42}
+      groundCheckB: {x: 0.4, y: -0.57}
       idle:
       - {fileID: 21300000, guid: 1df3c9ae9fdb68542bea8a7332459f56, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 21300000, guid: e13949d57096a4c4f81cf744c77164d0, type: 3}
         rising: {fileID: 21300000, guid: b6597c5fe0131a2459f06920d0860457, type: 3}
         midair: {fileID: 21300000, guid: 7f1ff8ea9a7bcf54fbed5c66ddd3dc09, type: 3}
@@ -520,12 +520,12 @@ MonoBehaviour:
         landing: {fileID: 21300000, guid: c04ab715d2b73e743b3a484177965315, type: 3}
     - _name: Size 4
       collider: {fileID: 2286364110019228330}
-      groundCheck_A: {x: -0.4, y: -0.42}
-      groundCheck_B: {x: 0.4, y: -0.57}
+      groundCheckA: {x: -0.4, y: -0.42}
+      groundCheckB: {x: 0.4, y: -0.57}
       idle:
       - {fileID: 21300000, guid: 6d6c6af489aa1044abac16aed0004daa, type: 3}
       - {fileID: 21300000, guid: 7ceb784c6450c7e4ba01e01ed9140a18, type: 3}
-      Jump:
+      jump:
         squash: {fileID: 0}
         rising: {fileID: 0}
         midair: {fileID: 0}

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer), typeof(MyAnimator)), RequireComponent(typeof(GroundCheck))]
 public class LiquidCharacter : MonoBehaviour
@@ -24,18 +25,16 @@ public class LiquidCharacter : MonoBehaviour
     public PlayerSize[] sizes = new PlayerSize[5];
 
 
-    public ModesEnum _currentMode = ModesEnum.Liquid;
+    [SerializeField] [FormerlySerializedAs("currentMode")]
+    ModesEnum _currentMode = ModesEnum.Liquid;
 
-    [Range(0, 4)]
-    public int _currentSize;
+    [SerializeField] [FormerlySerializedAs("currentSize")] [Range(0, 4)]
+    int _currentSize;
 
 
-    public MovementMode ModeData {
-        get => modes[(int)CurrentMode];
-    }
-    public PlayerSize SizeData {
-        get => sizes[CurrentSize];
-    }
+    protected MovementMode ModeData => modes[(int)CurrentMode];
+
+    protected PlayerSize SizeData => sizes[CurrentSize];
 
 
     [NonReorderable]
@@ -50,7 +49,7 @@ public class LiquidCharacter : MonoBehaviour
     [HideInInspector]
     public float jumpVelocity;
 
-    private Coroutine liquification; // convert back to water after timeout
+    Coroutine liquification; // convert back to water after timeout
 
     public float baseMovementSpeed = 1;
 
@@ -75,9 +74,9 @@ public class LiquidCharacter : MonoBehaviour
         gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
 
         for (int i = 0; i < assets[(int)ModesEnum.Liquid].sizes.Length; i++) {
-            assets[(int)ModesEnum.Liquid_Underground].sizes[i].collider = assets[(int)ModesEnum.Liquid].sizes[i].collider;
-            assets[(int)ModesEnum.Liquid_Underground].sizes[i].groundCheck_A = assets[(int)ModesEnum.Liquid].sizes[i].groundCheck_A;
-            assets[(int)ModesEnum.Liquid_Underground].sizes[i].groundCheck_B = assets[(int)ModesEnum.Liquid].sizes[i].groundCheck_B;
+            assets[(int)ModesEnum.LiquidUnderground].sizes[i].collider = assets[(int)ModesEnum.Liquid].sizes[i].collider;
+            assets[(int)ModesEnum.LiquidUnderground].sizes[i].groundCheckA = assets[(int)ModesEnum.Liquid].sizes[i].groundCheckA;
+            assets[(int)ModesEnum.LiquidUnderground].sizes[i].groundCheckB = assets[(int)ModesEnum.Liquid].sizes[i].groundCheckB;
         }
 
     }
@@ -150,28 +149,36 @@ public class LiquidCharacter : MonoBehaviour
     public void Jump()
         => Jump(jumpVelocity);
 
-    private Coroutine j = null;
+    Coroutine j;
     public void Jump(float velocity)
     {
+        if (j is not null) {
+            StopCoroutine(j);
+            j = null;
+        }
+        j = StartCoroutine(Jump(velocity));
+
+        return;
+
         IEnumerator Jump(float velocity)
         {
             movementState = MovementState.Jumping;
 
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.squash);
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.squash);
 
             yield return new WaitForSeconds(0.1f);
             yield return new WaitForFixedUpdate();
             rb.linearVelocityY = velocity;
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.rising);
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.rising);
 
             yield return new WaitUntil(() => Mathf.Abs(rb.linearVelocityY) < velocity * 0.3f);
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.midair);
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.midair);
 
             yield return new WaitUntil(() => Mathf.Abs(rb.linearVelocityY) > velocity * 0.3f);
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.falling);
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.falling);
 
             yield return new WaitUntil(() => groundCheck.CheckGround(GroundLayers));
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.landing);
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.landing);
 
             yield return new WaitForSeconds(0.15f);
             animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].idle);
@@ -180,12 +187,6 @@ public class LiquidCharacter : MonoBehaviour
 
             j = null;
         }
-
-        if (j is not null) {
-            StopCoroutine(j);
-            j = null;
-        }
-        j = StartCoroutine(Jump(velocity));
     }
 
 
@@ -195,21 +196,21 @@ public class LiquidCharacter : MonoBehaviour
         {
             movementState = MovementState.Jumping;
 
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.squash);
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.squash);
 
             yield return new WaitForSeconds(0.1f);
             yield return new WaitForFixedUpdate();
             rb.linearVelocityY = velocity;
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.rising);
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.rising);
 
             yield return new WaitUntil(() => Mathf.Abs(rb.linearVelocityY) < velocity * 0.3f);
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.midair);
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.midair);
 
             yield return new WaitUntil(() => Mathf.Abs(rb.linearVelocityY) > velocity * 0.3f);
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.falling);
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.falling);
 
             yield return new WaitUntil(() => groundCheck.CheckGround(GroundLayers));
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].Jump.landing);
+            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.landing);
 
             UpdateTexture();
 
@@ -227,12 +228,12 @@ public class LiquidCharacter : MonoBehaviour
         set {
             _currentMode = value;
 
-            if (value == ModesEnum.Liquid_Underground)
+            if (value == ModesEnum.LiquidUnderground)
                 rb.excludeLayers = rb.excludeLayers.Including("GroundPorous"); // exclude collisions with porous ground
             else
                 rb.excludeLayers = rb.excludeLayers.Excluding("GroundPorous"); // allow collisions with porous ground
 
-            if (value == ModesEnum.Ice || value == ModesEnum.Cloud) {
+            if (value is ModesEnum.Ice or ModesEnum.Cloud) {
                 if (liquification is null)
                     liquification = StartCoroutine(DelayedConvert(ModesEnum.Liquid, iceAndCloudTimeout));
             }
@@ -284,15 +285,15 @@ public class LiquidCharacter : MonoBehaviour
     {
         foreach (Collider2D collider in GetComponents<Collider2D>())
             collider.enabled = collider == assets[(int)CurrentMode].sizes[CurrentSize].collider;
-        groundCheck.pointA = assets[(int)CurrentMode].sizes[CurrentSize].groundCheck_A;
-        groundCheck.pointB = assets[(int)CurrentMode].sizes[CurrentSize].groundCheck_B;
+        groundCheck.pointA = assets[(int)CurrentMode].sizes[CurrentSize].groundCheckA;
+        groundCheck.pointB = assets[(int)CurrentMode].sizes[CurrentSize].groundCheckB;
 
         if (Application.isPlaying && movementState == MovementState.Idle)
             animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].idle);
     }
 
 
-    private void OnValidate()
+    void OnValidate()
     {
         if (!Application.isPlaying) {
             if (modes.Length != Enum.GetValues(typeof(ModesEnum)).Length || assets.Length != Enum.GetValues(typeof(ModesEnum)).Length || sizes.Length > 5) {
@@ -340,7 +341,7 @@ public class LiquidCharacter : MonoBehaviour
 
 public enum ModesEnum
 {
-    Liquid, Liquid_Underground, Ice, Cloud, Jelly
+    Liquid, LiquidUnderground, Ice, Cloud, Jelly
 }
 
 [Serializable]
@@ -353,12 +354,12 @@ public class MovementMode
     public float speed = 1;
 
     [Tooltip("Air resistance")]
-    public float drag = 0;
+    public float drag;
 
     [Tooltip("Multiplier applied to gravity. Value only used if mode does not jump")]
     public float gravityScale = 1;
 
-    public bool doesJump = false;
+    public bool doesJump;
 
     [Tooltip("Max height of jump")]
     public float _jumpHeight;
@@ -402,12 +403,12 @@ public class ModeAssets
         public string _name;
 
         public Collider2D collider;
-        public Vector2 groundCheck_A;
-        public Vector2 groundCheck_B;
+        [FormerlySerializedAs("groundCheck_A")] public Vector2 groundCheckA;
+        [FormerlySerializedAs("groundCheck_B")] public Vector2 groundCheckB;
 
         public Sprite[] idle;
 
-        public JumpSprites Jump;
+        [FormerlySerializedAs("Jump")] public JumpSprites jump;
 
         [Serializable]
         public class JumpSprites

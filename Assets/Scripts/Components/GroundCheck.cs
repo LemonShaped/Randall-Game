@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,7 +8,7 @@ public class GroundCheck : MonoBehaviour
     public bool mirror;
     public bool showGizmo;
 
-    private void OnValidate() {
+    void OnValidate() {
         if (mirror)
             pointB.x = -pointA.x;
     }
@@ -29,7 +27,7 @@ public class GroundCheck : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private void OnDrawGizmosSelected() {
+    void OnDrawGizmosSelected() {
         if (showGizmo) {
             Handles.DrawSolidRectangleWithOutline(new Vector3[]{
                 TopLeft,

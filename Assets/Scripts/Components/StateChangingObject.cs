@@ -1,10 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 public class StateChangingObject : MonoBehaviour
@@ -30,24 +26,25 @@ public class StateChangingObject : MonoBehaviour
     public float reloadTime;
     public float reloadTimeRemaining;
 
-    private void Start() {
+    void Start() {
         spriteRenderer.sprite = closed;
         animator.Animate(closed);
     }
 
-    private void Update() {
+    void Update() {
         if (reloadTimeRemaining > 0)
             reloadTimeRemaining -= Time.deltaTime;
     }
 
-    public Dictionary<int, IEnumerator> PlayersWaitingToStartCoroutines = new();
+    Dictionary<int, IEnumerator> playersWaitingToStartCoroutines = new();
 
     public void WaitingToStart(LiquidCharacter player) {
         IEnumerator coroutine = WaitingToStart_Coroutine(player);
         StartCoroutine(coroutine);
-        PlayersWaitingToStartCoroutines[player.GetInstanceID()] = coroutine;
+        playersWaitingToStartCoroutines[player.GetInstanceID()] = coroutine;
     }
-    private IEnumerator WaitingToStart_Coroutine(LiquidCharacter player) {
+
+    IEnumerator WaitingToStart_Coroutine(LiquidCharacter player) {
         if (!isRunning) {
             isOpen = true;
             animator.Animate(open);
@@ -60,11 +57,11 @@ public class StateChangingObject : MonoBehaviour
     public void CancelBeforeStarted(LiquidCharacter player) {
         isOpen = false;
         animator.Animate(closed);
-        if (PlayersWaitingToStartCoroutines.Remove(player.GetInstanceID(), out IEnumerator coroutine))
+        if (playersWaitingToStartCoroutines.Remove(player.GetInstanceID(), out IEnumerator coroutine))
             StopCoroutine(coroutine);
     }
 
-    private IEnumerator Convert(LiquidCharacter player) {
+    IEnumerator Convert(LiquidCharacter player) {
         if (isRunning || reloadTimeRemaining > 0)
             yield break;
 

@@ -2,7 +2,7 @@
 eol=lf
 * eol=lf
 
-# only convert eol on files in Assets
+# only convert line endings on game files
 * -text
 /Assets/* text=auto eol=lf
 /Assets/**/* text=auto eol=lf
@@ -12,8 +12,9 @@ eol=lf
 .gitattributes text=auto eol=lf
 GlobalSuppressions.cs text=auto eol=native
 
-# Dont touch line endings
 /Assets/TextMesh?Pro/**/* -text
+
+*.pdn -text
 
 # Collapse Unity-generated files on GitHub
 *.asset linguist-generated -text
@@ -21,4 +22,3 @@ GlobalSuppressions.cs text=auto eol=native
 *.meta linguist-generated -text
 *.prefab linguist-generated -text
 *.unity linguist-generated -text
-

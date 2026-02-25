@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
 
 public class AutoGitCommitOnSave : AssetModificationProcessor
@@ -11,7 +7,7 @@ public class AutoGitCommitOnSave : AssetModificationProcessor
         foreach (string path in paths)
             if (path.StartsWith("Assets/Scenes/") && path.EndsWith(".unity")) {
                 //Debug.Log("Ctrl+S was pressed. Auto-committing.");
-                
+
                 //git commit
                 // Process.Start("git", "branch auto-commit-qw123aq");
                 // Process.Start("git", "add .");
