@@ -97,9 +97,7 @@ public class LiquidCharacter : MonoBehaviour
 
     public virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Spike"))
-            Hurt();
-        else if (CurrentMode == ModesEnum.Jelly && (collision.gameObject.layer == LayerMask.NameToLayer("GroundPorous") || collision.gameObject.layer == LayerMask.NameToLayer("GroundPorous"))) {
+        if (CurrentMode == ModesEnum.Jelly && (collision.gameObject.layer == LayerMask.NameToLayer("GroundPorous") || collision.gameObject.layer == LayerMask.NameToLayer("GroundPorous"))) {
             if (-incomingVelocity.y > jellyMinBounceVelocity)
                 Bounce(-incomingVelocity.y * jellyBouncePercent);
             else {
@@ -229,9 +227,9 @@ public class LiquidCharacter : MonoBehaviour
             _currentMode = value;
 
             if (value == ModesEnum.LiquidUnderground)
-                rb.excludeLayers = rb.excludeLayers.Including("GroundPorous"); // exclude collisions with porous ground
+                rb.excludeLayers = rb.excludeLayers.Add("GroundPorous"); // exclude collisions with porous ground
             else
-                rb.excludeLayers = rb.excludeLayers.Excluding("GroundPorous"); // allow collisions with porous ground
+                rb.excludeLayers = rb.excludeLayers.Remove("GroundPorous"); // allow collisions with porous ground
 
             if (value is ModesEnum.Ice or ModesEnum.Cloud) {
                 if (liquification is null)

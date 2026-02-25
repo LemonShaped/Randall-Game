@@ -12,8 +12,9 @@ public class PlayerController : LiquidCharacter
     public Vector2 movement;
 
     [Tooltip("Stores held items.\nShould be an empty object that is a child of the player.")]
-    public Transform inventory;
+    public Transform inventoryObj;
 
+    public List<PickupObject> inventory = new();
 
     void EnableInput()
     {
@@ -47,9 +48,9 @@ public class PlayerController : LiquidCharacter
 
     public override void Awake()
     {
-        if (inventory == null) {
+        if (inventoryObj == null) {
             Debug.LogWarning("PlayerController: inventory not set, using self as inventory by default");
-            inventory = transform;
+            inventoryObj = transform;
         }
         base.Awake();
     }
@@ -114,9 +115,9 @@ public class PlayerController : LiquidCharacter
 
 
         if (movement.x < 0 && assets[(int)CurrentMode].flippable)
-            gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            spriteRenderer.flipX = true;
         else if (movement.x > 0 && assets[(int)CurrentMode].flippable)
-            gameObject.GetComponent<SpriteRenderer>().flipX = false;
+            spriteRenderer.flipX = false;
 
         if (ModeData.doesJump && Actions.Jump.IsPressed() && IsOnGround()) {
             Jump();

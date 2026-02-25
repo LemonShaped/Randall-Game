@@ -139,8 +139,9 @@ public class GenerateMesh : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected() {
-        Gizmos.color = Colours.Orange;
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.orange;
         if (collider2d is PolygonCollider2D polygon)
             Gizmos.DrawLineStrip(polygon.points.Select(v2 => (Vector3)v2 + transform.position).ToArray(), true);
         //else if (meshFilter)

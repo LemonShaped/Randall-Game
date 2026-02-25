@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 2556416708625436632}
-  player: {fileID: 0}
+  owner: {fileID: 0}
 --- !u!50 &2556416708625436632
 Rigidbody2D:
   serializedVersion: 5

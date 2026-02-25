@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 [CustomEditor(typeof(GenerateMesh))]
-public class GenerateMesh_Inspector : Editor
+public class GenerateMesh_Editor : Editor
 {
     public override VisualElement CreateInspectorGUI() {
         VisualElement inspector = new VisualElement();

@@ -5,7 +5,7 @@ public class PickupObject : MonoBehaviour
     GameManager gameManager;
 
     public Rigidbody2D rb;
-    public PlayerController player;
+    public PlayerController owner;
 
     public void Awake()
     {
@@ -15,47 +15,44 @@ public class PickupObject : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (player != null) { // we are attached to a player
+        if (!owner) return; // Are we attached to a player
 
-            Vector2 netForce = Vector2.zero;
+        Vector2 position = owner.rb.position;
 
-            Vector2 position = player.rb.position;
+        //Vector2 netForce = Vector2.zero;
+        //netForce += (player.rb.position - position) * 100f;
+        //position = MyPhysics.CalculateDisplacement(netForce, rb.mass, Time.fixedDeltaTime);
 
-
-            //netForce += (player.rb.position - position) * 100f;
-
-
-            //position = MyPhysics.CalculateDisplacement(netForce, rb.mass, Time.fixedDeltaTime);
-
-            rb.MovePosition(position);
-
-        }
+        rb.MovePosition(position);
     }
 
     protected virtual void OnPickUp(PlayerController byPlayer)
     {
-        player = byPlayer;
-        transform.parent = byPlayer.inventory;
+        owner = byPlayer;
+        byPlayer.inventory.Add(this);
+        transform.parent = byPlayer.inventoryObj;
         rb.gravityScale = 0;
     }
 
     protected virtual void OnDrop(PlayerController byPlayer)
     {
-        player = null;
+        owner = null;
+        byPlayer.inventory.Remove(this);
         transform.parent = gameManager.unheldItemParent;
         rb.gravityScale = 1;
     }
 
-    public virtual bool CanBePickedUp(PlayerController byPlayer)
+    bool CanBePickedUp(PlayerController byPlayer)
     {
-        return player == null && (byPlayer.CurrentMode == ModesEnum.Liquid || byPlayer.CurrentMode == ModesEnum.Jelly);
+        return !owner && byPlayer.CurrentMode is ModesEnum.Liquid or ModesEnum.Jelly;
     }
 
-    public virtual bool CanBeDropped(PlayerController byPlayer)
+    static bool CanBeDropped(PlayerController byPlayer)
     {
         return true;
     }
 
+    /// <returns>Success picking up</returns>
     public bool PickUp(PlayerController byPlayer)
     {
         if (!CanBePickedUp(byPlayer)) {
