@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public LayerMask groundLayers;
 
     public SpriteShapeRenderer[] fireSpriteShapeFrames;
-    public float fireFrame = 0;
+    public int fireFrame;
 
     public GameObject firePrefab;
     public float fireTimeout;
@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator FireAnimation()
     {
-        while (true) {
+        while (isActiveAndEnabled) {
             for (int i = 0; i < fireSpriteShapeFrames.Length; i++) {
                 if (i == fireFrame)
                     fireSpriteShapeFrames[i].gameObject.SetActive(true);
@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour
     }
 
 
+    /// <param name="position">Position</param>
     /// <param name="angle">Angle in degrees clockwise from Up</param>
     public void PlaceFire(Vector3 position, float angle)
     {
@@ -110,8 +111,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         winScreen.SetActive(true);
-        if (!winScreen.GetComponent<VideoPlayer>().isPlaying)
-            winScreen.GetComponent<VideoPlayer>().Play();
+        foreach (VideoPlayer video in winScreen.GetComponentsInChildren<VideoPlayer>())
+            if (!video.isPlaying)
+                video.Play();
 
     }
 
@@ -133,7 +135,7 @@ public class GameManager : MonoBehaviour
 
     public GroundMaterial GetMaterial(Vector2 position)
     {
-        Collider2D obj = Physics2D.OverlapPoint(position, groundLayers.Including("Water"));
+        Collider2D obj = Physics2D.OverlapPoint(position, groundLayers.Add("Water"));
         if (obj) {
             if (obj.gameObject.layer == LayerMask.NameToLayer("GroundNonPorous"))
                 return GroundMaterial.Stone;
@@ -189,3 +191,10 @@ public enum GroundMaterial
     Water
 }
 
+// public enum MaterialMask
+// {
+//     None  = 0b000,
+//     Dirt  = 0b001,
+//     Stone = 0b010,
+//     Water = 0b100
+// }

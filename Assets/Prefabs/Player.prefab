@@ -531,9 +531,9 @@ MonoBehaviour:
         midair: {fileID: 0}
         falling: {fileID: 0}
         landing: {fileID: 0}
-  movementSpeed: 3
+  movementSpeed: 6
   jumpVelocity: 11
-  baseMovementSpeed: 1
+  baseMovementSpeed: 2
   jellyBouncePercent: 0.9
   jellyMinBounceVelocity: 5
   movementState: 0
@@ -541,7 +541,8 @@ MonoBehaviour:
   hurtTimeout: 1
   hurtTimeoutRemaining: 10
   movement: {x: 0, y: 0}
-  inventory: {fileID: 7728558390827499046}
+  inventoryObj: {fileID: 7728558390827499046}
+  inventory: []
 --- !u!50 &4482333105400101336
 Rigidbody2D:
   serializedVersion: 5

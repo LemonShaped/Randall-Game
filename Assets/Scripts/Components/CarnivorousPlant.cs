@@ -13,9 +13,9 @@ public class CarnivorousPlant : MonoBehaviour
 
     public Vector2 eatenPosition;
 
-    public void Bite(LiquidCharacter player) {
-        player.rb.MovePosition((Vector2)transform.position + Vector2.Scale(eatenPosition, transform.lossyScale));
-        player.Hurt();
+    public void Bite(LiquidCharacter target) {
+        target.rb.MovePosition((Vector2)transform.position + Vector2.Scale(eatenPosition, transform.lossyScale));
+        target.Hurt();
         spriteRenderer.sprite = closed;
         headCollider.enabled = false;
 
