@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
     public SpriteRenderer door;
     public Sprite closedDoorSprite;
 
+    public Transform fireParent;
+    public Transform unheldItemParent;
+
     //private void Awake() {
     //    Debug.Log(winScreen.GetComponent<VideoPlayer>().url);
     //    Debug.Log(System.IO.Path.Combine(Application.streamingAssetsPath));
@@ -70,7 +73,7 @@ public class GameManager : MonoBehaviour
                 return;
             }
         }
-        GameObject newFire = Instantiate(firePrefab, position, Quaternion.AngleAxis(angle, Vector3.forward), transform);
+        GameObject newFire = Instantiate(firePrefab, position, Quaternion.AngleAxis(angle, Vector3.forward), fireParent);
         fires.Add(newFire.GetInstanceID(), new FireData { fireObj = newFire, coroutine = FireExpiry(newFire.GetInstanceID()) });
         StartCoroutine(fires[newFire.GetInstanceID()].coroutine);
     }

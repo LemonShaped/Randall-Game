@@ -2,12 +2,15 @@ using UnityEngine;
 
 public class PickupObject : MonoBehaviour
 {
+    GameManager gameManager;
+
     public Rigidbody2D rb;
     public PlayerController player;
 
     public void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
     }
 
     public void FixedUpdate()
@@ -39,7 +42,7 @@ public class PickupObject : MonoBehaviour
     protected virtual void OnDrop(PlayerController byPlayer)
     {
         player = null;
-        transform.parent = null;
+        transform.parent = gameManager.unheldItemParent;
         rb.gravityScale = 1;
     }
 
