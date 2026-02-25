@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CarnivorousPlant : MonoBehaviour
@@ -23,7 +22,7 @@ public class CarnivorousPlant : MonoBehaviour
         StartCoroutine(Reopen());
     }
 
-    private IEnumerator Reopen() {
+    IEnumerator Reopen() {
         yield return new WaitForSeconds(timeClosed);
 
         spriteRenderer.sprite = open;
@@ -31,7 +30,7 @@ public class CarnivorousPlant : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private void OnDrawGizmosSelected() {
+    void OnDrawGizmosSelected() {
         Gizmos.color = Color.blue.MixWith(Color.white, 0.05f);
         Gizmos.DrawWireSphere(transform.position + Vector3.Scale(eatenPosition, transform.lossyScale), 0.1f);
     }

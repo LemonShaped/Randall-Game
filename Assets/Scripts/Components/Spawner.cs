@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
@@ -14,7 +12,7 @@ public class Spawner : MonoBehaviour
     public float timePerSpawn;
 
     public float timeRemainingUntilSpawn;
-    
+
 
     // Update is called once per frame
     void FixedUpdate()

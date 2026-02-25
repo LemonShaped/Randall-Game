@@ -33,13 +33,18 @@ public class IndirectCompositeCollider : MonoBehaviour
         [Tooltip("Composite order is the list index")]
         public Collider2D.CompositeOperation operation;
 
-        public void Deconstruct(out Collider2D first, out Collider2D.CompositeOperation second) {
-            first = collider; second = operation;
+        public void Deconstruct(out Collider2D first, out Collider2D.CompositeOperation second)
+        {
+            first = collider;
+            second = operation;
         }
     }
 
 
-    void Awake() => composite = GetComponent<CompositeCollider2D>();
+    void Awake()
+    {
+        composite = GetComponent<CompositeCollider2D>();
+    }
 
 #if UNITY_EDITOR
 
@@ -54,17 +59,19 @@ public class IndirectCompositeCollider : MonoBehaviour
             {
                 if (!generatedThisFrame)
                     Generate();
-                generatedThisFrame = true;
 
+                generatedThisFrame = true;
             }
             else
             {
                 foreach (Collider2D collider in generatedColliders)
                     DestroyImmediate(collider);
+
                 generatedColliders.Clear();
             }
         };
     }
+
     void Update()
     {
         generatedThisFrame = false;
@@ -75,10 +82,9 @@ public class IndirectCompositeCollider : MonoBehaviour
         if (this == null || Application.isPlaying)
             return;
 
-        foreach (Collider2D col in generatedColliders) {
+        foreach (Collider2D col in generatedColliders)
             if (col && col.gameObject == gameObject)
                 DestroyImmediate(col);
-        }
 
         generatedColliders.Clear();
 
@@ -87,7 +93,8 @@ public class IndirectCompositeCollider : MonoBehaviour
         {
             (Collider2D srcCollider, Collider2D.CompositeOperation operation) = sourceColliders[i];
 
-            if (srcCollider.gameObject == gameObject) {
+            if (srcCollider.gameObject == gameObject)
+            {
                 srcCollider.compositeOperation = Collider2D.CompositeOperation.None;
                 srcCollider.enabled = false;
             }
@@ -103,7 +110,6 @@ public class IndirectCompositeCollider : MonoBehaviour
 
             // UnityEditorInternal.InternalEditorUtility.SetIsInspectorExpanded(newCol, false);
             foldComponentIDs.Add(newCol.GetInstanceID());
-
         }
 
         if (composite.generationType == CompositeCollider2D.GenerationType.Manual)
@@ -111,7 +117,5 @@ public class IndirectCompositeCollider : MonoBehaviour
     }
 
 
-
 #endif
-
 }

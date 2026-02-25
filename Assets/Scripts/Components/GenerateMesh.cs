@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 [ExecuteAlways]
 public class GenerateMesh : MonoBehaviour
@@ -16,7 +12,7 @@ public class GenerateMesh : MonoBehaviour
     public string meshName;
     public Mesh meshAsset;
 
-    private void Start() {
+    void Start() {
         if (Application.isPlaying) {
             meshFilter.mesh = meshAsset;
         }
@@ -42,7 +38,7 @@ public class GenerateMesh : MonoBehaviour
                 meshName = gameObject.name;
 
             // Rename generated mesh asset to match
-            if (meshAsset && meshAsset.name != meshName && AssetDatabase.GetAssetPath(meshAsset) == GeneratedMeshes.assetPath) {
+            if (meshAsset && meshAsset.name != meshName && AssetDatabase.GetAssetPath(meshAsset) == GeneratedMeshes.AssetPath) {
                 meshAsset.name = meshName;
                 EditorUtility.SetDirty(meshAsset);
                 AssetDatabase.SaveAssets();
@@ -98,26 +94,26 @@ public class GenerateMesh : MonoBehaviour
 
                 mesh.name = meshName;
 
-                if (!AssetDatabase.AssetPathExists(GeneratedMeshes.assetPath)) {
-                    AssetDatabase.CreateAsset(ScriptableObject.CreateInstance<GeneratedMeshes>(), GeneratedMeshes.assetPath);
+                if (!AssetDatabase.AssetPathExists(GeneratedMeshes.AssetPath)) {
+                    AssetDatabase.CreateAsset(ScriptableObject.CreateInstance<GeneratedMeshes>(), GeneratedMeshes.AssetPath);
 
                     AssetDatabase.SaveAssets();
                     AssetDatabase.Refresh();
                 }
 
-                GeneratedMeshes generatedMeshes = AssetDatabase.LoadAssetAtPath<GeneratedMeshes>(GeneratedMeshes.assetPath);
+                GeneratedMeshes generatedMeshes = AssetDatabase.LoadAssetAtPath<GeneratedMeshes>(GeneratedMeshes.AssetPath);
 
 
                 Undo.RecordObject(generatedMeshes, "Save mesh to GeneratedMeshes");
 
 
-                meshAsset = (Mesh)AssetDatabase.LoadAllAssetsAtPath(GeneratedMeshes.assetPath).FirstOrDefault(obj => obj is Mesh && obj.name == meshName);
+                meshAsset = (Mesh)AssetDatabase.LoadAllAssetsAtPath(GeneratedMeshes.AssetPath).FirstOrDefault(obj => obj is Mesh && obj.name == meshName);
                 if (!meshAsset) {
                     AssetDatabase.AddObjectToAsset(mesh, generatedMeshes);
                     EditorUtility.SetDirty(generatedMeshes);
                     AssetDatabase.SaveAssets();
                     AssetDatabase.Refresh();
-                    meshAsset = (Mesh)AssetDatabase.LoadAllAssetsAtPath(GeneratedMeshes.assetPath).First(obj => obj is Mesh && obj.name == meshName);
+                    meshAsset = (Mesh)AssetDatabase.LoadAllAssetsAtPath(GeneratedMeshes.AssetPath).First(obj => obj is Mesh && obj.name == meshName);
                 }
 
                 meshAsset.triangles = mesh.triangles;

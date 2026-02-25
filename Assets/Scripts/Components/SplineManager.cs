@@ -10,7 +10,7 @@ public class SplineManager : MonoBehaviour
     public SplineContainer splineContainer;
     public int splineIndex;
 
-    public UnityEngine.Splines.Spline spline => splineContainer.Splines[splineIndex];
+    UnityEngine.Splines.Spline Spline => splineContainer.Splines[splineIndex];
 
     [SerializeField] bool recreate;
 
@@ -20,37 +20,37 @@ public class SplineManager : MonoBehaviour
 
     void Recreate()
     {
-        foreach (var c in spriteShapeControllers) {
+        foreach (SpriteShapeController c in spriteShapeControllers) {
             UnityEngine.U2D.Spline spriteSpline = c.spline;
 
             spriteSpline.Clear();
             spriteSpline.isOpenEnded = false;
 
             int ssPointCount = spriteSpline.GetPointCount();
-            for (int index = 0; index < Mathf.Max(ssPointCount, spline.Count); index++) {
+            for (int index = 0; index < Mathf.Max(ssPointCount, Spline.Count); index++) {
 
                 if (index >= ssPointCount)
-                    spriteSpline.InsertPointAt(index, spline[index].Position);
+                    spriteSpline.InsertPointAt(index, Spline[index].Position);
 
-                else if (index >= spline.Count) {
+                else if (index >= Spline.Count) {
                     spriteSpline.RemovePointAt(index);
                     continue;
                 }
 
                 spriteSpline.SetCorner(index, true);
                 spriteSpline.SetHeight(index, 1f);
-                spriteSpline.SetPosition(index, spline[index].Position);
+                spriteSpline.SetPosition(index, Spline[index].Position);
                 spriteSpline.SetSpriteIndex(index, 0);
 
-                if (spline.GetTangentMode(index) == TangentMode.Linear) {
+                if (Spline.GetTangentMode(index) == TangentMode.Linear) {
                     spriteSpline.SetTangentMode(index, ShapeTangentMode.Linear);
                     spriteSpline.SetLeftTangent(index, Vector3.zero);
                     spriteSpline.SetRightTangent(index, Vector3.zero);
                 }
                 else {
                     spriteSpline.SetTangentMode(index, ShapeTangentMode.Broken);
-                    spriteSpline.SetLeftTangent(index, math.rotate(spline[index].Rotation, spline[index].TangentIn));
-                    spriteSpline.SetRightTangent(index, math.rotate(spline[index].Rotation, spline[index].TangentOut));
+                    spriteSpline.SetLeftTangent(index, math.rotate(Spline[index].Rotation, Spline[index].TangentIn));
+                    spriteSpline.SetRightTangent(index, math.rotate(Spline[index].Rotation, Spline[index].TangentOut));
                 }
 
             }
@@ -76,7 +76,7 @@ public class SplineManager : MonoBehaviour
         Debug.Log(log);
     }
 
-    private void OnValidate()
+    void OnValidate()
     {
         if (recreate) {
             recreate = false;

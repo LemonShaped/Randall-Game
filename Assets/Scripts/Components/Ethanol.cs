@@ -54,19 +54,21 @@ public class Ethanol : LiquidCharacter
         OnCollisionStay2D(collision);
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    void OnCollisionStay2D(Collision2D collision)
     {
-        if (GroundLayers.Contains(collision.collider.gameObject.layer) && !noFiresAbove.Contains(gameManager.GetMaterial(collision.gameObject.layer))) {
-            for (int i = 0; i < collision.contactCount; i++) {
-                float angle = Vector2.SignedAngle(Vector2.up, collision.GetContact(i).normal);
-                if (-60f < angle && angle < 60f) {
-                    gameManager.PlaceFire(collision.GetContact(i).point, angle);
-                }
+        if (!GroundLayers.Contains(collision.gameObject.layer)
+            || noFiresAbove.Contains(gameManager.GetMaterial(collision.gameObject.layer)))
+            return;
+
+        for (int i = 0; i < collision.contactCount; i++) {
+            float angle = Vector2.SignedAngle(Vector2.up, collision.GetContact(i).normal);
+            if (-60f < angle && angle < 60f) {
+                gameManager.PlaceFire(collision.GetContact(i).point, angle);
             }
         }
     }
 
-    private IEnumerator BurnUp()
+    IEnumerator BurnUp()
     {
         while (true) {
             yield return new WaitForSeconds(burnTime);
