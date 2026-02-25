@@ -4,8 +4,8 @@ eol=lf
 
 # only convert line endings on game files
 * -text
-/Assets/* text=auto eol=lf
-/Assets/**/* text=auto eol=lf
+/Assets/Randall_Game/* text=auto eol=lf
+/Assets/Randall_Game/**/* text=auto eol=lf
 
 .editorconfig text=auto eol=lf
 .gitignore text=auto eol=lf
