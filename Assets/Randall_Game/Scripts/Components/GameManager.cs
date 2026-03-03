@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
 
     public Transform fireParent;
     public Transform unheldItemParent;
+
 
     //private void Awake() {
     //    Debug.Log(winScreen.GetComponent<VideoPlayer>().url);

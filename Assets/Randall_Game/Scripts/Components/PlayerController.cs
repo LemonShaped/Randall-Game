@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerController : LiquidCharacter
@@ -15,6 +17,11 @@ public class PlayerController : LiquidCharacter
     public Transform inventoryObj;
 
     public List<PickupObject> inventory = new();
+
+
+    public CinemachineCamera vcamGeneral;
+    public CinemachineCamera vcamUnderground;
+
 
     void EnableInput()
     {
@@ -137,7 +144,7 @@ public class PlayerController : LiquidCharacter
 
             case ModesEnum.Cloud:
             case ModesEnum.LiquidUnderground:
-                if (movement.x != 0) // we want to control the speed directly but we dont want to stop instantly, when flying.
+                if (movement.x != 0) // we want to control the speed directly, but we don't want to stop instantly, when flying.
                     rb.linearVelocityX = movement.x * movementSpeed;
                 if (movement.y != 0)
                     rb.linearVelocityY = movement.y * movementSpeed;
@@ -152,16 +159,67 @@ public class PlayerController : LiquidCharacter
         if (CurrentMode is ModesEnum.Liquid or ModesEnum.LiquidUnderground or ModesEnum.Jelly
             && Actions.Down.IsPressed() && onPorousGround)
         {
-            foreach (PickupObject item in inventoryObj.GetComponentsInChildren<PickupObject>()) {
+            for (int i = inventory.Count - 1; i >= 0; i--)
+            {
+                PickupObject item = inventory[i];
                 item.Drop(this);
             }
-            if (CurrentMode != ModesEnum.LiquidUnderground)
+
+            if (CurrentMode != ModesEnum.LiquidUnderground) {
                 CurrentMode = ModesEnum.LiquidUnderground;
+                vcamGeneral.gameObject.SetActive(false);
+                vcamUnderground.gameObject.SetActive(true);
+
+            }
         }
         // Liquid_Underground -> Liquid
         else if (CurrentMode == ModesEnum.LiquidUnderground
-                 && gameManager.GetMaterial((Vector2)transform.position) == GroundMaterial.None)
+                 && gameManager.GetMaterial((Vector2)transform.position) == GroundMaterial.None) {
             CurrentMode = ModesEnum.Liquid;
+            vcamGeneral.gameObject.SetActive(true);
+            vcamUnderground.gameObject.SetActive(false);
+
+        }
 
     }
 }
+/*
+public class Inventory : MonoBehaviour
+{
+    List<Item> items;
+
+    public void DropAll()
+    {
+        items.RemoveAll(item => {
+            OnDrop(item);
+            return true;
+        });
+    }
+    public void DropAll(Predicate<Item> match)
+    {
+        items.RemoveAll(item => {
+            OnDrop(item);
+            return match(item);
+        });
+    }
+    void Drop(Item item)
+    {
+        items.Remove(item);
+        OnDrop(item);
+    }
+
+    void OnDrop(Item item)
+    {
+        item.owner = null;
+        item.rb.gravityScale = item.gravityScale;
+    }
+}
+
+public class Item : MonoBehaviour
+{
+    public GameObject owner;
+    public Rigidbody2D rb;
+
+    public float gravityScale;
+}
+*/

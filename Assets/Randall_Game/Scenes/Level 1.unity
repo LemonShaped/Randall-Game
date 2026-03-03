@@ -223,85 +223,46 @@ CompositeCollider2D:
     m_ColliderPaths:
     - - X: 2515324672
         Y: -552685888
-      - X: 2475002624
-        Y: -32974834
-      - X: 2275955712
-        Y: -10270994
-      - X: 1988848896
-        Y: -80172312
-      - X: 1740576896
-        Y: -79577912
-      - X: 1671344512
-        Y: -112217904
-      - X: 1545170688
-        Y: -108665928
-      - X: 1424297728
-        Y: -96387616
-      - X: 1292856960
-        Y: -96664352
-      - X: 1262630656
-        Y: -85716560
-      - X: 1108018304
-        Y: -85822696
-      - X: 1014711936
-        Y: -96646624
-      - X: 932935616
-        Y: -96170960
-      - X: 915505088
-        Y: -70082952
-      - X: 900336384
-        Y: -67912752
-      - X: 850999616
-        Y: -81446400
-      - X: 674270656
-        Y: -80875320
-      - X: 608554560
-        Y: -97571496
-      - X: 315081696
-        Y: -98277896
-      - X: 252764512
-        Y: -90813048
-      - X: -21362172
-        Y: -91230552
-      - X: -139034720
-        Y: -162292160
-      - X: -185664208
-        Y: -163416064
-      - X: -363652832
-        Y: -270552224
-      - X: -547249024
-        Y: -272312832
+      - X: 2443000064
+        Y: 80000000
+      - X: 2153999872
+        Y: 80000000
+      - X: 2153999872
+        Y: -40476240
+      - X: 2146004224
+        Y: -45677296
+      - X: 1705641984
+        Y: -103071912
+      - X: 1465714688
+        Y: -102949680
+      - X: 1411904000
+        Y: -92847928
+      - X: 9940765
+        Y: -92255152
+      - X: -97356952
+        Y: -163403568
+      - X: -170121712
+        Y: -163413872
+      - X: -332924544
+        Y: -267640176
+      - X: -547526848
+        Y: -267589360
       - X: -626429376
         Y: -577897920
   m_CompositePaths:
     m_Paths:
-    - - {x: -46, y: -27.147585}
-      - {x: -36.365276, y: -27.05522}
-      - {x: -18.566414, y: -16.341606}
-      - {x: -13.903466, y: -16.229214}
-      - {x: -2.1362102, y: -9.123055}
-      - {x: 25.276455, y: -9.081305}
-      - {x: 31.508173, y: -9.827789}
-      - {x: 60.855457, y: -9.757149}
-      - {x: 67.42706, y: -8.087532}
-      - {x: 85.09997, y: -8.144639}
-      - {x: 90.033646, y: -6.791276}
-      - {x: 91.550514, y: -7.008305}
-      - {x: 93.29358, y: -9.617096}
-      - {x: 101.47119, y: -9.664662}
-      - {x: 110.801834, y: -8.58227}
-      - {x: 126.26307, y: -8.571658}
-      - {x: 129.28569, y: -9.666435}
-      - {x: 142.42978, y: -9.6387615}
-      - {x: 154.51707, y: -10.866593}
-      - {x: 167.13446, y: -11.221788}
-      - {x: 174.0577, y: -7.9577913}
-      - {x: 198.88489, y: -8.01723}
-      - {x: 218.5, y: -3.2415595}
-      - {x: 218.49997, y: 4.64}
-      - {x: 215.4, y: 4.6400294}
+    - - {x: -33.29246, y: -26.764017}
+      - {x: -17.012163, y: -16.341387}
+      - {x: -9.735689, y: -16.340353}
+      - {x: 0.9940843, y: -9.225515}
+      - {x: 141.1904, y: -9.284794}
+      - {x: 146.57147, y: -10.294968}
+      - {x: 170.5642, y: -10.307191}
+      - {x: 214.60042, y: -4.5677266}
+      - {x: 215.4, y: -4.04761}
       - {x: 215.39996, y: 93}
       - {x: -46, y: 92.99997}
+      - {x: -45.999973, y: -26.76101}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
@@ -325,10 +286,10 @@ MonoBehaviour:
   - collider: {fileID: 493850}
     operation: 3
   enableEdit: 0
+  constantlyGenerate: 0
   generatedColliders:
   - {fileID: 493852}
   - {fileID: 493851}
-  foldComponentIDs: d836ffffd636ffff
 --- !u!50 &493847
 Rigidbody2D:
   serializedVersion: 5
@@ -402,30 +363,18 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -54.724903, y: -27.231283}
-      - {x: -36.365284, y: -27.055222}
-      - {x: -18.566422, y: -16.341606}
-      - {x: -13.903472, y: -16.229216}
-      - {x: -2.136217, y: -9.123055}
-      - {x: 25.276451, y: -9.081305}
-      - {x: 31.50817, y: -9.827789}
-      - {x: 60.855453, y: -9.75715}
-      - {x: 67.42706, y: -8.087532}
-      - {x: 85.09996, y: -8.14464}
-      - {x: 90.03364, y: -6.7912755}
-      - {x: 91.55051, y: -7.0082955}
-      - {x: 93.293564, y: -9.617096}
-      - {x: 101.47119, y: -9.664662}
-      - {x: 110.80183, y: -8.58227}
-      - {x: 126.26306, y: -8.571656}
-      - {x: 129.28569, y: -9.666435}
-      - {x: 142.42978, y: -9.6387615}
-      - {x: 154.51707, y: -10.866592}
-      - {x: 167.13445, y: -11.22179}
-      - {x: 174.0577, y: -7.9577913}
-      - {x: 198.88489, y: -8.017231}
-      - {x: 227.59558, y: -1.0270994}
-      - {x: 247.50027, y: -3.2974834}
+    - - {x: -54.752686, y: -26.758936}
+      - {x: -33.292454, y: -26.764017}
+      - {x: -17.01217, y: -16.341387}
+      - {x: -9.735695, y: -16.340357}
+      - {x: 0.9940765, y: -9.225515}
+      - {x: 141.1904, y: -9.284793}
+      - {x: 146.57147, y: -10.294968}
+      - {x: 170.5642, y: -10.307191}
+      - {x: 214.60042, y: -4.5677295}
+      - {x: 215.4, y: -4.047624}
+      - {x: 215.4, y: 8}
+      - {x: 244.3, y: 8}
       - {x: 251.53246, y: -55.26859}
       - {x: -62.642937, y: -57.789795}
   m_UseDelaunayMesh: 1
@@ -459,7 +408,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 3
   m_CompositeOrder: 1
@@ -475,30 +424,18 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -54.724903, y: -27.231283}
-      - {x: -36.365284, y: -27.055222}
-      - {x: -18.566422, y: -16.341606}
-      - {x: -13.903472, y: -16.229216}
-      - {x: -2.136217, y: -9.123055}
-      - {x: 25.276451, y: -9.081305}
-      - {x: 31.50817, y: -9.827789}
-      - {x: 60.855453, y: -9.75715}
-      - {x: 67.42706, y: -8.087532}
-      - {x: 85.09996, y: -8.14464}
-      - {x: 90.03364, y: -6.7912755}
-      - {x: 91.55051, y: -7.0082955}
-      - {x: 93.293564, y: -9.617096}
-      - {x: 101.47119, y: -9.664662}
-      - {x: 110.80183, y: -8.58227}
-      - {x: 126.26306, y: -8.571656}
-      - {x: 129.28569, y: -9.666435}
-      - {x: 142.42978, y: -9.6387615}
-      - {x: 154.51707, y: -10.866592}
-      - {x: 167.13445, y: -11.22179}
-      - {x: 174.0577, y: -7.9577913}
-      - {x: 198.88489, y: -8.017231}
-      - {x: 227.59558, y: -1.0270994}
-      - {x: 247.50027, y: -3.2974834}
+    - - {x: -54.752686, y: -26.758936}
+      - {x: -33.292454, y: -26.764017}
+      - {x: -17.01217, y: -16.341387}
+      - {x: -9.735695, y: -16.340357}
+      - {x: 0.9940765, y: -9.225515}
+      - {x: 141.1904, y: -9.284793}
+      - {x: 146.57147, y: -10.294968}
+      - {x: 170.5642, y: -10.307191}
+      - {x: 214.60042, y: -4.5677295}
+      - {x: 215.4, y: -4.047624}
+      - {x: 215.4, y: 8}
+      - {x: 244.3, y: 8}
       - {x: 251.53246, y: -55.26859}
       - {x: -62.642937, y: -57.789795}
   m_UseDelaunayMesh: 1
@@ -4131,6 +4068,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1661767080}
     m_Modifications:
+    - target: {fileID: 3128680460566213785, guid: 6c671197dc1bd8f42bd04bec6cd38f3e, type: 3}
+      propertyPath: vcamGeneral
+      value: 
+      objectReference: {fileID: 1318531410}
+    - target: {fileID: 3128680460566213785, guid: 6c671197dc1bd8f42bd04bec6cd38f3e, type: 3}
+      propertyPath: vcamUnderground
+      value: 
+      objectReference: {fileID: 2005130077}
     - target: {fileID: 3676224179324160962, guid: 6c671197dc1bd8f42bd04bec6cd38f3e, type: 3}
       propertyPath: m_Name
       value: Player
@@ -5013,7 +4958,7 @@ Transform:
   m_GameObject: {fileID: 560945354}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.1331449, y: -4.91806, z: -5}
+  m_LocalPosition: {x: 1.1500338, y: -5.0255766, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6625,7 +6570,7 @@ PrefabInstance:
     - target: {fileID: 803560607562819236, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
       propertyPath: BoundingShape2D
       value: 
-      objectReference: {fileID: 493845}
+      objectReference: {fileID: 1581819850}
     - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.1459996
@@ -9718,6 +9663,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 413387568}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1318531410 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8676188270337490555, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+  m_PrefabInstance: {fileID: 4165651257674659257}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
 --- !u!1 &1330575546
 GameObject:
   m_ObjectHideFlags: 0
@@ -14798,6 +14754,17 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &2005130077 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8676188270337490555, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+  m_PrefabInstance: {fileID: 716419524}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
 --- !u!1 &2009926813
 GameObject:
   m_ObjectHideFlags: 0

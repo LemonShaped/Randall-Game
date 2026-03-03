@@ -15,14 +15,19 @@ public class IndirectCompositeCollider : MonoBehaviour
 
     [SerializeField] ColliderAndOperation[] sourceColliders;
 
+    [Tooltip("Generates on disable.")]
     [SerializeField] bool enableEdit;
+
+    [SerializeField] bool constantlyGenerate;
 
 
     [HideInInspector] [SerializeField] List<Collider2D> generatedColliders;
 
-    [HideInInspector] public List<int> foldComponentIDs = new();
+    [NonSerialized] public readonly List<int> foldComponentIDs = new();
 
     bool generatedThisFrame;
+
+    bool prevEnableEdit = true;
 
 
     [Serializable]
@@ -55,20 +60,22 @@ public class IndirectCompositeCollider : MonoBehaviour
 
         EditorApplication.delayCall += () =>
         {
-            if (!enableEdit)
-            {
-                if (!generatedThisFrame)
-                    Generate();
-
-                generatedThisFrame = true;
-            }
-            else
+            if (enableEdit)
             {
                 foreach (Collider2D collider in generatedColliders)
                     DestroyImmediate(collider);
 
                 generatedColliders.Clear();
             }
+            else if (prevEnableEdit || constantlyGenerate)
+            {
+                if (!generatedThisFrame)
+                    Generate();
+
+                generatedThisFrame = true;
+            }
+
+            prevEnableEdit = enableEdit;
         };
     }
 
@@ -79,7 +86,7 @@ public class IndirectCompositeCollider : MonoBehaviour
 
     void Generate()
     {
-        if (this == null || Application.isPlaying)
+        if (this == null)
             return;
 
         foreach (Collider2D col in generatedColliders)

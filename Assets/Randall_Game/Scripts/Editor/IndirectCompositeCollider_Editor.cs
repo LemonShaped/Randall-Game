@@ -67,6 +67,6 @@ public class IndirectCompositeCollider_Editor : Editor
 
             inspector.Repaint();
         };
-        ;
+
     }
 }

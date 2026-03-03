@@ -27,7 +27,6 @@ MonoBehaviour:
   - MeshRenderer
   - SkinnedMeshRenderer
   - Canvas
-  - GraphicRaycaster
   - CanvasGroup
   - Button
   - Text
@@ -53,3 +52,4 @@ MonoBehaviour:
   - NavMeshAgent
   - Cloth
   - LODGroup
+  - CinemachinePositionComposer
