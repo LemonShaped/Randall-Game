@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom - LiberationSans SDF - Drop Shadow 2
+  m_Name: LiberationSans SDF - drop shadow 1
   m_Shader: {fileID: 4800000, guid: fe393ace9b354375a9cb14cdbbc28be4, type: 3}
-  m_Parent: {fileID: 2100000, guid: e65bb07fa7c89454b92c00d2aa4ed5d3, type: 2}
+  m_Parent: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - UNDERLAY_ON
@@ -28,12 +28,12 @@ Material:
     m_Floats:
     - _FaceDilate: 0
     - _OutlineWidth: 0
-    - _ScaleRatioC: 0.72044337
-    - _UnderlayDilate: 0.342
-    - _UnderlayOffsetX: 0.623
-    - _UnderlayOffsetY: -0.564
-    - _UnderlaySoftness: 0.05
+    - _ScaleRatioC: 0.73125
+    - _UnderlayDilate: 0.13
+    - _UnderlayOffsetX: 0.38
+    - _UnderlayOffsetY: -0.37
+    - _UnderlaySoftness: 0.101
     m_Colors:
-    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5019608}
+    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.69411767}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

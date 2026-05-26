@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -150,77 +151,47 @@ public class LiquidCharacter : MonoBehaviour
     Coroutine j;
     public void Jump(float velocity)
     {
-        if (j is not null) {
-            StopCoroutine(j);
-            j = null;
-        }
-        j = StartCoroutine(Jump(velocity));
+        if (j is not null)
+            return;
 
-        return;
-
-        IEnumerator Jump(float velocity)
-        {
-            movementState = MovementState.Jumping;
-
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.squash);
-
-            yield return new WaitForSeconds(0.1f);
-            yield return new WaitForFixedUpdate();
-            rb.linearVelocityY = velocity;
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.rising);
-
-            yield return new WaitUntil(() => Mathf.Abs(rb.linearVelocityY) < velocity * 0.3f);
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.midair);
-
-            yield return new WaitUntil(() => Mathf.Abs(rb.linearVelocityY) > velocity * 0.3f);
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.falling);
-
-            yield return new WaitUntil(() => groundCheck.CheckGround(GroundLayers));
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.landing);
-
-            yield return new WaitForSeconds(0.15f);
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].idle);
-            movementState = MovementState.Idle;
-            UpdateTexture();
-
-            j = null;
-        }
+        j = StartCoroutine(JumpCo(velocity));
     }
-
-
     public void Bounce(float velocity)
     {
-        IEnumerator Bounce(float velocity)
-        {
-            movementState = MovementState.Jumping;
+        if (j is not null)
+            return;
 
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.squash);
-
-            yield return new WaitForSeconds(0.1f);
-            yield return new WaitForFixedUpdate();
-            rb.linearVelocityY = velocity;
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.rising);
-
-            yield return new WaitUntil(() => Mathf.Abs(rb.linearVelocityY) < velocity * 0.3f);
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.midair);
-
-            yield return new WaitUntil(() => Mathf.Abs(rb.linearVelocityY) > velocity * 0.3f);
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.falling);
-
-            yield return new WaitUntil(() => groundCheck.CheckGround(GroundLayers));
-            animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.landing);
-
-            UpdateTexture();
-
-            j = null;
-        }
-
-        if (j is not null) {
-            StopCoroutine(j);
-            j = null;
-        }
-        j = StartCoroutine(Bounce(velocity));
+        j = StartCoroutine(JumpCo(velocity));
     }
+
+    IEnumerator JumpCo(float velocity)
+    {
+        movementState = MovementState.Jumping;
+
+        animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.squash);
+
+        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForFixedUpdate();
+        rb.linearVelocityY = velocity;
+        animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.rising);
+
+        yield return new WaitUntil(() => Mathf.Abs(rb.linearVelocityY) < velocity * 0.3f);
+        animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.midair);
+
+        yield return new WaitUntil(() => Mathf.Abs(rb.linearVelocityY) > velocity * 0.3f);
+        animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.falling);
+
+        yield return new WaitUntil(() => groundCheck.CheckGround(GroundLayers));
+        animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.landing);
+
+        yield return new WaitForSeconds(0.15f);
+        animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].idle);
+        movementState = MovementState.Idle;
+        UpdateTexture();
+
+        j = null;
+    }
+
     public ModesEnum CurrentMode {
         get => _currentMode;
         set {

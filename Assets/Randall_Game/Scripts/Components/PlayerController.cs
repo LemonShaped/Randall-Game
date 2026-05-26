@@ -50,8 +50,10 @@ public class PlayerController : LiquidCharacter
 
 
 
-    void OnEnable() => EnableInput();
-    void OnDisable() => DisableInput();
+    void OnEnable() =>
+        EnableInput();
+    void OnDisable() =>
+        DisableInput();
 
     public override void Awake()
     {
