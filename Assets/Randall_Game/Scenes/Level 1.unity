@@ -221,48 +221,57 @@ CompositeCollider2D:
         Y: -340819680
   - m_Collider: {fileID: 493851}
     m_ColliderPaths:
-    - - X: 2515324672
-        Y: -552685888
-      - X: 2443000064
+    - - X: 2400000000
         Y: 80000000
       - X: 2153999872
         Y: 80000000
       - X: 2153999872
-        Y: -40476240
-      - X: 2146004224
-        Y: -45677296
-      - X: 1705641984
-        Y: -103071912
-      - X: 1465714688
-        Y: -102949680
-      - X: 1411904000
-        Y: -92847928
-      - X: 9940765
-        Y: -92255152
-      - X: -97356952
-        Y: -163403568
-      - X: -170121712
-        Y: -163413872
-      - X: -332924544
-        Y: -267640176
-      - X: -547526848
-        Y: -267589360
-      - X: -626429376
-        Y: -577897920
+        Y: -50000000
+      - X: 1940000000
+        Y: -80000000
+      - X: 1710000000
+        Y: -80000000
+      - X: 1660000000
+        Y: -110000000
+      - X: 1495000064
+        Y: -110000000
+      - X: 1444999936
+        Y: -90000000
+      - X: -20000000
+        Y: -90000000
+      - X: -140000000
+        Y: -160000000
+      - X: -190000000
+        Y: -160000000
+      - X: -255000000
+        Y: -195000000
+      - X: -275000000
+        Y: -195000000
+      - X: -380000000
+        Y: -270000000
+      - X: -550000000
+        Y: -270000000
+      - X: -550000000
+        Y: -500000000
+      - X: 2400000000
+        Y: -500000000
   m_CompositePaths:
     m_Paths:
-    - - {x: -33.29246, y: -26.764017}
-      - {x: -17.012163, y: -16.341387}
-      - {x: -9.735689, y: -16.340353}
-      - {x: 0.9940843, y: -9.225515}
-      - {x: 141.1904, y: -9.284794}
-      - {x: 146.57147, y: -10.294968}
-      - {x: 170.5642, y: -10.307191}
-      - {x: 214.60042, y: -4.5677266}
-      - {x: 215.4, y: -4.04761}
+    - - {x: -38.00001, y: -27}
+      - {x: -27.49999, y: -19.5}
+      - {x: -25.499994, y: -19.499996}
+      - {x: -18.999994, y: -16}
+      - {x: -13.999993, y: -15.999997}
+      - {x: -1.9999932, y: -9}
+      - {x: 144.5, y: -9.000002}
+      - {x: 149.50002, y: -11}
+      - {x: 166, y: -10.999997}
+      - {x: 171.00002, y: -8}
+      - {x: 194, y: -8}
+      - {x: 215.4, y: -4.999975}
       - {x: 215.39996, y: 93}
       - {x: -46, y: 92.99997}
-      - {x: -45.999973, y: -26.76101}
+      - {x: -45.999973, y: -27}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
@@ -363,20 +372,23 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -54.752686, y: -26.758936}
-      - {x: -33.292454, y: -26.764017}
-      - {x: -17.01217, y: -16.341387}
-      - {x: -9.735695, y: -16.340357}
-      - {x: 0.9940765, y: -9.225515}
-      - {x: 141.1904, y: -9.284793}
-      - {x: 146.57147, y: -10.294968}
-      - {x: 170.5642, y: -10.307191}
-      - {x: 214.60042, y: -4.5677295}
-      - {x: 215.4, y: -4.047624}
+    - - {x: -55, y: -27}
+      - {x: -38, y: -27}
+      - {x: -27.5, y: -19.5}
+      - {x: -25.5, y: -19.5}
+      - {x: -19, y: -16}
+      - {x: -14, y: -16}
+      - {x: -2, y: -9}
+      - {x: 144.5, y: -9}
+      - {x: 149.5, y: -11}
+      - {x: 166, y: -11}
+      - {x: 171, y: -8}
+      - {x: 194, y: -8}
+      - {x: 215.4, y: -5}
       - {x: 215.4, y: 8}
-      - {x: 244.3, y: 8}
-      - {x: 251.53246, y: -55.26859}
-      - {x: -62.642937, y: -57.789795}
+      - {x: 240, y: 8}
+      - {x: 240, y: -50}
+      - {x: -55, y: -50}
   m_UseDelaunayMesh: 1
 --- !u!60 &493851
 PolygonCollider2D:
@@ -424,20 +436,23 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -54.752686, y: -26.758936}
-      - {x: -33.292454, y: -26.764017}
-      - {x: -17.01217, y: -16.341387}
-      - {x: -9.735695, y: -16.340357}
-      - {x: 0.9940765, y: -9.225515}
-      - {x: 141.1904, y: -9.284793}
-      - {x: 146.57147, y: -10.294968}
-      - {x: 170.5642, y: -10.307191}
-      - {x: 214.60042, y: -4.5677295}
-      - {x: 215.4, y: -4.047624}
+    - - {x: -55, y: -27}
+      - {x: -38, y: -27}
+      - {x: -27.5, y: -19.5}
+      - {x: -25.5, y: -19.5}
+      - {x: -19, y: -16}
+      - {x: -14, y: -16}
+      - {x: -2, y: -9}
+      - {x: 144.5, y: -9}
+      - {x: 149.5, y: -11}
+      - {x: 166, y: -11}
+      - {x: 171, y: -8}
+      - {x: 194, y: -8}
+      - {x: 215.4, y: -5}
       - {x: 215.4, y: 8}
-      - {x: 244.3, y: 8}
-      - {x: 251.53246, y: -55.26859}
-      - {x: -62.642937, y: -57.789795}
+      - {x: 240, y: 8}
+      - {x: 240, y: -50}
+      - {x: -55, y: -50}
   m_UseDelaunayMesh: 1
 --- !u!60 &493852
 PolygonCollider2D:
@@ -588,6 +603,22 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!4 &10396675 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+  m_PrefabInstance: {fileID: 1369508994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &10396678 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8676188270337490555, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+  m_PrefabInstance: {fileID: 1369508994}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
 --- !u!1 &20309491
 GameObject:
   m_ObjectHideFlags: 0
@@ -4069,11 +4100,23 @@ PrefabInstance:
     m_TransformParent: {fileID: 1661767080}
     m_Modifications:
     - target: {fileID: 3128680460566213785, guid: 6c671197dc1bd8f42bd04bec6cd38f3e, type: 3}
-      propertyPath: vcamGeneral
+      propertyPath: cameras.rising
+      value: 
+      objectReference: {fileID: 10396678}
+    - target: {fileID: 3128680460566213785, guid: 6c671197dc1bd8f42bd04bec6cd38f3e, type: 3}
+      propertyPath: cameras.falling
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3128680460566213785, guid: 6c671197dc1bd8f42bd04bec6cd38f3e, type: 3}
+      propertyPath: cameras.general
       value: 
       objectReference: {fileID: 1318531410}
     - target: {fileID: 3128680460566213785, guid: 6c671197dc1bd8f42bd04bec6cd38f3e, type: 3}
-      propertyPath: vcamUnderground
+      propertyPath: cameras.jumping
+      value: 
+      objectReference: {fileID: 10396678}
+    - target: {fileID: 3128680460566213785, guid: 6c671197dc1bd8f42bd04bec6cd38f3e, type: 3}
+      propertyPath: cameras.underground
       value: 
       objectReference: {fileID: 2005130077}
     - target: {fileID: 3676224179324160962, guid: 6c671197dc1bd8f42bd04bec6cd38f3e, type: 3}
@@ -4881,7 +4924,7 @@ MonoBehaviour:
     Enabled: 1
     DefaultMode: 1
   DefaultBlend:
-    Style: 1
+    Style: 0
     Time: 1
     CustomCurve:
       serializedVersion: 2
@@ -4889,7 +4932,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  CustomBlends: {fileID: 0}
+  CustomBlends: {fileID: 11400000, guid: 092150625b0b0de4a95df7d28b61d75f, type: 2}
 --- !u!81 &560945356
 AudioListener:
   m_ObjectHideFlags: 0
@@ -4916,12 +4959,12 @@ Camera:
   m_ShutterSpeed: 0.005
   m_Aperture: 16
   m_FocusDistance: 10
-  m_FocalLength: 50
+  m_FocalLength: 0.86602545
   m_BladeCount: 5
   m_Curvature: {x: 2, y: 11}
   m_BarrelClipping: 0.25
   m_Anamorphism: 0
-  m_SensorSize: {x: 36, y: 24}
+  m_SensorSize: {x: 1, y: 1}
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
@@ -4958,7 +5001,7 @@ Transform:
   m_GameObject: {fileID: 560945354}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.1500338, y: -5.0255766, z: -5}
+  m_LocalPosition: {x: 1.146, y: -5.399, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6573,7 +6616,7 @@ PrefabInstance:
       objectReference: {fileID: 1581819850}
     - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.1459996
+      value: 1.146
       objectReference: {fileID: 0}
     - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6611,13 +6654,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4001867501539212584, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: Lookahead.Time
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4001867501539212584, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: Lookahead.IgnoreY
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4001867501539212584, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: Lookahead.Smoothing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4001867501539212584, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: Composition.DeadZone.Size.y
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4001867501539212584, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: Composition.ScreenPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4001867501539212584, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: Composition.HardLimits.Offset.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7750259934211589062, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
       propertyPath: m_Name
       value: VCam Underground
       objectReference: {fileID: 0}
     - target: {fileID: 7750259934211589062, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8676188270337490555, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8676188270337490555, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
       propertyPath: Target.TrackingTarget
@@ -9997,6 +10068,95 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5426273362634997894, guid: ee012cfa9caf1c144986f1de5992fc57, type: 3}
   m_PrefabInstance: {fileID: 1363664057}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1369508994
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1378101992}
+    m_Modifications:
+    - target: {fileID: 803560607562819236, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: BoundingShape2D
+      value: 
+      objectReference: {fileID: 1581819850}
+    - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.146
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.399
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4001867501539212584, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: Composition.DeadZone.Size.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4001867501539212584, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: Composition.DeadZone.Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4001867501539212584, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: Composition.ScreenPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4001867501539212584, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: Composition.HardLimits.Size.y
+      value: 0.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 4001867501539212584, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: Composition.HardLimits.Offset.y
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7750259934211589062, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: m_Name
+      value: VCam Jumping
+      objectReference: {fileID: 0}
+    - target: {fileID: 8676188270337490555, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8676188270337490555, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: Target.TrackingTarget
+      value: 
+      objectReference: {fileID: 4662676408746828247}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
 --- !u!1 &1378101991
 GameObject:
   m_ObjectHideFlags: 0
@@ -10030,6 +10190,7 @@ Transform:
   - {fileID: 493842}
   - {fileID: 560945358}
   - {fileID: 483696806}
+  - {fileID: 10396675}
   - {fileID: 269276372}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16223,14 +16384,14 @@ PrefabInstance:
     - target: {fileID: 803560607562819236, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
       propertyPath: BoundingShape2D
       value: 
-      objectReference: {fileID: 493845}
+      objectReference: {fileID: 1581819850}
     - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.1459996
+      value: 1.146
       objectReference: {fileID: 0}
     - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -7.499
+      value: -5.399
       objectReference: {fileID: 0}
     - target: {fileID: 3818588695739271092, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
       propertyPath: m_LocalPosition.z
@@ -16267,6 +16428,10 @@ PrefabInstance:
     - target: {fileID: 7750259934211589062, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
       propertyPath: m_Name
       value: VCam General
+      objectReference: {fileID: 0}
+    - target: {fileID: 8676188270337490555, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8676188270337490555, guid: 9d64bdf30dcc9fa47a8190c149c0bdff, type: 3}
       propertyPath: Target.TrackingTarget

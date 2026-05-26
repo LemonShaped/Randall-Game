@@ -167,6 +167,7 @@ public class LiquidCharacter : MonoBehaviour
     IEnumerator JumpCo(float velocity)
     {
         movementState = MovementState.Jumping;
+        (this as PlayerController)?.cameras.jumping.Prioritize();
 
         animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.squash);
 
@@ -183,6 +184,7 @@ public class LiquidCharacter : MonoBehaviour
 
         yield return new WaitUntil(() => groundCheck.CheckGround(GroundLayers));
         animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].jump.landing);
+        (this as PlayerController)?.cameras.general.Prioritize();
 
         yield return new WaitForSeconds(0.15f);
         animator.Animate(assets[(int)CurrentMode].sizes[CurrentSize].idle);

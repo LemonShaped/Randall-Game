@@ -543,8 +543,10 @@ MonoBehaviour:
   movement: {x: 0, y: 0}
   inventoryObj: {fileID: 7728558390827499046}
   inventory: []
-  vcamGeneral: {fileID: 0}
-  vcamUnderground: {fileID: 0}
+  cameras:
+    general: {fileID: 0}
+    underground: {fileID: 0}
+    jumping: {fileID: 0}
 --- !u!50 &4482333105400101336
 Rigidbody2D:
   serializedVersion: 5

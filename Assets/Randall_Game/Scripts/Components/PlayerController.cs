@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerController : LiquidCharacter
 {
@@ -13,14 +14,18 @@ public class PlayerController : LiquidCharacter
 
     public Vector2 movement;
 
+    public VCamList cameras;
+    [Serializable] public struct VCamList
+    {
+        public CinemachineCamera general;
+        public CinemachineCamera underground;
+        public CinemachineCamera jumping;
+    }
+
     [Tooltip("Stores held items.\nShould be an empty object that is a child of the player.")]
     public Transform inventoryObj;
 
     public List<PickupObject> inventory = new();
-
-
-    public CinemachineCamera vcamGeneral;
-    public CinemachineCamera vcamUnderground;
 
 
     void EnableInput()
@@ -61,6 +66,7 @@ public class PlayerController : LiquidCharacter
             Debug.LogWarning("PlayerController: inventory not set, using self as inventory by default");
             inventoryObj = transform;
         }
+        cameras.general.Prioritize();
         base.Awake();
     }
 
@@ -169,8 +175,7 @@ public class PlayerController : LiquidCharacter
 
             if (CurrentMode != ModesEnum.LiquidUnderground) {
                 CurrentMode = ModesEnum.LiquidUnderground;
-                vcamGeneral.gameObject.SetActive(false);
-                vcamUnderground.gameObject.SetActive(true);
+                cameras.underground.Prioritize();
 
             }
         }
@@ -178,8 +183,7 @@ public class PlayerController : LiquidCharacter
         else if (CurrentMode == ModesEnum.LiquidUnderground
                  && gameManager.GetMaterial((Vector2)transform.position) == GroundMaterial.None) {
             CurrentMode = ModesEnum.Liquid;
-            vcamGeneral.gameObject.SetActive(true);
-            vcamUnderground.gameObject.SetActive(false);
+            cameras.general.Prioritize();
 
         }
 
